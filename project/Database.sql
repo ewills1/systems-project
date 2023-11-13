@@ -21,28 +21,28 @@ CREATE TABLE OrderLine (
 
 CREATE TABLE Order (
     orderID INT NOT NULL PRIMARY KEY,
-    date Date,
-    totalCost Money,
-    status Status
+    date DATE,
+    totalCost MONEY,
+    status STATUS
 );
 
 CREATE TABLE User (
     userID NOT NULL PRIMARY KEY,
-    forename String,
-    surname String,
-    bankCardName String,
-    cardHolderName String,
-    expiryDate String,
-    securityCode Int,
-    userType Type,
+    forename STRING,
+    surname STRING,
+    bankCardName STRING,
+    cardHolderName STRING,
+    expiryDate STRING,
+    securityCode INT,
+    userType TYPE,
     PRIMARY FOREIGN KEY (houseID) REFERENCES Address (houseID)
 );
 
 CREATE TABLE Address (
     houseID NOT NULL PRIMARY KEY,
-    streetName String,
-    cityName String,
-    postcode String
+    streetName STRING,
+    cityName STRING,
+    postcode STRING
 );
 
 CREATE TABLE Locomotive (
