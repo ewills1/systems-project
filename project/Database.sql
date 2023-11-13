@@ -5,7 +5,7 @@ CREATE TABLE Product (
     quantity INT,
     FOREIGN KEY (locomotiveID) REFERENCES Locomotive(locomotiveID),
     FOREIGN KEY (rollingStockID) REFERENCES RollingStock(rollingStockID),
-    FOREIGN (controllerID) REFERENCES Controller(controllerID)
+    FOREIGN KEY (controllerID) REFERENCES Controller(controllerID)
 );
 
 CREATE TABLE OrderLine (
@@ -15,6 +15,8 @@ CREATE TABLE OrderLine (
     productQuantity INT, 
     orderLineCost MONEY,
     PRIMARY FOREIGN KEY (orderID, productID)
+    FOREIGN KEY (orderID) REFERENCES Order (orderID)
+    FOREIGN KEY (productID) REFERENCES Product (productID)
 );
 
 CREATE TABLE Order (
@@ -33,7 +35,7 @@ CREATE TABLE User (
     expiryDate String,
     securityCode Int,
     userType Type,
-    PRIMARY FOREIGN KEY (houseID)
+    PRIMARY FOREIGN KEY (houseID) REFERENCES Address (houseID)
 );
 
 CREATE TABLE Address (
@@ -44,26 +46,26 @@ CREATE TABLE Address (
 );
 
 CREATE TABLE Locomotive (
-    PRIMARY FOREIGN KEY (productID)
-    FOREIGN KEY (trainSetID)
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product (productID)
+    FOREIGN KEY (trainSetID) REFERENCES TrainSet(trainSetID)
 );
 
 CREATE TABLE RollingStock (
-    PRIMARY FOREIGN KEY (productID)
-    FOREIGN KEY (trainSetID)
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product(productID)
+    FOREIGN KEY (trainSetID) REFERENCES TrainSet (trainSetID)
 );
 
 CREATE TABLE Controller (
-    PRIMARY FOREIGN KEY (productID)
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product(productID)
 );
 
 CREATE TABLE TrainSet (
     trainSetID NOT NULL PRIMARY KEY
-    PRIMARY FOREIGN KEY (productID)
-    FOREIGN KEY (trainPackProductID)
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product (productID)
+    FOREIGN KEY (trainPackProductID) REFERENCES TrackPack (productID)
     FOREIGN KEY (controllerProductID)
 );
 
 CREATE TABLE TrackPack (
-    PRIMARY FOREIGN KEY (productID)
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product (productID)
 );
