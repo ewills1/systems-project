@@ -34,6 +34,7 @@ CREATE TABLE User (
     forename VARCHAR (100),
     surname VARCHAR (100),
     bankCardName VARCHAR (100),
+    houseID INT,
     cardHolderName VARCHAR (100),
     expiryDate VARCHAR (100),
     securityCode INT,
@@ -50,24 +51,32 @@ CREATE TABLE Address (
 );
 
 CREATE TABLE Locomotive (
+    productID INT,
+    trainSetID INT,
 	PRIMARY KEY (productID),
     FOREIGN KEY (productID) REFERENCES Product (productID),
     FOREIGN KEY (trainSetID) REFERENCES TrainSet(trainSetID)
 );
 
 CREATE TABLE RollingStock (
+    productID INT,
+    trainSetID INT,
 	PRIMARY KEY (productID),
 	FOREIGN KEY (productID) REFERENCES Product(productID),
     FOREIGN KEY (trainSetID) REFERENCES TrainSet (trainSetID)
 );
 
 CREATE TABLE Controller (
+    productID INT,
 	PRIMARY KEY (productID),
     FOREIGN KEY (productID) REFERENCES Product(productID)
 );
 
 CREATE TABLE TrainSet (
+    productID INT,
     trainSetID INT,
+    trainPackProductID INT,
+    controllerProductID INT,
     PRIMARY KEY (productID, trainSetID),
     FOREIGN KEY (productID) REFERENCES Product (productID),
     FOREIGN KEY (trainPackProductID) REFERENCES TrackPack (productID),
@@ -75,6 +84,7 @@ CREATE TABLE TrainSet (
 );
 
 CREATE TABLE TrackPack (
+    productID INT,
 	PRIMARY KEY (productID),
     FOREIGN KEY (productID) REFERENCES Product (productID)
 );
