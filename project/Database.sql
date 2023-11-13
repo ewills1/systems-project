@@ -14,8 +14,8 @@ CREATE TABLE OrderLine (
     orderLineNumber INT,
     productQuantity INT, 
     orderLineCost MONEY,
-    PRIMARY FOREIGN KEY (orderID, productID)
-    FOREIGN KEY (orderID) REFERENCES Order (orderID)
+    PRIMARY FOREIGN KEY (orderID, productID),
+    FOREIGN KEY (orderID) REFERENCES Order (orderID),
     FOREIGN KEY (productID) REFERENCES Product (productID)
 );
 
@@ -46,12 +46,12 @@ CREATE TABLE Address (
 );
 
 CREATE TABLE Locomotive (
-    PRIMARY FOREIGN KEY (productID) REFERENCES Product (productID)
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product (productID),
     FOREIGN KEY (trainSetID) REFERENCES TrainSet(trainSetID)
 );
 
 CREATE TABLE RollingStock (
-    PRIMARY FOREIGN KEY (productID) REFERENCES Product(productID)
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product(productID),
     FOREIGN KEY (trainSetID) REFERENCES TrainSet (trainSetID)
 );
 
@@ -60,9 +60,9 @@ CREATE TABLE Controller (
 );
 
 CREATE TABLE TrainSet (
-    trainSetID NOT NULL PRIMARY KEY
-    PRIMARY FOREIGN KEY (productID) REFERENCES Product (productID)
-    FOREIGN KEY (trainPackProductID) REFERENCES TrackPack (productID)
+    trainSetID NOT NULL PRIMARY KEY,
+    PRIMARY FOREIGN KEY (productID) REFERENCES Product (productID),
+    FOREIGN KEY (trainPackProductID) REFERENCES TrackPack (productID),
     FOREIGN KEY (controllerProductID)
 );
 
