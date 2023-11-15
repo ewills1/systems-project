@@ -3,11 +3,15 @@ package com.sheffield;
 
 import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.views.LoanTableDisplay;
+import com.sheffield.views.LoginScreen;
 
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+
+        LoginScreen loginDisplay = new LoginScreen("Train Toy Store - Login"); //visible(true)
+
         // Create an instance of DatabaseConnectionHandler for managing database connections
         DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 
