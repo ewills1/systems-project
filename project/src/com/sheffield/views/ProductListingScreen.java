@@ -14,6 +14,8 @@ public class ProductListingScreen extends JFrame {
     // Variables declaration                 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -56,6 +58,8 @@ public class ProductListingScreen extends JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -77,7 +81,7 @@ public class ProductListingScreen extends JFrame {
         jButton1.setText("Profile");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToProfile(evt);
+                goToProfileScreen(evt);
             }
         });
 
@@ -85,6 +89,20 @@ public class ProductListingScreen extends JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 goToStaffDashboard(evt);
+            }
+        });
+
+        jButton3.setText("Order Line");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goToOrderLineScreen(evt);
+            }
+        });
+
+        jButton4.setText("My Order");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goToMyOrderScreen(evt);
             }
         });
 
@@ -97,7 +115,11 @@ public class ProductListingScreen extends JFrame {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(303, 303, 303)
+                .addGap(123, 123, 123)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addGap(16, 16, 16))
         );
@@ -106,7 +128,10 @@ public class ProductListingScreen extends JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton3)
+                        .addComponent(jButton4))
                     .addComponent(jLabel2)
                     .addComponent(jButton2))
                 .addContainerGap(15, Short.MAX_VALUE))
@@ -223,12 +248,23 @@ public class ProductListingScreen extends JFrame {
     /** setExtendedState(JFrame.MAXIMIZED_BOTH);
      * Action-button || other functions | listeners
      */  
-    private void goToProfile(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+    private void goToProfileScreen(java.awt.event.ActionEvent evt) {                                         
+        dispose();
+        new ProfileScreen();
     }                                        
 
     private void goToStaffDashboard(java.awt.event.ActionEvent evt) {  
         dispose();
         new StaffDashboardScreen();                                       
     } 
+
+    private void goToOrderLineScreen(java.awt.event.ActionEvent evt) {                                         
+        dispose();
+        new OrderLineScreen();
+    } 
+
+    private void goToMyOrderScreen(java.awt.event.ActionEvent evt) {                                         
+        dispose();
+        new MyOrderScreen();
+    }
 }
