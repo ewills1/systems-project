@@ -1,74 +1,66 @@
 package com.sheffield.model;
 
-public class User {
-    private int userID;
-    private String email;
-    private String password;
+import java.util.List;
 
-    //Constructor
-    public User(int userID, String email, String password) {
+public class User {
+    private String userID;
+    private String email;
+    private List<Role> roles;
+
+     /**
+     * Constructor for creating a User object.
+     *
+     * @param userId   The unique identifier for the user.
+     * @param email    The email address of the user.
+     * @param roles     The role assigned to the user.
+     */
+    public User(String userID, String email, List<Role>roles) {
         this.setUserID(userID);
         this.setEmail(email);
-        this.setPassword(password);
+        this.setRoles(roles);
     }
 
-    //Getter and setter methods for userID with validation
-    public int getUserID() {
+    //Getter and setter methods for userID 
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID){
-        if (isValidUserID(userID)){
+    public void setUserID(String userID){
             this.userID = userID;
-        } else {
-            throw new IllegalArgumentException("UserID is not valid");
-        }
     }
 
-    //Getter and setter methods for email with validation
+    //Getter and setter methods for email 
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email){
-        if (isValidEmail(email)){
             this.email = email;
-        } else {
-            throw new IllegalArgumentException("Email is not valid");
-        }
     }
 
-    //Getter and setter methods for password with validation
-    public String getPassword() {
-        return password;
+    /**
+     * Gets the list of roles associated with the user.
+     *
+     * @return The list of roles.
+     */
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setPassword(String password){
-        if (isValidPassword (password)){
-            this.password = password;
-        }else {
-            throw new IllegalArgumentException("Password is not valid");
-        }
-    }
-
-    //private validation methods for each attribute
-    private boolean isValidUserID(int userID){
-        return userID >= 0 & userID <= 9999;
-    }
-
-    private boolean isValidEmail(String email){
-        return email != null && email.length() <= 100;
-    }
-
-    private boolean isValidPassword(String password){
-        return password != null && password.length()<=100;
+    /**
+     * Sets the list of roles associated with the user.
+     *
+     * @param roles The list of roles to be set.
+     */
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
 
     @Override
     public String toString() {
         return "{ " + " userID = " + getUserID() + 
-            ", email = " + getEmail() + ", password = " +
-            getPassword() + " }";
+            ", email = " + getEmail() + ", role= "
+            + roles.toString()+"}";
     }
 }
