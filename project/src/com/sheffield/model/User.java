@@ -26,7 +26,7 @@ public class User {
     }
 
     public void setUserID(String userID){
-            this.userID = userID;
+        this.userID = userID;
     }
 
     //Getter and setter methods for email 
@@ -35,7 +35,7 @@ public class User {
     }
 
     public void setEmail(String email){
-            this.email = email;
+        this.email = email;
     }
 
     /**

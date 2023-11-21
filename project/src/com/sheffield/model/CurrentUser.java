@@ -8,7 +8,6 @@ import java.util.List;
 public class CurrentUser {
     private String userId;
     private String email;
-    private String username;
     private List<Role> roles;
 
     /**
@@ -16,13 +15,11 @@ public class CurrentUser {
      *
      * @param userId   The unique identifier for the user.
      * @param email    The email address of the user.
-     * @param username The username chosen by the user.
      * @param roles     The role assigned to the user.
      */
-    public CurrentUser(String userId, String email, String username, List<Role> roles) {
+    public CurrentUser(String userId, String email, List<Role> roles) {
         this.userId = userId;
         this.email = email;
-        this.username = username;
         this.roles = roles;
     }
 
@@ -63,24 +60,6 @@ public class CurrentUser {
     }
 
     /**
-     * Gets the user's chosen username.
-     *
-     * @return The user's chosen username.
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Sets the user's chosen username.
-     *
-     * @param username The user's chosen username.
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
      * Gets the list of roles associated with the user.
      *
      * @return The list of roles.
@@ -108,7 +87,6 @@ public class CurrentUser {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
                 ", role='" + roles.toString() + '\'' +
                 '}';
     }
