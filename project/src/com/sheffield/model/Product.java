@@ -29,8 +29,8 @@ public class Product {
     }
 
     public void setProductCode(String productCode) {
-        if (isValidCode(code)) {
-            this.code = productCode;
+        if (isValidProductCode(productCode)) {
+            this.productCode = productCode;
         } else {
             throw new IllegalArgumentException("Product code is not valid.");
         }
