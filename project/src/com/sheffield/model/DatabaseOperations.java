@@ -60,7 +60,7 @@ public class DatabaseOperations {
         }
     }
 
-    public void printTEST() {
+    public void printTEST(Connection connection) {
         System.out.println("If you see this. I had linked view to use database operations");
     }
 

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.ResultSet;
 
 import javax.swing.*;
 
@@ -38,6 +39,15 @@ public class NewLoginScreen extends JFrame {
      */
     public NewLoginScreen(Connection connection) {
         super();
+        jButton1 = new javax.swing.JButton();
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goToProductListingScreen(evt);
+                System.out.println("ABC");
+                databaseOperations.printTEST(connection);
+                //ResultSet allUsers = databaseOperations.getAllUsers(connection);
+            }
+        });
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
         Dimension screenSize = toolkit.getScreenSize();
@@ -64,7 +74,7 @@ public class NewLoginScreen extends JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
@@ -110,13 +120,7 @@ public class NewLoginScreen extends JFrame {
         });
 
         jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToProductListingScreen(evt);
-                System.out.println("ABC");
-                databaseOperations.printTEST();
-            }
-        });
+
 
         jLabel4.setText("Not yet a member? Register.");
 
