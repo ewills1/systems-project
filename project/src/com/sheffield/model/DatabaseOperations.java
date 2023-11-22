@@ -2,10 +2,7 @@ package com.sheffield.model;
 
 import com.sheffield.util.HashedPasswordGenerator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +57,22 @@ public class DatabaseOperations {
         }
     }
 
-    public void printTEST(Connection connection) {
-        System.out.println("If you see this. I had linked view to use database operations");
+    public void printTEST(Connection connection) throws SQLException {
+        System.out.println("Dummy function to test connection to database");
+        System.out.println("Should print cityName from Addresses from DB");
+        Statement st = connection.createStatement();
+        String query = "select * from team060.Addresses";
+        ResultSet rs = st.executeQuery(query); // Execute query
+        while (rs.next()) { // Check if result set has data
+            String result = rs.getString("cityName"); // Retrieve name from db
+            System.out.println(result); // Print result on console
+        }
+        /*else {
+            System.out.println("No data found in the result set");
+        }*/
+
+        rs.close(); // Close result set
+        st.close(); // Close statement
     }
 
      /**

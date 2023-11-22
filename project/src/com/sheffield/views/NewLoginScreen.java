@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.*;
 
@@ -44,8 +45,12 @@ public class NewLoginScreen extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 goToProductListingScreen(evt);
                 System.out.println("ABC");
-                databaseOperations.printTEST(connection);
-                //ResultSet allUsers = databaseOperations.getAllUsers(connection);
+                try {
+                    databaseOperations.printTEST(connection);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         });
 
