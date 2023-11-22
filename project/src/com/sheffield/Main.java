@@ -12,7 +12,6 @@ public class Main {
 
         // Create an instance of DatabaseConnectionHandler for managing database connections
         DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-<<<<<<< HEAD
 
         // Execute the Swing GUI application on the Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
@@ -31,7 +30,5 @@ public class Main {
             }
         });
 
-=======
->>>>>>> 334a6e66264fa3ea3f880c3ffa51f761862b37ba
     }
 }
