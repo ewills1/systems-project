@@ -18,9 +18,5 @@ public class Main {
 
         // Create an instance of DatabaseConnectionHandler for managing database connections
         DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-<<<<<<< HEAD
-=======
-
->>>>>>> 4ee7fc6594ae906a83da4d01894c087b1e3b42f5
     }
 }
