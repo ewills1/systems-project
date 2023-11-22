@@ -12,12 +12,8 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
 
-        new NewLoginScreen();
-
-        // LoginScreen loginDisplay = new LoginScreen("Train Toy Store - Login"); //visible(true)
-
         // Create an instance of DatabaseConnectionHandler for managing database connections
         DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-
+        new NewLoginScreen(databaseConnectionHandler.getConnection());
     }
 }

@@ -60,6 +60,9 @@ public class DatabaseOperations {
         }
     }
 
+    public void printTEST() {
+        System.out.println("If you see this. I had linked view to use database operations");
+    }
 
      /**
      * Promotes the selected user to the role of Moderator.

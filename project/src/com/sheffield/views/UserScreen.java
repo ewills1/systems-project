@@ -2,6 +2,8 @@ package com.sheffield.views;
 /**
  * @author afiq_ismail
  */
+import com.sheffield.model.DatabaseConnectionHandler;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -20,6 +22,10 @@ public class UserScreen extends JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+
+    // Create an instance of DatabaseConnectionHandler for managing database connections
+    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+
     // End of variables declaration
     
     /**
@@ -174,7 +180,7 @@ public class UserScreen extends JFrame {
      */
     private void goToLogout(java.awt.event.ActionEvent evt) {                                         
         dispose();
-        new NewLoginScreen();
+        new NewLoginScreen(databaseConnectionHandler.getConnection());
     }                                        
 
     private void goToStaffDashboard(java.awt.event.ActionEvent evt) {                                         

@@ -2,6 +2,8 @@ package com.sheffield.views;
 /**
  * @author afiq_ismail
  */
+import com.sheffield.model.DatabaseConnectionHandler;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -26,6 +28,9 @@ public class RegisterScreen extends JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+
+    // Create an instance of DatabaseConnectionHandler for managing database connections
+    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 
     // End of variables declaration
     
@@ -210,7 +215,7 @@ public class RegisterScreen extends JFrame {
      */
     private void goToLoginScreen(java.awt.event.ActionEvent evt) {                                         
         dispose();
-        new NewLoginScreen();
+        new NewLoginScreen(databaseConnectionHandler.getConnection());
     } 
     
 }

@@ -2,9 +2,12 @@ package com.sheffield.views;
 /**
  * @author afiq_ismail
  */
+import com.sheffield.model.DatabaseOperations;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 
 import javax.swing.*;
 
@@ -25,12 +28,15 @@ public class NewLoginScreen extends JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+
+    DatabaseOperations databaseOperations = new DatabaseOperations();
+
     // End of variables declaration  
 
     /**
      * Creates NewLoginScreen constructor
      */
-    public NewLoginScreen() {
+    public NewLoginScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -107,6 +113,8 @@ public class NewLoginScreen extends JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 goToProductListingScreen(evt);
+                System.out.println("ABC");
+                databaseOperations.printTEST();
             }
         });
 
