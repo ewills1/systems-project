@@ -139,6 +139,9 @@ public class DatabaseOperations {
         return null;
     }
 
+<<<<<<< HEAD
+    
+=======
     /**
      * Retrieves a result set containing all usernames from the 'Users' table.
      *
@@ -225,4 +228,5 @@ public class DatabaseOperations {
     }
 
 
+>>>>>>> 4ee7fc6594ae906a83da4d01894c087b1e3b42f5
 }
