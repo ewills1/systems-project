@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnectionHandler {
     private static final String DB_URL = "jdbc:mysql://stusql.dcs.shef.ac.uk:3306/team060";
-    private static final String DB_USER = "<DB_NAME>";
-    private static final String DB_PASSWORD = "<DB_PASSWORD>";
+    private static final String DB_USER = "team060";
+    private static final String DB_PASSWORD = "eep5Yohb0";
 
     // Define the connection as a class member to share it across the application.
     private Connection connection = null;
