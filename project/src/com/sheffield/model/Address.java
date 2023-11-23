@@ -1,18 +1,22 @@
 package com.sheffield.model;
 
+import java.util.ArrayList;
+
 public class Address {
 
     private String houseNumber;
     private String streetName;
     private String cityName;
     private String postcode;
+    private ArrayList<String> users;
     
 
-    public Address (String houseNumber, String streetName, String cityName, String postcode ){
+    public Address (String houseNumber, String streetName, String cityName, String postcode, ArrayList<String> users ){
         this.houseNumber = houseNumber;
         this.streetName = streetName;
         this.cityName = cityName;
         this.postcode = postcode;
+        this.users = users;
     }
 
     public String getHouseNumber(){
@@ -45,6 +49,18 @@ public class Address {
 
     public void setPostCode(String postcode){
         this.postcode = postcode;
+    }
+
+    public ArrayList<String> getUsers(){
+        return users;
+    }
+
+    public void addUser(String user){
+        users.add(user);
+    }
+
+    public void removeUser(String user){
+        users.remove(user);
     }
 
     @Override

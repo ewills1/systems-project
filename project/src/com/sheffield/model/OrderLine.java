@@ -1,17 +1,15 @@
 package com.sheffield.model;
-import java.math.BigDecimal;
-import java.sql.Connection;
 
 public class OrderLine {
     
-    private String productCode;
+    private Product product;
     private int lineNumber;
     private int quantity;
-    private BigDecimal cost;
+    private double cost;
 
-    public OrderLine(int lineNumber, String productID, int quantity){
+    public OrderLine(int lineNumber, Product product, int quantity){
         this.lineNumber = lineNumber;
-        this.productCode = productID;
+        this.product = product;
         this.quantity = quantity;
     }
 
@@ -31,13 +29,16 @@ public class OrderLine {
         this.quantity = quantity;
     }
 
-    // public BigDecimal getCost(Connection connection){
-    //     Product.getProductByCode(productCode, connection).getCost() * quantity;
-    // }
+    public double getCost(){
+        double price = product.getPrice().doubleValue();
+        double cost = price * quantity;
+        return cost;
+    }
 
     @Override
     public String toString(){
-        return "Order line: "+ lineNumber + ", "+productCode+", "+quantity; //+cost
+        return "Order line: "+ lineNumber + ", Name: "+product.getName()+", Quantity: "+
+        quantity+", Price: "+cost; //+cost
     }
 
 
