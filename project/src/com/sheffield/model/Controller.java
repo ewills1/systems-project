@@ -2,8 +2,6 @@ package com.sheffield.model;
 
 import java.math.BigDecimal;
 
-import javax.sound.sampled.AudioFileFormat.Type;
-
 public class Controller extends Product{
 
     private Type type;
