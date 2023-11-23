@@ -29,6 +29,14 @@ public class OrderLine {
         this.quantity = quantity;
     }
 
+    public Product getProduct(){
+        return product;
+    }
+
+    public void setProduct(Product p){
+        this.product = p;
+    }
+
     public double getCost(){
         double price = product.getPrice().doubleValue();
         double cost = price * quantity;
