@@ -8,6 +8,6 @@ public class TrainSet extends Product{
     enum Type {ANALOGUE, DCC_READY, DCC_FITTED, DCC_SOUND};
 
     public TrainSet(String productCode, String name, String brandName, int quantity, BigDecimal price, Type  type){
-        super(productCode, name, brandName, quantity, price)
+        super(productCode, name, brandName, quantity, price);
     }
 }
