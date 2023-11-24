@@ -101,7 +101,7 @@ public class ProfileScreen extends JFrame {
         jButton4.setText("Logout");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToLoginScreen(evt);
+                goToLoginScreen(connection, evt);
             }
         });
 
@@ -271,8 +271,8 @@ public class ProfileScreen extends JFrame {
         new ProductListingScreen(connection);
     }                                        
 
-    private void goToLoginScreen(java.awt.event.ActionEvent evt) {
+    private void goToLoginScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(databaseConnectionHandler.getConnection());
+        new NewLoginScreen(connection);
     }  
 }
