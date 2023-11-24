@@ -3,6 +3,7 @@ package com.sheffield.views;
  * @author afiq_ismail
  */
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class MyOrderFormScreen extends JFrame {
@@ -28,7 +29,7 @@ public class MyOrderFormScreen extends JFrame {
     /**
      * Creates MyOrderFormScreen constructor
      */
-    public MyOrderFormScreen() {
+    public MyOrderFormScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -40,7 +41,7 @@ public class MyOrderFormScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -48,7 +49,7 @@ public class MyOrderFormScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -111,7 +112,7 @@ public class MyOrderFormScreen extends JFrame {
         jButton2.setText("BACK");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMyOrderScreen(evt);
+                goToMyOrderScreen(connection, evt);
             }
         });
 
@@ -187,8 +188,8 @@ public class MyOrderFormScreen extends JFrame {
         // TODO add your handling code here:
     }                                           
 
-    private void goToMyOrderScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToMyOrderScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new MyOrderScreen();
+        new MyOrderScreen(connection);
     }  
 }

@@ -3,6 +3,7 @@ package com.sheffield.views;
  * @author afiq_ismail
  */
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class OrderFormScreen extends JFrame {
@@ -29,7 +30,7 @@ public class OrderFormScreen extends JFrame {
     /**
      * Creates OrderFormScreen constructor
      */
-    public OrderFormScreen() {
+    public OrderFormScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -41,7 +42,7 @@ public class OrderFormScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -49,7 +50,7 @@ public class OrderFormScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -120,7 +121,7 @@ public class OrderFormScreen extends JFrame {
         jButton2.setText("CANCEL");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderScreen(evt);
+                goToOrderScreen(connection, evt);
             }
         });
 
@@ -200,9 +201,9 @@ public class OrderFormScreen extends JFrame {
         // TODO add your handling code here:
     }                                           
 
-    private void goToOrderScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToOrderScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new OrderScreen();
+        new OrderScreen(connection);
     }                                        
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         

@@ -5,6 +5,7 @@ package com.sheffield.views;
 import com.sheffield.model.DatabaseConnectionHandler;
 
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class ProfileScreen extends JFrame {
@@ -41,7 +42,7 @@ public class ProfileScreen extends JFrame {
     /**
      * Creates ProfileScreen constructor
      */
-    public ProfileScreen() {
+    public ProfileScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -53,7 +54,7 @@ public class ProfileScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -61,7 +62,7 @@ public class ProfileScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -93,7 +94,7 @@ public class ProfileScreen extends JFrame {
         jButton3.setText("Main Screen");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(evt);
+                goToMainScreen(connection, evt);
             }
         });
 
@@ -265,12 +266,12 @@ public class ProfileScreen extends JFrame {
         // TODO add your handling code here:
     }                                        
 
-    private void goToMainScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToMainScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen();
+        new ProductListingScreen(connection);
     }                                        
 
-    private void goToLoginScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToLoginScreen(java.awt.event.ActionEvent evt) {
         dispose();
         new NewLoginScreen(databaseConnectionHandler.getConnection());
     }  

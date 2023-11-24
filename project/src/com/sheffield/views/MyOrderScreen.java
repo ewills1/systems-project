@@ -5,6 +5,7 @@ package com.sheffield.views;
 import com.sheffield.model.DatabaseConnectionHandler;
 
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class MyOrderScreen extends JFrame {
@@ -31,7 +32,7 @@ public class MyOrderScreen extends JFrame {
     /**
      * Creates MyOrderScreen constructor
      */
-    public MyOrderScreen() {
+    public MyOrderScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -43,7 +44,7 @@ public class MyOrderScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -51,7 +52,7 @@ public class MyOrderScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -73,14 +74,14 @@ public class MyOrderScreen extends JFrame {
         jButton1.setText("Main Screen");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(evt);
+                goToMainScreen(connection, evt);
             }
         });
 
         jButton2.setText("Logout");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToLogout(evt);
+                goToLogout(connection, evt);
             }
         });
 
@@ -124,7 +125,7 @@ public class MyOrderScreen extends JFrame {
         jButton3.setText("View My Order");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderFormScreen(evt);
+                goToOrderFormScreen(connection, evt);
             }
         });
 
@@ -178,18 +179,18 @@ public class MyOrderScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToLogout(java.awt.event.ActionEvent evt) {                                         
+    private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(databaseConnectionHandler.getConnection());
+        new NewLoginScreen(connection);
     }                                        
 
-    private void goToMainScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToMainScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen();
+        new ProductListingScreen(connection);
     }                                        
 
-    private void goToOrderFormScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToOrderFormScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new MyOrderFormScreen();
+        new MyOrderFormScreen(connection);
     }  
 }

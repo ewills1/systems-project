@@ -5,6 +5,7 @@ package com.sheffield.views;
 import com.sheffield.model.DatabaseConnectionHandler;
 
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class UserScreen extends JFrame {
@@ -31,7 +32,7 @@ public class UserScreen extends JFrame {
     /**
      * Creates UserScreen constructor
      */
-    public UserScreen() {
+    public UserScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -43,7 +44,7 @@ public class UserScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -51,7 +52,7 @@ public class UserScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -73,7 +74,7 @@ public class UserScreen extends JFrame {
         jButton1.setText("Staff Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(evt);
+                goToStaffDashboard(connection, evt);
             }
         });
 
@@ -124,7 +125,7 @@ public class UserScreen extends JFrame {
         jButton3.setText("View User");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToUserFormScreen(evt);
+                goToUserFormScreen(connection, evt);
             }
         });
 
@@ -183,13 +184,13 @@ public class UserScreen extends JFrame {
         new NewLoginScreen(databaseConnectionHandler.getConnection());
     }                                        
 
-    private void goToStaffDashboard(java.awt.event.ActionEvent evt) {                                         
+    private void goToStaffDashboard(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new StaffDashboardScreen();
+        new StaffDashboardScreen(connection);
     }   
 
-    private void goToUserFormScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToUserFormScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new UserFormScreen();
+        new UserFormScreen(connection);
     } 
 }

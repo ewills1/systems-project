@@ -3,6 +3,7 @@ package com.sheffield.views;
  * @author afiq_ismail
  */
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class OrderLineScreen extends JFrame {
@@ -24,7 +25,7 @@ public class OrderLineScreen extends JFrame {
     /**
      * Creates OrderLineScreen constructor
      */
-    public OrderLineScreen() {
+    public OrderLineScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -36,7 +37,7 @@ public class OrderLineScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -44,7 +45,7 @@ public class OrderLineScreen extends JFrame {
     /**
      * Creates OrderLineScreen constructor
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -65,7 +66,7 @@ public class OrderLineScreen extends JFrame {
         jButton2.setText("Main Screen");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(evt);
+                goToMainScreen(connection, evt);
             }
         });
 
@@ -100,7 +101,7 @@ public class OrderLineScreen extends JFrame {
         jButton1.setText(" Checkout");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToCheckoutScreen(evt);
+                goToCheckoutScreen(connection, evt);
             }
         });
 
@@ -155,13 +156,13 @@ public class OrderLineScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToCheckoutScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToCheckoutScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new CheckoutScreen();
+        new CheckoutScreen(connection);
     }                                        
 
-    private void goToMainScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToMainScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen();
+        new ProductListingScreen(connection);
     }   
 }

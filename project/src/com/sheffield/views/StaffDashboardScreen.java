@@ -5,6 +5,7 @@ package com.sheffield.views;
 import com.sheffield.model.DatabaseConnectionHandler;
 
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class StaffDashboardScreen extends JFrame {
@@ -39,7 +40,7 @@ public class StaffDashboardScreen extends JFrame {
     /**
      * Creates StaffDashboardScreen constructor
      */
-    public StaffDashboardScreen() {
+    public StaffDashboardScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -51,7 +52,7 @@ public class StaffDashboardScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -59,7 +60,7 @@ public class StaffDashboardScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -89,14 +90,14 @@ public class StaffDashboardScreen extends JFrame {
         jButton1.setText("Main Screen");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(evt);
+                goToMainScreen(connection, evt);
             }
         });
 
         jButton2.setText("Logout");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToLogout(evt);
+                goToLogout(connection, evt);
             }
         });
 
@@ -127,21 +128,21 @@ public class StaffDashboardScreen extends JFrame {
         jButton3.setText("Inventory Screen");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToInventoryScreen(evt);
+                goToInventoryScreen(connection, evt);
             }
         });
 
         jButton4.setText("Order Screen");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderScreen(evt);
+                goToOrderScreen(connection, evt);
             }
         });
 
         jButton5.setText("User Screen");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToUserScreen(evt);
+                goToUserScreen(connection, evt);
             }
         });
 
@@ -267,28 +268,28 @@ public class StaffDashboardScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToMainScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToMainScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen();
+        new ProductListingScreen(connection);
     }                                        
 
-    private void goToLogout(java.awt.event.ActionEvent evt) {                                         
+    private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(databaseConnectionHandler.getConnection());
+        new NewLoginScreen(connection);
     }                                        
 
-    private void goToInventoryScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToInventoryScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new InventoryScreen();
+        new InventoryScreen(connection);
     }   
 
-    private void goToOrderScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToOrderScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new OrderScreen();
+        new OrderScreen(connection);
     }   
 
-    private void goToUserScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToUserScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new UserScreen();
+        new UserScreen(connection);
     } 
 }

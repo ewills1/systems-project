@@ -43,7 +43,7 @@ public class NewLoginScreen extends JFrame {
         jButton1 = new javax.swing.JButton();
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToProductListingScreen(evt);
+                goToProductListingScreen(connection, evt);
                 System.out.println("ABC");
                 try {
                     databaseOperations.printTEST(connection);
@@ -62,7 +62,7 @@ public class NewLoginScreen extends JFrame {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -70,7 +70,7 @@ public class NewLoginScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */                     
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -132,7 +132,7 @@ public class NewLoginScreen extends JFrame {
         jButton2.setText("Register");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToRegisterScreen(evt);
+                goToRegisterScreen(connection, evt);
             }
         });
 
@@ -210,14 +210,14 @@ public class NewLoginScreen extends JFrame {
     /**
      *  action-button || other functions | listeners
      */
-    private void goToProductListingScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToProductListingScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen();
+        new ProductListingScreen(connection);
     }                                        
 
-    private void goToRegisterScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToRegisterScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new RegisterScreen();
+        new RegisterScreen(connection);
     }                                        
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                            

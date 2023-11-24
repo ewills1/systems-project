@@ -5,6 +5,7 @@ package com.sheffield.views;
 import com.sheffield.model.DatabaseConnectionHandler;
 
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class InventoryScreen extends JFrame {
@@ -23,15 +24,12 @@ public class InventoryScreen extends JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
 
-    // Create an instance of DatabaseConnectionHandler for managing database connections
-    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-
     // End of variables declaration
     
     /**
      * Creates InventoryScreen constructor
      */
-    public InventoryScreen() {
+    public InventoryScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -43,7 +41,7 @@ public class InventoryScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -51,7 +49,7 @@ public class InventoryScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -73,14 +71,14 @@ public class InventoryScreen extends JFrame {
         jButton1.setText("Staff Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(evt);
+                goToStaffDashboard(connection, evt);
             }
         });
 
         jButton2.setText("Logout");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToLogout(evt);
+                goToLogout(connection, evt);
             }
         });
 
@@ -124,7 +122,7 @@ public class InventoryScreen extends JFrame {
         jButton3.setText("Add New Item");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToItemForm(evt);
+                goToItemForm(connection, evt);
             }
         });
 
@@ -178,18 +176,18 @@ public class InventoryScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToLogout(java.awt.event.ActionEvent evt) {                                         
+    private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(databaseConnectionHandler.getConnection());
+        new NewLoginScreen(connection);
     }                                        
 
-    private void goToStaffDashboard(java.awt.event.ActionEvent evt) {                                         
+    private void goToStaffDashboard(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new StaffDashboardScreen();
+        new StaffDashboardScreen(connection);
     }
     
-    private void goToItemForm(java.awt.event.ActionEvent evt) {                                         
+    private void goToItemForm(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new ItemFormScreen();
+        new ItemFormScreen(connection);
     }
 }

@@ -5,6 +5,7 @@ package com.sheffield.views;
 import com.sheffield.model.DatabaseConnectionHandler;
 
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
 
 public class RegisterScreen extends JFrame {
@@ -37,7 +38,7 @@ public class RegisterScreen extends JFrame {
     /**
      * Creates RegisterScreen constructor
      */
-    public RegisterScreen() {
+    public RegisterScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -49,7 +50,7 @@ public class RegisterScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents();
+        initComponents(connection);
 
         setVisible(true);
     }
@@ -57,7 +58,7 @@ public class RegisterScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents() {
+    private void initComponents(Connection connection) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -110,7 +111,7 @@ public class RegisterScreen extends JFrame {
         jButton1.setText("REGISTER");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToLoginScreen(evt);
+                goToLoginScreen(connection, evt);
             }
         });
 
@@ -119,7 +120,7 @@ public class RegisterScreen extends JFrame {
         jButton2.setText("LOGIN");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToLoginScreen(evt);
+                goToLoginScreen(connection, evt);
             }
         });
 
@@ -213,9 +214,9 @@ public class RegisterScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToLoginScreen(java.awt.event.ActionEvent evt) {                                         
+    private void goToLoginScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(databaseConnectionHandler.getConnection());
+        new NewLoginScreen(connection);
     } 
     
 }
