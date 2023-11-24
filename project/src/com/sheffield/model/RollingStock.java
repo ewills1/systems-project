@@ -1,3 +1,6 @@
+package com.sheffield.model;
+import java.math.BigDecimal;
+
 public class RollingStock extends Product{
 
 private String era;
