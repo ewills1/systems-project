@@ -121,6 +121,8 @@ public class Product {
             ", price='" + getPrice() + "'" +
             " }";
     }
+    
+    // =========== PRODUCTS TABLE OPERATIONS ===========
 
     // Insert a new product into the database
     public void insertProduct(Product newProduct, Connection connection) throws SQLException {
@@ -240,4 +242,6 @@ public class Product {
             throw e;// Re-throw the exception to signal an error.
         }
     }
+
+
 }

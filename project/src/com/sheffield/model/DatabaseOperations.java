@@ -10,6 +10,8 @@ import java.util.List;
 
 public class DatabaseOperations {
 
+
+
     /**
      * Gets the userId based on the email from the 'Users' table.
      *
@@ -221,6 +223,127 @@ public class DatabaseOperations {
         } catch (Exception e){
             e.printStackTrace();
             return false;
+        }
+    }
+
+    // =========== PRODUCTS TABLE OPERATIONS ===========
+
+    // Insert a new product into the database
+    public void insertProduct(Product newProduct, Connection connection) throws SQLException {
+        try {
+            // Create an SQL INSERT statement
+            String insertSQL = "INSERT INTO Products (productCode, name, brand_name,"+
+            "quantity, price) VALUES (?, ?, ?, ?, ?, ?)";
+
+            // Prepare and execute the INSERT statement
+            PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
+            preparedStatement.setString(1, newProduct.getProductCode());
+            preparedStatement.setString(2, newProduct.getName());
+            preparedStatement.setString(3, newProduct.getBrandName());
+            preparedStatement.setInt(4, newProduct.getQuantity());
+            preparedStatement.setBigDecimal(5, newProduct.getPrice());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Re-throw the exception to signal an error.
+        }
+    }
+
+    // Get all products from the database
+    public void getAllProducts(Connection connection) throws SQLException {
+        try {
+            String selectSQL = "SELECT * FROM Products";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("<=================== GET ALL PRODUCTS ====================>");
+            while (resultSet.next()) {
+                // Print each product's information in the specified format
+                System.out.println("{" +
+                        "productCode='" + resultSet.getString("productCode") + "'" +
+                        ", name='" + resultSet.getString("name") + "'" +
+                        ", brandName='" + resultSet.getString("brand_name") + "'" +
+                        ", quantity='" + resultSet.getInt("quantity") + "'" +
+                        ", price='" + resultSet.getDouble("price") + "'" +
+                        "}");
+            }
+            System.out.println("<======================================================>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    // Get a product by it's productCode
+    public void getProductByCode(String productCode, Connection connection) throws SQLException {
+        try {
+            String selectSQL = "SELECT * FROM Products WHERE productCode=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, productCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("<==================== PRODUCT BY CODE =====================>");
+            if (resultSet.next()) {
+                System.out.println("{" +
+                        "productCode='" + resultSet.getString("productCode") + "'" +
+                        ", name='" + resultSet.getString("name") + "'" +
+                        ", brandName='" + resultSet.getString("brand_name") + "'" +
+                        ", quantity='" + resultSet.getInt("quantity") + "'" +
+                        ", price='" + resultSet.getDouble("price") + "'" +
+                        "}");
+            } else {
+                System.out.println("Product with productCode " + productCode + " not found.");
+            }
+            System.out.println("<=======================================================>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    // Update an existing product in the database
+    public void updateProduct(Product newProduct, Connection connection) throws SQLException {
+        try {
+            String updateSQL = "UPDATE Products SET name=?, brandName=?,"+
+            "quantity=?, price=? WHERE productCode=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
+
+            preparedStatement.setString(1, newProduct.getName());
+            preparedStatement.setString(2, newProduct.getBrandName());
+            preparedStatement.setInt(3, newProduct.getQuantity());
+            preparedStatement.setBigDecimal(4, newProduct.getPrice());
+            preparedStatement.setString(5, newProduct.getProductCode());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println(rowsAffected + " row(s) updated successfully.");
+            } else {
+                System.out.println("No rows were updated for productCode: " + newProduct.getProductCode());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    // Delete a product from the database by productCode
+    public void deleteProduct(String productCode, Connection connection) throws SQLException {
+        try {
+            String deleteSQL = "DELETE FROM Product WHERE productCode=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL);
+            preparedStatement.setString(1, productCode);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println(rowsAffected + " row(s) deleted successfully.");
+            } else {
+                System.out.println("No rows were deleted for the product code: " + productCode);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
         }
     }
 
