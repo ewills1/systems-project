@@ -26,22 +26,22 @@ private Wagon wagon;
         CATTLE_WAGON,
         HORSE_BOX_WAGON,
         PARCELS_VAN,
-        16T_MINERAL_WAGON,
-        6_PLANK_COAL_WAGON,
-        8_PLANK_COAL_WAGON,
-        20T_HOPPER_WAGON,
-        21T_CLAM_BALLAST_WAGON
+        MINERAL_WAGON,
+        PLANK_COAL_WAGON_6,
+        PLANK_COAL_WAGON_8,
+        HOPPER_WAGON,
+        CLAM_BALLAST_WAGON
     };
 
     public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String era, Carriage carriage){
-        super(productCode, name, brandName, quantity, price)
-        this.era = era
-        this.carriage = carriage
+        super(productCode, name, brandName, quantity, price);
+        this.era = era;
+        this.carriage = carriage;
     }
 
     public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String era, Wagon wagon){
-        super(productCode, name, brandName, quantity, price)
-        this.era = era
-        this.wagon = wagon
+        super(productCode, name, brandName, quantity, price);
+        this.era = era;
+        this.wagon = wagon;
     }
 }
