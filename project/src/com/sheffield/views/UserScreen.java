@@ -3,10 +3,14 @@ package com.sheffield.views;
  * @author afiq_ismail
  */
 import com.sheffield.model.DatabaseConnectionHandler;
+import com.sheffield.model.DatabaseOperations;
 
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class UserScreen extends JFrame {
     /**
@@ -24,8 +28,7 @@ public class UserScreen extends JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
 
-    // Create an instance of DatabaseConnectionHandler for managing database connections
-    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // End of variables declaration
     
@@ -47,6 +50,8 @@ public class UserScreen extends JFrame {
         initComponents(connection);
 
         setVisible(true);
+
+        updateTableDisplayUserID(connection);
     }
 
     /**
@@ -81,7 +86,7 @@ public class UserScreen extends JFrame {
         jButton2.setText("Logout");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToLogout(evt);
+                goToLogout(connection, evt);
             }
         });
 
@@ -112,12 +117,9 @@ public class UserScreen extends JFrame {
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "User ID", "Name", "Email Address", "Role"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -179,9 +181,9 @@ public class UserScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToLogout(java.awt.event.ActionEvent evt) {                                         
+    private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(databaseConnectionHandler.getConnection());
+        new NewLoginScreen(connection);
     }                                        
 
     private void goToStaffDashboard(Connection connection, java.awt.event.ActionEvent evt) {
@@ -192,5 +194,27 @@ public class UserScreen extends JFrame {
     private void goToUserFormScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
         new UserFormScreen(connection);
-    } 
+    }
+
+    public void updateTableDisplayUserID(Connection connection) {
+        try {
+            List<Object> userIDList = databaseOperations.getListFromTable(connection, "Users", "UserID");
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+            if (userIDList.size() > jTable1.getRowCount()) {
+                // Add new rows to table
+                int rowsToAdd = userIDList.size() - jTable1.getRowCount();
+                for (int i = 0; i < rowsToAdd; i++) {
+                    model.addRow(new Object[model.getColumnCount()]);
+                }
+            }
+
+            for (int i = 0; i  <  userIDList.size(); i++) {
+                model.setValueAt(userIDList.get(i), i, 0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package com.sheffield.model;
 
 import com.sheffield.util.HashedPasswordGenerator;
 
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -347,4 +348,23 @@ public class DatabaseOperations {
         }
     }
 
+    //Grab list <column> from Users table
+    public List<Object> getListFromTable(Connection connection,String tableName, String columnName) throws SQLException {
+        Statement st = connection.createStatement();
+        String query = "SELECT " + columnName + " FROM team060." + tableName;
+
+        List<Object> columnList = new ArrayList<>();
+
+        ResultSet rs = st.executeQuery(query); // Execute query
+
+        while (rs.next()) { // Check if result set has data
+            String result = rs.getString(columnName);
+            columnList.add(result);
+        }
+
+        rs.close(); // Close result set
+        st.close(); // Close statement
+
+        return columnList;
+    }
 }
