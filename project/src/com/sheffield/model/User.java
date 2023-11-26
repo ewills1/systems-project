@@ -4,7 +4,10 @@ import java.util.List;
 
 public class User {
     private String userID;
+    private String forename;
+    private String surname;
     private String email;
+    private String password;
     private List<Role> roles;
 
      /**
@@ -14,10 +17,11 @@ public class User {
      * @param email    The email address of the user.
      * @param roles     The role assigned to the user.
      */
-    public User(String userID, String email, List<Role>roles) {
-        this.setUserID(userID);
+    public User(String forename, String surname, String email, String password) {
+        this.setForename(forename);
+        this.setSurname(surname);
         this.setEmail(email);
-        this.setRoles(roles);
+        this.setPassword(password);
     }
 
     //Getter and setter methods for userID 
@@ -29,6 +33,24 @@ public class User {
         this.userID = userID;
     }
 
+    // Getter and setter methods for forename
+    public String getForename() {
+        return forename;
+    }
+
+    public void setForename(String forename) {
+        this.forename = forename;
+    }
+
+    // Getter and setter methods for surname
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     //Getter and setter methods for email 
     public String getEmail() {
         return email;
@@ -36,6 +58,15 @@ public class User {
 
     public void setEmail(String email){
         this.email = email;
+    }
+
+    // Getter and setter methods for password
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**

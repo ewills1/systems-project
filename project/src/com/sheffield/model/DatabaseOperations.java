@@ -227,6 +227,87 @@ public class DatabaseOperations {
         }
     }
 
+    //  USER OPERATION
+    public boolean registerNewUser(Connection connection, User newUser) throws SQLException {
+        try {
+            String insertSQL = "INSERT INTO Users (userID, forename, surname, email, password, addressID)" +
+                    " VALUES (?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
+            preparedStatement.setInt(1, countUsers(connection) + 1);
+            preparedStatement.setString(2, newUser.getForename());
+            preparedStatement.setString(3, newUser.getSurname());
+            preparedStatement.setString(4, newUser.getEmail());
+            preparedStatement.setString(5, newUser.getPassword());
+            preparedStatement.setInt(6, 1);
+
+            int rowAffected = preparedStatement.executeUpdate();
+            System.out.println(rowAffected + "row(s) inserted successfully.");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Re-throw the exception to signal an error.
+        }
+    }
+
+    public boolean verifyEmailIsUsed(Connection connection, String email) throws SQLException {
+        try {
+            String query = "SELECT COUNT(*) AS count FROM Users WHERE email = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt("count");
+
+            return count > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public int countUsers(Connection connection) throws SQLException {
+        try {
+            String query = "SELECT COUNT(*) AS rowCount FROM Users";
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int rowCount = resultSet.getInt("rowCount");
+            System.out.println("Number of rows in the table: " + rowCount);
+
+            return rowCount;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+    public boolean verifyEmailandPassword(Connection connection, String email, String password) throws SQLException {
+        try {
+            boolean isValid = false;
+            String query = "SELECT password FROM team060.Users WHERE email = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            String storedPassword = resultSet.getString("password");
+            if(storedPassword.equals(password)) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
+            return isValid;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+
     // =========== PRODUCTS TABLE OPERATIONS ===========
 
     // Insert a new product into the database

@@ -1,4 +1,5 @@
 package com.sheffield.views;
+import com.sheffield.model.DatabaseConnectionHandler;
 /**
  * @author afiq_ismail
  */
@@ -18,21 +19,20 @@ public class NewLoginScreen extends JFrame {
      * Needed for serialisation
      */
     private static final long serialVersionUID = 1L;
+    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // Variables declaration                   
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-
-    DatabaseOperations databaseOperations = new DatabaseOperations();
-
+    private javax.swing.JTextField emailField;
+    private javax.swing.JTextField passwordField;
     // End of variables declaration  
 
     /**
@@ -43,7 +43,7 @@ public class NewLoginScreen extends JFrame {
         jButton1 = new javax.swing.JButton();
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToProductListingScreen(connection, evt);
+                goToProductListingScreen(evt, connection);
                 System.out.println("ABC");
                 try {
                     databaseOperations.printTEST(connection);
@@ -75,11 +75,11 @@ public class NewLoginScreen extends JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        
+        emailLabel = new javax.swing.JLabel();
+        emailField = new javax.swing.JTextField();
+        passwordLabel = new javax.swing.JLabel();
+        passwordField = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
@@ -108,31 +108,23 @@ public class NewLoginScreen extends JFrame {
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
-        jLabel2.setText("Email: ");
+        emailLabel.setText("Email: ");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Password:");
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
+        passwordLabel.setText("Password:");
 
         jButton1.setText("Login");
-
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                login(evt, connection);
+            }
+        });
 
         jLabel4.setText("Not yet a member? Register.");
 
         jButton2.setText("Register");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToRegisterScreen(connection, evt);
+                goToRegisterScreen(evt, connection);
             }
         });
 
@@ -145,12 +137,12 @@ public class NewLoginScreen extends JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
+                            .addComponent(passwordLabel)
+                            .addComponent(emailLabel))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(emailField)
+                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(138, 138, 138)
                         .addComponent(jButton1))
@@ -168,12 +160,12 @@ public class NewLoginScreen extends JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(emailLabel)
+                    .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordLabel)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
                 .addComponent(jButton1)
                 .addGap(60, 60, 60)
@@ -210,21 +202,56 @@ public class NewLoginScreen extends JFrame {
     /**
      *  action-button || other functions | listeners
      */
-    private void goToProductListingScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToProductListingScreen(java.awt.event.ActionEvent evt, Connection connection) {                                         
         dispose();
         new ProductListingScreen(connection);
     }                                        
 
-    private void goToRegisterScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToRegisterScreen(java.awt.event.ActionEvent evt, Connection connection) {                                         
         dispose();
         new RegisterScreen(connection);
     }                                        
+    
+    private void login(java.awt.event.ActionEvent evt, Connection connection) {
+        emailLabel.setForeground(Color.BLACK);
+        passwordLabel.setForeground(Color.BLACK);
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                           
+        JFrame frame = new JFrame();
+        String email = emailField.getText();
+        String password = passwordField.getText();
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                              
+        if (email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty()) {
+                emailLabel.setForeground(Color.RED);
+            }
+            if (password.isEmpty()) {
+                passwordLabel.setForeground(Color.RED);
+            }
+            JOptionPane.showMessageDialog(frame, "Text field cannot be empty.");
+
+        } else {
+            try {
+                databaseConnectionHandler.openConnection();
+                if(databaseOperations.verifyEmailIsUsed(connection, email) == true) {
+                    boolean isSuccess = databaseOperations.verifyEmailandPassword(connection, email, password);
+                    if (isSuccess) {
+                        JOptionPane.showMessageDialog(frame, "User successfully logged in.");
+                        emailField.setText("");
+                        passwordField.setText("");
+                        dispose();
+                        new ProductListingScreen(connection);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Invalid email and password combination.");
+                        emailLabel.setForeground(Color.RED);
+                        passwordLabel.setForeground(Color.RED);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Email not existed.");
+                    emailLabel.setForeground(Color.RED);
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
