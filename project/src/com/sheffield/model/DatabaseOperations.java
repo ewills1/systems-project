@@ -420,16 +420,17 @@ public class DatabaseOperations {
     public void insertProduct(Product newProduct, Connection connection) throws SQLException {
         try {
             // Create an SQL INSERT statement
-            String insertSQL = "INSERT INTO Products (productCode, name, brand_name," +
-                    "quantity, price) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertSQL = "INSERT INTO Products (productCode, name, brandName,"+
+            "price, quantity, gaugeScale) VALUES (?, ?, ?, ?, ?, ?)";
 
             // Prepare and execute the INSERT statement
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
             preparedStatement.setString(1, newProduct.getProductCode());
             preparedStatement.setString(2, newProduct.getName());
             preparedStatement.setString(3, newProduct.getBrandName());
-            preparedStatement.setInt(4, newProduct.getQuantity());
-            preparedStatement.setBigDecimal(5, newProduct.getPrice());
+            preparedStatement.setBigDecimal(4, newProduct.getPrice());
+            preparedStatement.setInt(5, newProduct.getQuantity());
+            preparedStatement.setString(6, newProduct.getGaugeScale());
 
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println(rowsAffected + " row(s) inserted successfully.");
@@ -439,24 +440,153 @@ public class DatabaseOperations {
         }
     }
 
-    // Get all products from the database
-    public void getAllProducts(Connection connection) throws SQLException {
+    //  insert the extened values to the foreign product table
+    public void insertForeignKey(int selectedIndex, Product newProduct, Connection connection) throws SQLException {
         try {
-            String selectSQL = "SELECT * FROM Products";
+            // Create an SQL INSERT statement
+            String insertSQL = "";
+            PreparedStatement preparedStatement;
+            int rowsAffected = 0;
+            switch (selectedIndex) {
+                case 0:
+                    TrainSet newTrainSet = (TrainSet) newProduct;
+                    insertSQL = "INSERT INTO TrainSets (productCode, era) VALUES (?, ?)";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(insertSQL);
+                    preparedStatement.setString(1, newTrainSet.getProductCode());
+                    preparedStatement.setString(2, newTrainSet.getEra());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) inserted successfully.");
+                    break;
+                case 1:
+                    TrackPack newTrackPack = (TrackPack) newProduct;
+                    insertSQL = "INSERT INTO TrackPacks (productCode) VALUES (?)";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(insertSQL);
+                    preparedStatement.setString(1, newTrackPack.getProductCode());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) inserted successfully.");
+                    break;
+                case 2:
+                    Track newTrack = (Track) newProduct;
+                    insertSQL = "INSERT INTO Tracks (productCode) VALUES (?)";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(insertSQL);
+                    preparedStatement.setString(1, newTrack.getProductCode());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) inserted successfully.");
+                    break;
+                case 3:
+                    Locomotive newLocomotive = (Locomotive) newProduct;
+                    insertSQL = "INSERT INTO Locomotives (productCode, era, dcc) VALUES (?, ?, ?)";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(insertSQL);
+                    preparedStatement.setString(1, newLocomotive.getProductCode());
+                    preparedStatement.setString(2, newLocomotive.getEra());
+                    preparedStatement.setString(3, newLocomotive.getControllerType());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) inserted successfully.");
+
+                    break;
+                case 4:
+                    RollingStock newRollingStock = (RollingStock) newProduct;
+                    insertSQL = "INSERT INTO RollingStocks (productCode, era, rollingStockType) VALUES (?, ?, ?)";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(insertSQL);
+                    preparedStatement.setString(1, newRollingStock.getProductCode());
+                    preparedStatement.setString(2, newRollingStock.getEra());
+                    preparedStatement.setString(3, newRollingStock.getRollingStockType());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) inserted successfully.");
+                    break;
+                case 5:
+                    Controller newController = (Controller) newProduct;
+                    insertSQL = "INSERT INTO Controllers (productCode, dcc) VALUES (?, ?)";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(insertSQL);
+                    preparedStatement.setString(1, newController.getProductCode());
+                    preparedStatement.setString(2, newController.getControllerType());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) inserted successfully.");
+                    break;
+                default:
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Re-throw the exception to signal an error.
+        }
+    }
+
+    // count the number of product in the table
+    public int countProduct(String tableName, Connection connection) throws SQLException {
+        try {
+            String query = "SELECT COUNT(*) AS rowCount FROM " + tableName;
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int rowCount = resultSet.getInt("rowCount");
+
+            return rowCount;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+     // Get all products from the database
+     public ResultSet getAllProducts(Connection connection, String tableName) throws SQLException {
+        try {
+            String selectSQL = "SELECT * FROM " + tableName;
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("<=================== GET ALL PRODUCTS ====================>");
-            while (resultSet.next()) {
-                // Print each product's information in the specified format
-                System.out.println("{" +
-                        "productCode='" + resultSet.getString("productCode") + "'" +
-                        ", name='" + resultSet.getString("name") + "'" +
-                        ", brandName='" + resultSet.getString("brand_name") + "'" +
-                        ", quantity='" + resultSet.getInt("quantity") + "'" +
-                        ", price='" + resultSet.getDouble("price") + "'" +
-                        "}");
-            }
-            System.out.println("<======================================================>");
+            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
+            // while (resultSet.next()) {
+            //     // Print each product's information in the specified format
+            //     System.out.println("{" +
+            //             "productCode='" + resultSet.getString("productCode") + "'" +
+            //             ", name='" + resultSet.getString("name") + "'" +
+            //             ", brandName='" + resultSet.getString("brandName") + "'" +
+            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
+            //             ", price='" + resultSet.getDouble("price") + "'" +
+            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+            //             "}");
+            // }
+            // System.out.println("<======================================================>");
+            return resultSet;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    // Get all subproducts from the database
+    public ResultSet getAllAggregatedProducts(Connection connection, String originTable, String foreignTable, String aggregatedColumns) throws SQLException {
+        try {
+            String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable + " a ON u.productCode = a.productCode";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
+            // while (resultSet.next()) {
+            //     // Print each product's information in the specified format
+            //     System.out.println("{" +
+            //             "productCode='" + resultSet.getString("productCode") + "'" +
+            //             ", name='" + resultSet.getString("name") + "'" +
+            //             ", brandName='" + resultSet.getString("brandName") + "'" +
+            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
+            //             ", price='" + resultSet.getDouble("price") + "'" +
+            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+            //             "}");
+            // }
+            // System.out.println("<======================================================>");
+            return resultSet;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;// Re-throw the exception to signal an error.
@@ -464,25 +594,52 @@ public class DatabaseOperations {
     }
 
     // Get a product by it's productCode
-    public void getProductByCode(String productCode, Connection connection) throws SQLException {
+    public ResultSet getProductByCode(String productCode, Connection connection) throws SQLException {
         try {
             String selectSQL = "SELECT * FROM Products WHERE productCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
             preparedStatement.setString(1, productCode);
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("<==================== PRODUCT BY CODE =====================>");
-            if (resultSet.next()) {
-                System.out.println("{" +
-                        "productCode='" + resultSet.getString("productCode") + "'" +
-                        ", name='" + resultSet.getString("name") + "'" +
-                        ", brandName='" + resultSet.getString("brand_name") + "'" +
-                        ", quantity='" + resultSet.getInt("quantity") + "'" +
-                        ", price='" + resultSet.getDouble("price") + "'" +
-                        "}");
-            } else {
-                System.out.println("Product with productCode " + productCode + " not found.");
-            }
-            System.out.println("<=======================================================>");
+            // System.out.println("<==================== PRODUCT BY CODE =====================>");
+            // if (resultSet.next()) {
+            //     System.out.println("{" +
+            //             "productCode='" + resultSet.getString("productCode") + "'" +
+            //             ", name='" + resultSet.getString("name") + "'" +
+            //             ", brandName='" + resultSet.getString("brand_name") + "'" +
+            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
+            //             ", price='" + resultSet.getDouble("price") + "'" +
+            //             "}");
+            // } else {
+            //     System.out.println("Product with productCode " + productCode + " not found.");
+            // }
+            // System.out.println("<=======================================================>");
+            return resultSet;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    public ResultSet getSelectedAggregatedProducts(String productCode, Connection connection, String originTable, String foreignTable, String aggregatedColumns) throws SQLException {
+        try {
+            String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable + " a ON u.productCode = a.productCode WHERE u.productCode=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, productCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
+            // while (resultSet.next()) {
+            //     // Print each product's information in the specified format
+            //     System.out.println("{" +
+            //             "productCode='" + resultSet.getString("productCode") + "'" +
+            //             ", name='" + resultSet.getString("name") + "'" +
+            //             ", brandName='" + resultSet.getString("brandName") + "'" +
+            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
+            //             ", price='" + resultSet.getDouble("price") + "'" +
+            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+            //             "}");
+            // }
+            // System.out.println("<======================================================>");
+            return resultSet;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;// Re-throw the exception to signal an error.
@@ -492,15 +649,16 @@ public class DatabaseOperations {
     // Update an existing product in the database
     public void updateProduct(Product newProduct, Connection connection) throws SQLException {
         try {
-            String updateSQL = "UPDATE Products SET name=?, brandName=?," +
-                    "quantity=?, price=? WHERE productCode=?";
+            String updateSQL = "UPDATE Products SET name=?, brandName=?,"+
+            "quantity=?, price=?, gaugeScale=? WHERE productCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
 
             preparedStatement.setString(1, newProduct.getName());
             preparedStatement.setString(2, newProduct.getBrandName());
             preparedStatement.setInt(3, newProduct.getQuantity());
             preparedStatement.setBigDecimal(4, newProduct.getPrice());
-            preparedStatement.setString(5, newProduct.getProductCode());
+            preparedStatement.setString(5, newProduct.getGaugeScale());
+            preparedStatement.setString(6, newProduct.getProductCode());
 
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -515,13 +673,80 @@ public class DatabaseOperations {
         }
     }
 
-    // Delete a product from the database by productCode
-    public void deleteProduct(String productCode, Connection connection) throws SQLException {
+    //  insert the extened values to the foreign product table
+    public void updateForeignKey(int selectedIndex, Product newProduct, Connection connection) throws SQLException {
         try {
-            String deleteSQL = "DELETE FROM Product WHERE productCode=?";
+            // Create an SQL INSERT statement
+            String updateSQL = "";
+            PreparedStatement preparedStatement;
+            int rowsAffected = 0;
+            switch (selectedIndex) {
+                case 0:
+                    TrainSet newTrainSet = (TrainSet) newProduct;
+                    updateSQL = "UPDATE TrainSets SET era=? WHERE productCode=?";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(updateSQL);
+                    preparedStatement.setString(1, newTrainSet.getEra());
+                    preparedStatement.setString(2, newTrainSet.getProductCode());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) updated successfully.");
+                    break;
+                case 3:
+                    Locomotive newLocomotive = (Locomotive) newProduct;
+                    updateSQL = "UPDATE Locomotives SET era=?, dcc=? WHERE productCode=?";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(updateSQL);
+                    preparedStatement.setString(1, newLocomotive.getEra());
+                    preparedStatement.setString(2, newLocomotive.getControllerType());
+                    preparedStatement.setString(3, newLocomotive.getProductCode());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) updated successfully.");
+                    break;
+                case 4:
+                    RollingStock newRollingStock = (RollingStock) newProduct;
+                    updateSQL = "UPDATE RollingStocks SET era=?,  rollingStockType=? WHERE productCode=?";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(updateSQL);
+                    preparedStatement.setString(1, newRollingStock.getEra());
+                    preparedStatement.setString(2, newRollingStock.getRollingStockType());
+                    preparedStatement.setString(3, newRollingStock.getProductCode());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) updated successfully.");
+                    break;
+                case 5:
+                    Controller newController = (Controller) newProduct;
+                    updateSQL = "UPDATE Controllers SET dcc=? WHERE productCode=?";
+                    // Prepare and execute the INSERT statement
+                    preparedStatement = connection.prepareStatement(updateSQL);
+                    preparedStatement.setString(1, newController.getControllerType());
+                    preparedStatement.setString(2, newController.getProductCode());
+
+                    rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) updated successfully.");
+                    break;
+                default:
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Re-throw the exception to signal an error.
+        }
+    }
+
+    // Delete a product from the database by productCode
+    public void deleteProduct(String tableName, String productCode, Connection connection) throws SQLException {
+        try {
+            String deleteSQL = "DELETE FROM " + tableName + " WHERE productCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL);
             preparedStatement.setString(1, productCode);
-
+            preparedStatement.executeUpdate();
+            
+            deleteSQL = "DELETE FROM Products WHERE productCode=?";
+            preparedStatement = connection.prepareStatement(deleteSQL);
+            preparedStatement.setString(1, productCode);
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
