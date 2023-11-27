@@ -84,7 +84,7 @@ public class DatabaseOperations {
      * @param connection    The database connection.
      * @param selectedUser  The username of the user to be promoted.
      */
-    public void promoteToModerator(Connection connection, String selectedUser) {
+    public void promoteToStaff(Connection connection, String selectedUser) {
         PreparedStatement preparedStatement = null;
 
         try {

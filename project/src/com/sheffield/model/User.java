@@ -3,6 +3,7 @@ package com.sheffield.model;
 import java.util.List;
 
 import com.sheffield.util.HashedPasswordGenerator;
+import com.sheffield.util.UniqueUserIDGenerator;
 
 public class User {
     private String userID;
@@ -24,6 +25,7 @@ public class User {
         this.setSurname(surname);
         this.setEmail(email);
         this.setPassword(password);
+        this.setUserID();
     }
 
     //Getter and setter methods for userID 
@@ -31,8 +33,8 @@ public class User {
         return userID;
     }
 
-    public void setUserID(String userID){
-        this.userID = userID;
+    public void setUserID(){
+        this.userID = UniqueUserIDGenerator.generateUniqueUserID();
     }
 
     // Getter and setter methods for forename
