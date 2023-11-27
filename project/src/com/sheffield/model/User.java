@@ -2,6 +2,8 @@ package com.sheffield.model;
 
 import java.util.List;
 
+import com.sheffield.util.HashedPasswordGenerator;
+
 public class User {
     private String userID;
     private String forename;
@@ -17,7 +19,7 @@ public class User {
      * @param email    The email address of the user.
      * @param roles     The role assigned to the user.
      */
-    public User(String forename, String surname, String email, String password) {
+    public User(String forename, String surname, String email, char[] password) {
         this.setForename(forename);
         this.setSurname(surname);
         this.setEmail(email);
@@ -65,8 +67,8 @@ public class User {
         return password;
     }
     
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(char[] password) {
+        this.password = HashedPasswordGenerator.hashPassword(password);
     }
 
     /**
