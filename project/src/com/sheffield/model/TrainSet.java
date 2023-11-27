@@ -5,7 +5,7 @@ public class TrainSet extends Product {
 
     private String era;
 
-    public TrainSet(String productCode, String name, String brandName, int quantity, BigDecimal price, /*Type type,*/ String era){
+    public TrainSet(String productCode, String name, String brandName, int quantity, BigDecimal price, String era){
         super(productCode, name, brandName, quantity, price);
         this.era = era;
     }
@@ -18,11 +18,7 @@ public class TrainSet extends Product {
         }
     }
 
-    public boolean isValidType (Type type) {
-        return type != null;
-    }
-
     public boolean isValidEra (String era) {
-        return era != null && era <= 50;
+        return era != null && era.length() <= 50;
     }
 }

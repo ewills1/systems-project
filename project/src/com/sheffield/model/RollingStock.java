@@ -45,6 +45,6 @@ private Type type;
     }
 
     public boolean isValidEra (String era) {
-        return era != null && era <= 50;
+        return era != null && era.length() <= 50;
     }
 }

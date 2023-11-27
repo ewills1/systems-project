@@ -1,4 +1,9 @@
+package com.sheffield.model;
+import java.math.BigDecimal;
+
 public class Locomotive extends Product{
+
+    private Type type;
 
     enum Type {
         ANALOGUE, DCC_READY, DCC_FITTED, DCC_SOUND;
