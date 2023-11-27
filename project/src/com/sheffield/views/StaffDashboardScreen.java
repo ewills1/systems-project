@@ -40,7 +40,7 @@ public class StaffDashboardScreen extends JFrame {
     /**
      * Creates StaffDashboardScreen constructor
      */
-    public StaffDashboardScreen(Connection connection) {
+    public StaffDashboardScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -52,7 +52,7 @@ public class StaffDashboardScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -60,7 +60,7 @@ public class StaffDashboardScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -90,7 +90,7 @@ public class StaffDashboardScreen extends JFrame {
         jButton1.setText("Main Screen");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(connection, evt);
+                goToMainScreen(connection, id, evt);
             }
         });
 
@@ -128,21 +128,21 @@ public class StaffDashboardScreen extends JFrame {
         jButton3.setText("Inventory Screen");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToInventoryScreen(connection, evt);
+                goToInventoryScreen(connection, id, evt);
             }
         });
 
         jButton4.setText("Order Screen");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderScreen(connection, evt);
+                goToOrderScreen(connection, id, evt);
             }
         });
 
         jButton5.setText("User Screen");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToUserScreen(connection, evt);
+                goToUserScreen(connection, id, evt);
             }
         });
 
@@ -268,9 +268,9 @@ public class StaffDashboardScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToMainScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToMainScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen(connection);
+        new ProductListingScreen(connection, id);
     }                                        
 
     private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
@@ -278,18 +278,18 @@ public class StaffDashboardScreen extends JFrame {
         new NewLoginScreen(connection);
     }                                        
 
-    private void goToInventoryScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToInventoryScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new InventoryScreen(connection);
+        new InventoryScreen(connection, id);
     }   
 
-    private void goToOrderScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToOrderScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new OrderScreen(connection);
+        new OrderScreen(connection, id);
     }   
 
-    private void goToUserScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToUserScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new UserScreen(connection);
+        new UserScreen(connection, id);
     } 
 }

@@ -82,7 +82,7 @@ public class DatabaseOperations {
      * Promotes the selected user to the role of Moderator.
      *
      * @param connection    The database connection.
-     * @param User  The user to be promoted.
+     * @param //User  The user to be promoted.
      */
     public void promoteToStaff(Connection connection, User selectedUser) {
         PreparedStatement preparedStatement = null;
@@ -449,5 +449,18 @@ public class DatabaseOperations {
         st.close(); // Close statement
 
         return columnList;
+    }
+
+    //Get UserID as token (from email) when logging in
+    public String getUserID(Connection connection, String email) throws SQLException {
+        Statement st = connection.createStatement();
+        String query = "SELECT userID FROM Users WHERE email=" + "\"" + email + "\""; // \ escape character to use " in String
+
+        ResultSet rs = st.executeQuery(query);
+
+        rs.close();
+        st.close();
+
+        return String.valueOf(rs);
     }
 }

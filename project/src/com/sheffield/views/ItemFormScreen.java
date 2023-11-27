@@ -34,7 +34,7 @@ public class ItemFormScreen extends JFrame {
     /**
      * Creates ItemFormScreen constructor
      */
-    public ItemFormScreen(Connection connection) {
+    public ItemFormScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -46,7 +46,7 @@ public class ItemFormScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -54,7 +54,7 @@ public class ItemFormScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -137,7 +137,7 @@ public class ItemFormScreen extends JFrame {
         jButton2.setText("CANCEL");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToInventoryScreen(connection, evt);
+                goToInventoryScreen(connection, id, evt);
             }
         });
 
@@ -251,9 +251,9 @@ public class ItemFormScreen extends JFrame {
         // TODO add your handling code here:
     } 
 
-    private void goToInventoryScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToInventoryScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new InventoryScreen(connection);
+        new InventoryScreen(connection, id);
     }                                        
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         

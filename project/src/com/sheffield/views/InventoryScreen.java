@@ -29,7 +29,7 @@ public class InventoryScreen extends JFrame {
     /**
      * Creates InventoryScreen constructor
      */
-    public InventoryScreen(Connection connection) {
+    public InventoryScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -41,7 +41,7 @@ public class InventoryScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -49,7 +49,7 @@ public class InventoryScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -71,7 +71,7 @@ public class InventoryScreen extends JFrame {
         jButton1.setText("Staff Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(connection, evt);
+                goToStaffDashboard(connection, id, evt);
             }
         });
 
@@ -122,7 +122,7 @@ public class InventoryScreen extends JFrame {
         jButton3.setText("Add New Item");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToItemForm(connection, evt);
+                goToItemForm(connection, id, evt);
             }
         });
 
@@ -181,13 +181,13 @@ public class InventoryScreen extends JFrame {
         new NewLoginScreen(connection);
     }                                        
 
-    private void goToStaffDashboard(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToStaffDashboard(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new StaffDashboardScreen(connection);
+        new StaffDashboardScreen(connection, id);
     }
     
-    private void goToItemForm(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToItemForm(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new ItemFormScreen(connection);
+        new ItemFormScreen(connection, id);
     }
 }

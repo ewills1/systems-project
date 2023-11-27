@@ -32,7 +32,7 @@ public class MyOrderScreen extends JFrame {
     /**
      * Creates MyOrderScreen constructor
      */
-    public MyOrderScreen(Connection connection) {
+    public MyOrderScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -44,7 +44,7 @@ public class MyOrderScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -52,7 +52,7 @@ public class MyOrderScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -74,7 +74,7 @@ public class MyOrderScreen extends JFrame {
         jButton1.setText("Main Screen");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(connection, evt);
+                goToMainScreen(connection, id, evt);
             }
         });
 
@@ -125,7 +125,7 @@ public class MyOrderScreen extends JFrame {
         jButton3.setText("View My Order");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderFormScreen(connection, evt);
+                goToOrderFormScreen(connection, id, evt);
             }
         });
 
@@ -184,13 +184,13 @@ public class MyOrderScreen extends JFrame {
         new NewLoginScreen(connection);
     }                                        
 
-    private void goToMainScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToMainScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen(connection);
+        new ProductListingScreen(connection, id);
     }                                        
 
-    private void goToOrderFormScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToOrderFormScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new MyOrderFormScreen(connection);
+        new MyOrderFormScreen(connection, id);
     }  
 }
