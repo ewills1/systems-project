@@ -8,15 +8,17 @@ public class Product {
     private String brandName;
     private int quantity;
     private BigDecimal price;
+    private String gaugeScale;
 
 
     // Constructor to initialize a Product object with its attributes
-    public Product(String name, String productCode, String brandName, int quantity, BigDecimal price) {
+    public Product(String productCode, String name, String brandName, int quantity, BigDecimal price, String gaugeScale) {
         this.setProductCode(productCode);
         this.setName(name);
         this.setBrandName(brandName);
         this.setQuantity(quantity);
         this.setPrice(price);
+        this.setGaugeScale(gaugeScale);
     }
 
     // Getter and setter methods for the productCode attribute with validation
@@ -84,6 +86,15 @@ public class Product {
         }
     }
 
+    // Getter and setter methods for the gaugeScale attribute with validation
+    public String getGaugeScale() {
+        return gaugeScale;
+    }
+
+    public void setGaugeScale(String gaugeScale) {
+        this.gaugeScale = gaugeScale;
+    }
+
     // Private validation methods for each attribute
     private boolean isValidProductCode(String productCode) {
         return productCode != null && productCode.length() <= 100;
@@ -115,6 +126,7 @@ public class Product {
             ", brandName='" + getBrandName() + "'" +
             ", quantity='" + getQuantity() + "'" +
             ", price='" + getPrice() + "'" +
+            ", gaugeScale='" + getGaugeScale() + "'" +
             " }";
     }
 }

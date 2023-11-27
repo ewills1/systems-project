@@ -6,8 +6,8 @@ public class TrainSet extends Product {
 
     private String era;
 
-    public TrainSet(String productCode, String name, String brandName, int quantity, BigDecimal price, String era) {
-        super(productCode, name, brandName, quantity, price);
+    public TrainSet(String productCode, String name, String brandName, int quantity, BigDecimal price, String gaugeScale, String era) {
+        super(productCode, name, brandName, quantity, price, gaugeScale);
         this.era = era;
     }
 
