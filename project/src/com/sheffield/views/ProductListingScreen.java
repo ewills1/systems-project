@@ -15,8 +15,8 @@ public class ProductListingScreen extends JFrame {
     // Variables declaration                 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton orderLineButton;
+    private javax.swing.JButton myOrderButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -59,8 +59,8 @@ public class ProductListingScreen extends JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        orderLineButton = new javax.swing.JButton();
+        myOrderButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -93,15 +93,15 @@ public class ProductListingScreen extends JFrame {
             }
         });
 
-        jButton3.setText("Order Line");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        orderLineButton.setText("Order Line");
+        orderLineButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 goToOrderLineScreen(connection, id, evt);
             }
         });
 
-        jButton4.setText("My Order");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        myOrderButton.setText("My Order");
+        myOrderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 goToMyOrderScreen(connection, id, evt);
             }
@@ -117,9 +117,9 @@ public class ProductListingScreen extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(123, 123, 123)
-                .addComponent(jButton4)
+                .addComponent(myOrderButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(orderLineButton)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addGap(16, 16, 16))
@@ -131,8 +131,8 @@ public class ProductListingScreen extends JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton1)
-                        .addComponent(jButton3)
-                        .addComponent(jButton4))
+                        .addComponent(orderLineButton)
+                        .addComponent(myOrderButton))
                     .addComponent(jLabel2)
                     .addComponent(jButton2))
                 .addContainerGap(15, Short.MAX_VALUE))
