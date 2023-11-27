@@ -234,7 +234,7 @@ public class DatabaseOperations {
                     " VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
-            preparedStatement.setInt(1, countUsers(connection) + 1);
+            preparedStatement.setString(1, newUser.getUserID());
             preparedStatement.setString(2, newUser.getForename());
             preparedStatement.setString(3, newUser.getSurname());
             preparedStatement.setString(4, newUser.getEmail());
