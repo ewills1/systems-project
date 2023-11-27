@@ -7,7 +7,7 @@ package com.sheffield.model;
  */
 public class CurrentUserManager {
     // Static field to hold the current user
-    private static CurrentUser currentUser;
+    private static User currentUser;
 
     // Private constructor to enforce singleton pattern
     private CurrentUserManager() {
@@ -19,7 +19,7 @@ public class CurrentUserManager {
      *
      * @return The current user.
      */
-    public static CurrentUser getCurrentUser() {
+    public static User getCurrentUser() {
         return currentUser;
     }
 
@@ -28,7 +28,7 @@ public class CurrentUserManager {
      *
      * @param user The user to set as the current user.
      */
-    public static void setCurrentUser(CurrentUser user) {
+    public static void setCurrentUser(User user) {
         currentUser = user;
     }
 }
