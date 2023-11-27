@@ -14,24 +14,24 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The PromoteUser class represents the GUI window for promoting users to Staff.
+ * The DemoteStaff class represents the GUI window for demoting Staff to User.
  */
-public class PromoteUser extends JFrame {
+public class DemoteStaff extends JFrame {
     private JComboBox<String> userComboBox;
     private final DatabaseOperations databaseOperations;
 
     /**
-     * Constructor for the promoteUser.
+     * Constructor for the demoteStaff.
      *
      * @param connection The database connection.
      * @throws SQLException if a database access error occurs.
      */
-    public PromoteUser(Connection connection) throws SQLException {
+    public DemoteStaff(Connection connection) throws SQLException {
         // Initialize DatabaseOperations
         databaseOperations = new DatabaseOperations();
 
         // Set properties for the new window
-        setTitle("Promote Users");
+        setTitle("Demote Staff");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -41,14 +41,14 @@ public class PromoteUser extends JFrame {
 
         // Add a welcome label to the panel
         JLabel welcomeLabel = new JLabel(
-                "Welcome to the Promote User Window! " + CurrentUserManager.getCurrentUser().getForename());
+                "Welcome to the Demote Staff Window! " + CurrentUserManager.getCurrentUser().getForename());
         if (CurrentUserManager.getCurrentUser().getRoles().contains(Role.MANAGER)) {
             welcomeLabel.setForeground(Color.RED); // Set the foreground color to red for managers
         }
         panel.add(welcomeLabel);
 
         // Check if the current user is a manager or staff
-        if (isUserAuthorised(Role.MANAGER) || isUserAuthorised(Role.STAFF)) {
+        if (isUserAuthorised(Role.MANAGER)) {
             // Create a JComboBox for user selection
             userComboBox = new JComboBox<>();
             // Populate the combo box with user data (you need to have a method to get
@@ -56,39 +56,39 @@ public class PromoteUser extends JFrame {
             populateUserComboBox(connection);
             panel.add(userComboBox);
 
-            // Create a button to promote the selected user to Staff
-            JButton promoteButton = new JButton("Promote to Staff");
-            panel.add(promoteButton);
+            // Create a button to demote the selected user to User
+            JButton demoteButton = new JButton("demote to User");
+            panel.add(demoteButton);
 
             // Add action listener to the button
-            promoteButton.addActionListener(new ActionListener() {
+            demoteButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (isUserAuthorised(Role.MANAGER)) {
-                        // Get the selected user from the combo box
-                        String selectedUser = String.valueOf(userComboBox.getSelectedItem());
+                        // Get the selected staff from the combo box
+                        String selectedStaff = String.valueOf(userComboBox.getSelectedItem());
 
-                        // Check if a user is selected
-                        if (selectedUser != null) {
+                        // Check if a member of staff is selected
+                        if (selectedStaff != null) {
 
                             // Ask for confirmation
                             int dialogResult = JOptionPane.showConfirmDialog(null,
-                                    "Are you sure you want to promote " + selectedUser + " to Staff?", "Confirmation",
+                                    "Are you sure you want to promote " + selectedStaff + " to Staff?", "Confirmation",
                                     JOptionPane.YES_NO_OPTION);
 
                             // Check the Manager's choice
                             if (dialogResult == JOptionPane.YES_OPTION) {
-                                // Manager confirmed, promote the selected user to Staff
-                                databaseOperations.promoteToStaff(connection, selectedUser);
-                                JOptionPane.showMessageDialog(null, selectedUser + " has been promoted to Staff.");
+                                // Manager confirmed, demote the selected Staff to User
+                                databaseOperations.demoteStaff(connection, selectedStaff);
+                                JOptionPane.showMessageDialog(null, selectedStaff + " has been demoted to User.");
                             } else {
                                 // Manager canceled the action
-                                JOptionPane.showMessageDialog(null, "Promotion canceled.", "Canceled",
+                                JOptionPane.showMessageDialog(null, "demotion canceled.", "Canceled",
                                         JOptionPane.WARNING_MESSAGE);
                             }
 
                         } else {
-                            JOptionPane.showMessageDialog(null, "Please select a user.");
+                            JOptionPane.showMessageDialog(null, "Please select a member of staff.");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "You are not a manager!", "Error",

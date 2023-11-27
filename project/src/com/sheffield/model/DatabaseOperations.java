@@ -11,13 +11,137 @@ import java.util.List;
 
 public class DatabaseOperations {
 
+    /**
+     * Promotes the selected user to the role of Staff.
+     *
+     * @param connection   The database connection.
+     * @param selectedUser The username of the user to be promoted.
+     */
+    public void promoteToStaff(Connection connection, String selectedUser) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            // Get the userID based on the username
+            String userID = getuserIDByUsername(connection, selectedUser);
+
+            // Prepare the SQL statement to update the user's role to "Staff"
+            String sql = "INSERT INTO Roles (userID, role) VALUES (?, 'Staff')";
+            preparedStatement = connection.prepareStatement(sql);
+
+            // Set the parameters for the prepared statement
+            preparedStatement.setString(1, userID);
+
+            // Execute the update
+            preparedStatement.executeUpdate();
+
+            // Additional actions may be performed here if needed after the user is promoted
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your application's needs
+        } finally {
+            // Close the prepared statement in a finally block to ensure it's closed even if
+            // an exception occurs
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle the exception according to your application's needs
+            }
+        }
+    }
+
+    /**
+     * Demotes the selected staff to the role of user.
+     *
+     * @param connection   The database connection.
+     * @param selectedUser The username of the user to be promoted.
+     */
+    public void demoteStaff(Connection connection, String selectedUser) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // Get the userID based on the username
+            String userID = getuserIDByUsername(connection, selectedUser);
+
+            // Prepare the SQL statement to update the staff's role to "User"
+            String sql = "INSERT INTO Roles (userID, role) VALUES (?, 'User')";
+            preparedStatement = connection.prepareStatement(sql);
+
+            // Set the parameters for the prepared statement
+            preparedStatement.setString(1, userID);
+
+            // Execute the update
+            preparedStatement.executeUpdate();
+
+            // Additional actions may be performed here if needed after the user is demoted
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your application's needs
+        } finally {
+            // Close the prepared statement in a finally block to ensure it's closed even if
+            // an exception occurs
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle the exception according to your application's needs
+            }
+        }
+    }
+
+    /**
+     * Gets the userID based on the username from the 'Users' table.
+     *
+     * @param connection The database connection.
+     * @param username   The username for which to retrieve the userID.
+     * @return The userID corresponding to the given username.
+     */
+    public String getuserIDByUsername(Connection connection, String username) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Prepare the SQL statement to select the userID based on the username
+            String sql = "SELECT userID FROM Users WHERE username = ?";
+            preparedStatement = connection.prepareStatement(sql);
+
+            // Set the parameter for the prepared statement
+            preparedStatement.setString(1, username);
+
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+
+            // Check if a result is found
+            if (resultSet.next()) {
+                return resultSet.getString("userID");
+            } else {
+                System.out.println("User with username " + username + " not found.");
+                return null; // Or throw an exception or handle the case as appropriate for your application
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your application's needs
+            return null;
+        } finally {
+            // Close the resources in a finally block to ensure they're closed even if an
+            // exception occurs
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle the exception according to your application's needs
+            }
+        }
+    }
 
     /**
      * Gets the userId based on the email from the 'Users' table.
      *
      * @param connection The database connection.
-     * @param email   The email for which to retrieve the userId.
+     * @param email      The email for which to retrieve the userId.
      * @return The userId corresponding to the given email.
      */
     public String getUserIdByEmail(Connection connection, String email) {
@@ -46,7 +170,8 @@ public class DatabaseOperations {
             e.printStackTrace(); // Handle the exception according to your application's needs
             return null;
         } finally {
-            // Close the resources in a finally block to ensure they're closed even if an exception occurs
+            // Close the resources in a finally block to ensure they're closed even if an
+            // exception occurs
             try {
                 if (resultSet != null) {
                     resultSet.close();
@@ -70,19 +195,21 @@ public class DatabaseOperations {
             String result = rs.getString("cityName"); // Retrieve name from db
             System.out.println(result); // Print result on console
         }
-        /*else {
-            System.out.println("No data found in the result set");
-        }*/
+        /*
+         * else {
+         * System.out.println("No data found in the result set");
+         * }
+         */
 
         rs.close(); // Close result set
         st.close(); // Close statement
     }
 
-     /**
+    /**
      * Promotes the selected user to the role of Moderator.
      *
-     * @param connection    The database connection.
-     * @param User  The user to be promoted.
+     * @param connection The database connection.
+     * @param User       The user to be promoted.
      */
     public void promoteToStaff(Connection connection, User selectedUser) {
         PreparedStatement preparedStatement = null;
@@ -105,7 +232,8 @@ public class DatabaseOperations {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle the exception according to your application's needs
         } finally {
-            // Close the prepared statement in a finally block to ensure it's closed even if an exception occurs
+            // Close the prepared statement in a finally block to ensure it's closed even if
+            // an exception occurs
             try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
@@ -119,8 +247,8 @@ public class DatabaseOperations {
     /**
      * Gets the user roles based on the userId.
      *
-     * @param connection  The database connection.
-     * @param userId  The userId for which to retrieve roles.
+     * @param connection The database connection.
+     * @param userId     The userId for which to retrieve roles.
      * @return The user's roles.
      */
     private List<Role> getRolesForUserId(Connection connection, String userId) {
@@ -169,32 +297,31 @@ public class DatabaseOperations {
 
     public boolean verifyLogin(Connection connection, String email, char[] enteredPassword) {
 
-        try{
-            //Fetch user information from database
+        try {
+            // Fetch user information from database
             String sql = "SELECT userID, password, accountLocked " + "FROM Users WHERE email = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
-
 
             if (resultSet.next()) {
                 String userID = resultSet.getString("userID");
                 String storedPasswordHash = resultSet.getString("password");
                 boolean accountLocked = resultSet.getBoolean("accountLocked");
 
-                //Check if account is locked
-                if (accountLocked){
+                // Check if account is locked
+                if (accountLocked) {
                     System.out.println("Account is locked. Please contact support");
                     return false;
                 } else {
                     // Verify entered password against stored hash
-                    if (verifyPassword(enteredPassword, storedPasswordHash)){
+                    if (verifyPassword(enteredPassword, storedPasswordHash)) {
                         User user = new User(userID, email, getRolesForUserId(connection, userID));
                         CurrentUserManager.setCurrentUser(user);
                         System.out.println("Login successful for user: " + user);
                         return true;
                     } else {
-                        //Incorrect password
+                        // Incorrect password
                         System.out.println("Incorrect password");
                         return false;
                     }
@@ -202,7 +329,7 @@ public class DatabaseOperations {
 
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         System.out.println("User not found.");
@@ -213,21 +340,21 @@ public class DatabaseOperations {
     /**
      * Verifies a password against stored hash
      *
-     * @param enteredPassword The entered password.
+     * @param enteredPassword    The entered password.
      * @param storedPasswordHash The stored password hash.
      * @return True if the password is verified, false otherwise
      */
-    private static boolean verifyPassword(char[] enteredPassword, String storedPasswordHash){
+    private static boolean verifyPassword(char[] enteredPassword, String storedPasswordHash) {
         try {
             String hashedEnteredPassword = HashedPasswordGenerator.hashPassword(enteredPassword);
             return hashedEnteredPassword.equals(storedPasswordHash);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    //  USER OPERATION
+    // USER OPERATION
     public boolean registerNewUser(Connection connection, User newUser) throws SQLException {
         try {
             String insertSQL = "INSERT INTO Users (userID, forename, surname, email, password, addressID)" +
@@ -260,9 +387,10 @@ public class DatabaseOperations {
             resultSet.next();
             int count = resultSet.getInt("count");
 
-            if (count > 0){
+            if (count > 0) {
                 return true;
-            } else return false;
+            } else
+                return false;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
@@ -286,15 +414,14 @@ public class DatabaseOperations {
         }
     }
 
-
     // =========== PRODUCTS TABLE OPERATIONS ===========
 
     // Insert a new product into the database
     public void insertProduct(Product newProduct, Connection connection) throws SQLException {
         try {
             // Create an SQL INSERT statement
-            String insertSQL = "INSERT INTO Products (productCode, name, brand_name,"+
-            "quantity, price) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertSQL = "INSERT INTO Products (productCode, name, brand_name," +
+                    "quantity, price) VALUES (?, ?, ?, ?, ?, ?)";
 
             // Prepare and execute the INSERT statement
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
@@ -365,8 +492,8 @@ public class DatabaseOperations {
     // Update an existing product in the database
     public void updateProduct(Product newProduct, Connection connection) throws SQLException {
         try {
-            String updateSQL = "UPDATE Products SET name=?, brandName=?,"+
-            "quantity=?, price=? WHERE productCode=?";
+            String updateSQL = "UPDATE Products SET name=?, brandName=?," +
+                    "quantity=?, price=? WHERE productCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
 
             preparedStatement.setString(1, newProduct.getName());
@@ -408,8 +535,9 @@ public class DatabaseOperations {
         }
     }
 
-    //Grab list <column> from Users table
-    public List<Object> getListFromTable(Connection connection,String tableName, String columnName) throws SQLException {
+    // Grab list <column> from Users table
+    public List<Object> getListFromTable(Connection connection, String tableName, String columnName)
+            throws SQLException {
         Statement st = connection.createStatement();
         String query = "SELECT " + columnName + " FROM team060." + tableName;
 
