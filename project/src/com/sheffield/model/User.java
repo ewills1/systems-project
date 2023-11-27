@@ -28,6 +28,12 @@ public class User {
         this.setUserID();
     }
 
+    public User(String email, String password, List<Role> roles){
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
     //Getter and setter methods for userID 
     public String getUserID() {
         return userID;

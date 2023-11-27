@@ -1,90 +1,97 @@
-CREATE TABLE Product ( 
-    productID INT NOT NULL PRIMARY KEY,
+CREATE TABLE Products ( 
+    productCode VARCHAR(100) NOT NULL PRIMARY KEY,
     name VARCHAR (100),
-    price INT,
-    quantity INT,
-    locomotiveID INT,
-    rollingStockID INT,
-    controllerID INT,
-    FOREIGN KEY (locomotiveID) REFERENCES Locomotive(productID),
-    FOREIGN KEY (rollingStockID) REFERENCES RollingStock(productID),
-    FOREIGN KEY (controllerID) REFERENCES Controller(productID)
+    price DECIMAL(8,2),
+    quantity INT
 );
 
-CREATE TABLE OrderLine (
+CREATE TABLE OrderLines (
     orderID INT,
-    productID INT,
+    productCode VARCHAR(100),
     orderLineNumber INT,
     productQuantity INT, 
     orderLineCost DECIMAL (8,2),
-    PRIMARY KEY (orderID, productID),
-    FOREIGN KEY (orderID) REFERENCES `Order` (orderID),
-    FOREIGN KEY (productID) REFERENCES Product (productID)
+    PRIMARY KEY (orderID, productCode),
+    FOREIGN KEY (orderID) REFERENCES `Orders` (orderID),
+    FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
-CREATE TABLE `Order` (
-    orderID INT NOT NULL PRIMARY KEY,
+CREATE TABLE `Orders` (
+    orderID INT,
     date DATE,
     totalCost DECIMAL (8,2),
-    status BOOL
+    placed ENUM('pending ', 'confirmed ', 'fulfilled ') NOT NULL,
+    PRIMARY KEY (orderID)
 );
 
-CREATE TABLE User (
-    userID INT NOT NULL PRIMARY KEY,
+CREATE TABLE Users (
+    userID VARCHAR(100),
+    email VARCHAR(100),
+    password VARCHAR(100),
     forename VARCHAR (100),
     surname VARCHAR (100),
     bankCardName VARCHAR (100),
-    houseID INT,
+    addressID INT,
     cardHolderName VARCHAR (100),
     expiryDate VARCHAR (100),
     securityCode INT,
-    userType VARCHAR (100),
-    PRIMARY KEY (houseID),
-	FOREIGN KEY (houseID) REFERENCES Address (houseID)
+    PRIMARY KEY (userID),
+	FOREIGN KEY (addressID) REFERENCES Addresses (addressID)
 );
 
-CREATE TABLE Address (
-    houseID INT NOT NULL PRIMARY KEY,
+CREATE TABLE Roles (
+userID VARCHAR (50) NOT NULL ,
+role ENUM('Manager ', 'Staff ', 'User ') NOT NULL ,
+PRIMARY KEY (userID , role),
+FOREIGN KEY (userID) REFERENCES Users(userID)
+); 
+
+CREATE TABLE Addresses (
+    addressID INT,
     streetName VARCHAR (100),
     cityName VARCHAR (100),
-    postcode VARCHAR (100)
+    postcode VARCHAR (100),
+    houseNumber VARCHAR(50),
+    PRIMARY KEY (addressID)
 );
 
-CREATE TABLE Locomotive (
-    productID INT,
-    trainSetID INT,
-	PRIMARY KEY (productID),
-    FOREIGN KEY (productID) REFERENCES Product (productID),
-    FOREIGN KEY (trainSetID) REFERENCES TrainSet(trainSetID)
+CREATE TABLE Locomotives (
+    productCode VARCHAR(100),
+    era VARCHAR(50),
+    dcc VARCHAR(50),
+	PRIMARY KEY (productCode),
+    FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
-CREATE TABLE RollingStock (
-    productID INT,
-    trainSetID INT,
-	PRIMARY KEY (productID),
-	FOREIGN KEY (productID) REFERENCES Product(productID),
-    FOREIGN KEY (trainSetID) REFERENCES TrainSet (trainSetID)
+CREATE TABLE RollingStocks (
+    productCode VARCHAR(100),
+    era VARCHAR(50),
+	PRIMARY KEY (productCode),
+	FOREIGN KEY (productCode) REFERENCES Products(productCode)
 );
 
-CREATE TABLE Controller (
-    productID INT,
-	PRIMARY KEY (productID),
-    FOREIGN KEY (productID) REFERENCES Product(productID)
+CREATE TABLE Controllers (
+    productCode VARCHAR(100),
+    dcc VARCHAR(50),
+	PRIMARY KEY (productCode),
+    FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
-CREATE TABLE TrainSet (
-    productID INT,
-    trainSetID INT,
-    trainPackProductID INT,
-    controllerProductID INT,
-    PRIMARY KEY (productID, trainSetID),
-    FOREIGN KEY (productID) REFERENCES Product (productID),
-    FOREIGN KEY (trainPackProductID) REFERENCES TrackPack (productID),
-    FOREIGN KEY (controllerProductID) REFERENCES Controller (productID)
+CREATE TABLE TrainSets (
+    productCode VARCHAR(100),
+    era VARCHAR(50),
+    PRIMARY KEY (productCode),
+    FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
-CREATE TABLE TrackPack (
-    productID INT,
-	PRIMARY KEY (productID),
-    FOREIGN KEY (productID) REFERENCES Product (productID)
+CREATE TABLE TrackPacks (
+    productCode VARCHAR(100),
+	PRIMARY KEY (productCode),
+    FOREIGN KEY (productCode) REFERENCES Products (productCode)
+);
+
+CREATE TABLE Tracks (
+	productCode VARCHAR(100),
+    PRIMARY KEY (productCode),
+    FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
