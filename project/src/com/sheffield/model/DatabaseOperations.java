@@ -82,17 +82,17 @@ public class DatabaseOperations {
      * Promotes the selected user to the role of Moderator.
      *
      * @param connection    The database connection.
-     * @param selectedUser  The username of the user to be promoted.
+     * @param User  The user to be promoted.
      */
-    public void promoteToStaff(Connection connection, String selectedUser) {
+    public void promoteToStaff(Connection connection, User selectedUser) {
         PreparedStatement preparedStatement = null;
 
         try {
             // Get the userId based on the username
-            String userId = getUserIdByEmail(connection, selectedUser);
+            String userId = selectedUser.getUserID();
 
-            // Prepare the SQL statement to update the user's role to "Moderator"
-            String sql = "INSERT INTO Roles (userId, role) VALUES (?, 'Moderator')";
+            // Prepare the SQL statement to update the user's role to "Staff"
+            String sql = "INSERT INTO Roles (userId, role) VALUES (?, 'Staff')";
             preparedStatement = connection.prepareStatement(sql);
 
             // Set the parameters for the prepared statement
@@ -260,7 +260,9 @@ public class DatabaseOperations {
             resultSet.next();
             int count = resultSet.getInt("count");
 
-            return count > 0;
+            if (count > 0){
+                return true;
+            } else return false;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
