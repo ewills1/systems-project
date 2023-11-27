@@ -10,7 +10,7 @@ public class Locomotive extends Product{
     }
 
     public Locomotive(String productCode, String name, String brandName, int quantity, BigDecimal price){
-        super(productCode, name, brandName, quantity, price)
+        super(productCode, name, brandName, quantity, price);
     }
 
     public Type getType(){

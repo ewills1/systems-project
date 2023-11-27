@@ -313,27 +313,18 @@ public class DatabaseOperations {
     }
 
     // Get all products from the database
-    public void getAllProducts(Connection connection) throws SQLException {
+    public ResultSet getAllProducts(Connection connection) throws SQLException {
+        ResultSet resultSet = null;
         try {
             String selectSQL = "SELECT * FROM Products";
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("<=================== GET ALL PRODUCTS ====================>");
-            while (resultSet.next()) {
-                // Print each product's information in the specified format
-                System.out.println("{" +
-                        "productCode='" + resultSet.getString("productCode") + "'" +
-                        ", name='" + resultSet.getString("name") + "'" +
-                        ", brandName='" + resultSet.getString("brand_name") + "'" +
-                        ", quantity='" + resultSet.getInt("quantity") + "'" +
-                        ", price='" + resultSet.getDouble("price") + "'" +
-                        "}");
-            }
-            System.out.println("<======================================================>");
+            resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;// Re-throw the exception to signal an error.
         }
+
+        return resultSet;
     }
 
     // Get a product by it's productCode
@@ -389,18 +380,18 @@ public class DatabaseOperations {
     }
 
     // Delete a product from the database by productCode
-    public void deleteProduct(String productCode, Connection connection) throws SQLException {
+    public void deleteProduct(Product product, Connection connection) throws SQLException {
         try {
             String deleteSQL = "DELETE FROM Product WHERE productCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL);
-            preparedStatement.setString(1, productCode);
+            preparedStatement.setString(1, product.getProductCode());
 
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
                 System.out.println(rowsAffected + " row(s) deleted successfully.");
             } else {
-                System.out.println("No rows were deleted for the product code: " + productCode);
+                System.out.println("No rows were deleted for the product code: " + product.getProductCode());
             }
         } catch (SQLException e) {
             e.printStackTrace();
