@@ -4,47 +4,47 @@ import java.math.BigDecimal;
 public class RollingStock extends Product{
 
 private String era;
-private Carriage carriage;
-private Wagon wagon;
+private Type type;
 
-    enum Carriage {
-        CORRIDOR_FIRST,
-        CORRIDOR_SECOND,
-        OPEN_FIRST,
-        OPEN_SECOND,
-        SLEEPER_CAR,
-        BUFFET_CAR,
-        COMPOSITE_BREAK_VAN,
-        RESTAURANT_CAR,
-        GENERAL_UTILITY_VAN,
-        COMPOSITE_COACH,
-        PULLMAN_VIP,
-        POST_OFFICE_SORTING_VAN,
-        BRAKE_SECOND,
-        BRAKE_VAN,
-        STANDARD_CLASS
-    };
-
-    enum Wagon {
-        CATTLE_WAGON,
-        HORSE_BOX_WAGON,
-        PARCELS_VAN,
-        MINERAL_WAGON,
-        PLANK_COAL_WAGON_6,
-        PLANK_COAL_WAGON_8,
-        HOPPER_WAGON,
-        CLAM_BALLAST_WAGON
-    };
-
-    public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String era, Carriage carriage){
-        super(productCode, name, brandName, quantity, price);
-        this.era = era;
-        this.carriage = carriage;
+    enum Type {
+        CARRIAGE, WAGON;
     }
 
-    public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String era, Wagon wagon){
+    public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String era, Type type){
         super(productCode, name, brandName, quantity, price);
         this.era = era;
-        this.wagon = wagon;
+        this.type = type;
+    }
+
+    public Type getType(){
+        return type;
+    }
+
+    public String getEra(){
+        return era;
+    }
+
+    public void setType(Type type) {
+        if (isValidType(type)) {
+            this.type = type;
+        } else {
+            throw new IllegalArgumentException("This type of rolling stock is not valid");
+        }
+    }
+
+    public void setEra(String era) {
+        if (isValidEra(era)) {
+            this.era = era;
+        } else {
+            throw new IllegalArgumentException("era is not valid.");
+        }
+    }
+
+    public boolean isValidType (Type type) {
+        return type != null;
+    }
+
+    public boolean isValidEra (String era) {
+        return era != null && era <= 50;
     }
 }
