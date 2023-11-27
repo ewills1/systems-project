@@ -14,7 +14,7 @@ public class User {
     private List<Role> roles;
 
      /**
-     * Constructor for creating a User object.
+     * Constructor for Registration.
      *
      * @param userId   The unique identifier for the user.
      * @param email    The email address of the user.

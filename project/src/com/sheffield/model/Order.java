@@ -7,10 +7,16 @@ public class Order {
     private String orderID;
     private Date date;
     private double cost;
-    private boolean completed;
+    private Completed completed;
     private List<OrderLine> orderLines;
 
-    public Order(String orderID, List<OrderLine> orderLines, Date date, boolean completed){
+    enum Completed {
+        PENDING,
+        CONFIRMED,
+        FULFILLED
+    }
+
+    public Order(String orderID, List<OrderLine> orderLines, Date date, Completed completed){
         this.orderID = orderID;
         this.orderLines = orderLines;
         this.date = date;
@@ -33,11 +39,11 @@ public class Order {
         this.date = date;
     }
 
-    public boolean getCompleted(){
+    public Completed getCompleted(){
         return completed;
     }
 
-    public void setCompleted(boolean completed){
+    public void setCompleted(Completed completed){
         this.completed = completed;
     }
 
