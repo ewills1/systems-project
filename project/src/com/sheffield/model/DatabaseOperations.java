@@ -795,4 +795,19 @@ public class DatabaseOperations {
 
         return userID;
     }
+
+    //Update user details in ProfileScreen (ONLY FOR Users TABLE)
+    public void updateUserDetails(Connection connection, String columnName, String value, String id) {
+        String query = "UPDATE Users SET " + columnName + " = ? WHERE userID = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, value); // Set the new value for the specified column
+            pst.setString(2, id); // Set the user ID for the WHERE clause
+
+            int rowsAffected = pst.executeUpdate(); // Execute the update statement
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

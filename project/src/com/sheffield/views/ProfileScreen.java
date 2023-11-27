@@ -143,10 +143,10 @@ public class ProfileScreen extends JFrame {
 
         //Display name, email, etc
         try {
-            jTextField1.setText(databaseOperations.getRecordFromTable(connection,"email", "Users", id));
-            jTextField2.setText(databaseOperations.getRecordFromTable(connection,"password", "Users", id));
-            jTextField3.setText(databaseOperations.getRecordFromTable(connection,"forename", "Users", id));
-            jTextField4.setText(databaseOperations.getRecordFromTable(connection,"surname", "Users", id));
+            jTextField1.setText(databaseOperations.getRecordFromTable(connection,"forename", "Users", id));
+            jTextField2.setText(databaseOperations.getRecordFromTable(connection,"surname", "Users", id));
+            jTextField3.setText(databaseOperations.getRecordFromTable(connection,"email", "Users", id));
+            jTextField4.setText(databaseOperations.getRecordFromTable(connection,"password", "Users", id));
             jTextField5.setText(databaseOperations.getRecordFromTable(connection,"bankCardName", "Users", id));
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -154,6 +154,11 @@ public class ProfileScreen extends JFrame {
 
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText(), id);
+                databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText(), id);
+                databaseOperations.updateUserDetails(connection, "email", jTextField3.getText(), id);
+                databaseOperations.updateUserDetails(connection, "password", jTextField4.getText(), id);
+                databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText(), id);
                 jButton1ActionPerformed(evt);
             }
         });

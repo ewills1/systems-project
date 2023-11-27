@@ -51,7 +51,10 @@ public class UserScreen extends JFrame {
 
         setVisible(true);
 
-        updateTableDisplayUserID(connection);
+        updateTableDisplayColumnName(connection,"userID",0);
+        updateTableDisplayColumnName(connection,"forename",1);
+        updateTableDisplayColumnName(connection,"email",2);
+        updateTableDisplayColumnName(connection,"role",3);
     }
 
     /**
@@ -196,9 +199,9 @@ public class UserScreen extends JFrame {
         new UserFormScreen(connection, id);
     }
 
-    public void updateTableDisplayUserID(Connection connection) {
+    public void updateTableDisplayColumnName(Connection connection, String columnName, int colNum) {
         try {
-            List<Object> userIDList = databaseOperations.getListFromTable(connection, "Users", "UserID");
+            List<Object> userIDList = databaseOperations.getListFromTable(connection, "Users", columnName);
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
             if (userIDList.size() > jTable1.getRowCount()) {
@@ -210,7 +213,7 @@ public class UserScreen extends JFrame {
             }
 
             for (int i = 0; i  <  userIDList.size(); i++) {
-                model.setValueAt(userIDList.get(i), i, 0);
+                model.setValueAt(userIDList.get(i), i, colNum);
             }
         } catch (SQLException e) {
             e.printStackTrace();
