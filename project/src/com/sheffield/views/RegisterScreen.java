@@ -280,7 +280,8 @@ public class RegisterScreen extends JFrame {
             try {
                 databaseConnectionHandler.openConnection();
                 if(databaseOperations.verifyEmailIsUsed(connection, email) == false) {
-                    User newUser = new User(forename, surname, email, password);
+                    char[] charPassword = password.toCharArray();
+                    User newUser = new User(forename, surname, email, charPassword);
                     boolean isSuccess = databaseOperations.registerNewUser(connection, newUser);
                     if (isSuccess) {
                         JOptionPane.showMessageDialog(frame, "User successfully registered.");
