@@ -3,30 +3,42 @@ import java.math.BigDecimal;
 
 public class Controller extends Product{
 
-    private Type type;
+    // private Type type;
      
-    enum Type {
-        STANDARD, DCC, DCC_ELITE;
+    // enum Type {
+    //     STANDARD, DCC, DCC_ELITE;
+    // }
+
+    // public Controller (String name, String code, String brandName, int quantity, BigDecimal price, Type type){
+    //     super(name, code, brandName, quantity, price);
+    //     this.type = type;
+    // }
+
+    // public Type getType(){
+    //     return type;
+    // }
+
+    // public void setType(Type type) {
+    //     if (isValidType(type)) {
+    //         this.type = type;
+    //     } else {
+    //         throw new IllegalArgumentException("This type of controller is not valid");
+    //     }
+    // }
+
+    // public boolean isValidType (Type type) {
+    //     return type != null;
+    // }
+
+    // redefined Controller Class
+    private String controllerType;
+
+    public Controller (String name, String code, String brandName, int quantity, BigDecimal price, String gaugeScale, String controllerType){
+        super(name, code, brandName, quantity, price, gaugeScale);
+        this.controllerType = controllerType;
     }
 
-    public Controller (String name, String code, String brandName, int quantity, BigDecimal price, Type type){
-        super(name, code, brandName, quantity, price);
-        this.type = type;
-    }
-
-    public Type getType(){
-        return type;
-    }
-
-    public void setType(Type type) {
-        if (isValidType(type)) {
-            this.type = type;
-        } else {
-            throw new IllegalArgumentException("This type of controller is not valid");
-        }
-    }
-
-    public boolean isValidType (Type type) {
-        return type != null;
+    public String getControllerType(){
+        return controllerType;
     }
 }
