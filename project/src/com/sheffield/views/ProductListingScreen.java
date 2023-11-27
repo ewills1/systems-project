@@ -34,7 +34,7 @@ public class ProductListingScreen extends JFrame {
     /**
      * Creates ProductListingScreen constructor
      */
-    public ProductListingScreen(Connection connection) {
+    public ProductListingScreen(Connection connection,String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -46,7 +46,7 @@ public class ProductListingScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -54,7 +54,7 @@ public class ProductListingScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,28 +83,28 @@ public class ProductListingScreen extends JFrame {
         jButton1.setText("Profile");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToProfileScreen(connection, evt);
+                goToProfileScreen(connection, id, evt);
             }
         });
 
         jButton2.setText("Staff Dashboard");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(connection, evt);
+                goToStaffDashboard(connection, id, evt);
             }
         });
 
         orderLineButton.setText("Order Line");
         orderLineButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderLineScreen(connection, evt);
+                goToOrderLineScreen(connection, id, evt);
             }
         });
 
         myOrderButton.setText("My Order");
         myOrderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMyOrderScreen(connection, evt);
+                goToMyOrderScreen(connection, id, evt);
             }
         });
 
@@ -249,24 +249,24 @@ public class ProductListingScreen extends JFrame {
     
     /** setExtendedState(JFrame.MAXIMIZED_BOTH);
      * Action-button || other functions | listeners
-     */  
-    private void goToProfileScreen(Connection connection, java.awt.event.ActionEvent evt) {
+     */
+    private void goToProfileScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProfileScreen(connection);
-    }                                        
-
-    private void goToStaffDashboard(Connection connection, java.awt.event.ActionEvent evt) {
-        dispose();
-        new StaffDashboardScreen(connection);
+        new ProfileScreen(connection, id);
     }
 
-    private void goToOrderLineScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToStaffDashboard(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new OrderLineScreen(connection);
+        new StaffDashboardScreen(connection, id);
+    }
+
+    private void goToOrderLineScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
+        dispose();
+        new OrderLineScreen(connection, id);
     } 
 
-    private void goToMyOrderScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToMyOrderScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new MyOrderScreen(connection);
+        new MyOrderScreen(connection, id);
     }
 }

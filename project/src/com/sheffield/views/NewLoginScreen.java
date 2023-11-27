@@ -40,19 +40,6 @@ public class NewLoginScreen extends JFrame {
      */
     public NewLoginScreen(Connection connection) {
         super();
-        jButton1 = new javax.swing.JButton();
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToProductListingScreen(evt, connection);
-                System.out.println("ABC");
-                try {
-                    databaseOperations.printTEST(connection);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }
-        });
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
         Dimension screenSize = toolkit.getScreenSize();
@@ -202,9 +189,9 @@ public class NewLoginScreen extends JFrame {
     /**
      *  action-button || other functions | listeners
      */
-    private void goToProductListingScreen(java.awt.event.ActionEvent evt, Connection connection) {                                         
+    private void goToProductListingScreen(java.awt.event.ActionEvent evt, Connection connection, String id) {
         dispose();
-        new ProductListingScreen(connection);
+        new ProductListingScreen(connection, id);
     }                                        
 
     private void goToRegisterScreen(java.awt.event.ActionEvent evt, Connection connection) {                                         
@@ -238,7 +225,8 @@ public class NewLoginScreen extends JFrame {
                         emailField.setText("");
                         passwordField.setText("");
                         dispose();
-                        new ProductListingScreen(connection);
+                        String id = databaseOperations.getUserID(connection, email);
+                        new ProductListingScreen(connection, id);
                     } else {
                         JOptionPane.showMessageDialog(frame, "Invalid email and password combination.");
                         emailLabel.setForeground(Color.RED);

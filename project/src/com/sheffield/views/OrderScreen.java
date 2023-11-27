@@ -32,7 +32,7 @@ public class OrderScreen extends JFrame {
     /**
      * Creates OrderScreen constructor
      */
-    public OrderScreen(Connection connection) {
+    public OrderScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -44,7 +44,7 @@ public class OrderScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -52,7 +52,7 @@ public class OrderScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -74,7 +74,7 @@ public class OrderScreen extends JFrame {
         jButton1.setText("Staff Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(connection, evt);
+                goToStaffDashboard(connection, id, evt);
             }
         });
 
@@ -125,7 +125,7 @@ public class OrderScreen extends JFrame {
         jButton3.setText("View Order");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderFormScreen(connection, evt);
+                goToOrderFormScreen(connection, id, evt);
             }
         });
 
@@ -185,13 +185,13 @@ public class OrderScreen extends JFrame {
         new NewLoginScreen(databaseConnectionHandler.getConnection());
     }                                        
 
-    private void goToStaffDashboard(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToStaffDashboard(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new StaffDashboardScreen(connection);
+        new StaffDashboardScreen(connection, id);
     }   
 
-    private void goToOrderFormScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToOrderFormScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new OrderFormScreen(connection);
+        new OrderFormScreen(connection, id);
     }
 }

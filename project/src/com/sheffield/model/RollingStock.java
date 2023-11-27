@@ -4,29 +4,29 @@ import java.math.BigDecimal;
 public class RollingStock extends Product{
 
 private String era;
-private Type type;
+private String rollingStockType;
 
     enum Type {
         CARRIAGE, WAGON;
     }
 
-    public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String era, Type type){
-        super(productCode, name, brandName, quantity, price);
+    public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String gaugeScale, String era, String rollingStockType){
+        super(productCode, name, brandName, quantity, price, gaugeScale);
         this.era = era;
-        this.type = type;
+        this.rollingStockType = rollingStockType;
     }
 
-    public Type getType(){
-        return type;
+    public String getRollingStockType(){
+        return rollingStockType;
     }
 
     public String getEra(){
         return era;
     }
 
-    public void setType(Type type) {
+    public void setRollingStockType(Type type) {
         if (isValidType(type)) {
-            this.type = type;
+            this.rollingStockType = rollingStockType;
         } else {
             throw new IllegalArgumentException("This type of rolling stock is not valid");
         }

@@ -33,7 +33,7 @@ public class UserFormScreen extends JFrame {
     /**
      * Creates UserFormScreen constructor
      */
-    public UserFormScreen(Connection connection) {
+    public UserFormScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -45,7 +45,7 @@ public class UserFormScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -53,7 +53,7 @@ public class UserFormScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -114,7 +114,7 @@ public class UserFormScreen extends JFrame {
         jButton2.setText("CANCEL");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToUserScreen(connection, evt);
+                goToUserScreen(connection, id, evt);
             }
         });
 
@@ -222,9 +222,9 @@ public class UserFormScreen extends JFrame {
         // TODO add your handling code here:
     }                                           
 
-    private void goToUserScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToUserScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new UserScreen(connection);
+        new UserScreen(connection, id);
     }                                        
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         

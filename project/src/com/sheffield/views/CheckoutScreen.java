@@ -26,7 +26,7 @@ public class CheckoutScreen extends JFrame {
     /**
      * Creates CheckoutScreen constructor
      */
-    public CheckoutScreen(Connection connection) {
+    public CheckoutScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -38,7 +38,7 @@ public class CheckoutScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -46,7 +46,7 @@ public class CheckoutScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -68,7 +68,7 @@ public class CheckoutScreen extends JFrame {
         jButton2.setText("Order Line");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToOrderLine(connection, evt);
+                goToOrderLine(connection, id, evt);
             }
         });
 
@@ -103,7 +103,7 @@ public class CheckoutScreen extends JFrame {
         jButton1.setText("Place Order");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMyOrderScreen(connection, evt);
+                goToMyOrderScreen(connection, id, evt);
             }
         });
 
@@ -165,13 +165,13 @@ public class CheckoutScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToMyOrderScreen(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToMyOrderScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new MyOrderScreen(connection);
+        new MyOrderScreen(connection, id);
     }                                        
 
-    private void goToOrderLine(Connection connection, java.awt.event.ActionEvent evt) {
+    private void goToOrderLine(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new OrderLineScreen(connection);
+        new OrderLineScreen(connection, id);
     } 
 }
