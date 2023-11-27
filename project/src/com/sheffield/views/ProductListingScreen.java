@@ -28,6 +28,7 @@ public class ProductListingScreen extends JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable productsTable;
     // End of variables declaration
     
     /**

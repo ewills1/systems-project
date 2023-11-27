@@ -549,10 +549,11 @@ public class DatabaseOperations {
 
     // Get all subproducts from the database
     public ResultSet getAllAggregatedProducts(Connection connection, String originTable, String foreignTable, String aggregatedColumns) throws SQLException {
+        ResultSet resultSet = null;
         try {
             String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable + " a ON u.productCode = a.productCode";
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             // System.out.println("<=================== GET ALL PRODUCTS ====================>");
             // while (resultSet.next()) {
             //     // Print each product's information in the specified format
@@ -566,11 +567,12 @@ public class DatabaseOperations {
             //             "}");
             // }
             // System.out.println("<======================================================>");
-            return resultSet;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;// Re-throw the exception to signal an error.
         }
+
+        return resultSet;
     }
 
     // Get a product by it's productCode
