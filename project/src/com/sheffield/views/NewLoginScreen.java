@@ -232,9 +232,8 @@ public class NewLoginScreen extends JFrame {
         } else {
             try {
                 databaseConnectionHandler.openConnection();
-                if(databaseOperations.verifyEmailIsUsed(connection, email) == true) {
-                    boolean isSuccess = databaseOperations.verifyEmailandPassword(connection, email, password);
-                    if (isSuccess) {
+                char[] charPassword = password.toCharArray();
+                if(databaseOperations.verifyLogin(connection, email, charPassword)) {
                         JOptionPane.showMessageDialog(frame, "User successfully logged in.");
                         emailField.setText("");
                         passwordField.setText("");
@@ -245,11 +244,7 @@ public class NewLoginScreen extends JFrame {
                         emailLabel.setForeground(Color.RED);
                         passwordLabel.setForeground(Color.RED);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Email not existed.");
-                    emailLabel.setForeground(Color.RED);
-                }
-            } catch (Throwable e) {
+                }catch (Throwable e) {
                 e.printStackTrace();
             }
         }

@@ -171,7 +171,7 @@ public class DatabaseOperations {
 
         try{
             //Fetch user information from database
-            String sql = "SELECT userID, password_hash, account_locked," + "FROM Users WHERE email = ?";
+            String sql = "SELECT userID, password, accountLocked " + "FROM Users WHERE email = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
@@ -179,17 +179,17 @@ public class DatabaseOperations {
 
             if (resultSet.next()) {
                 String userID = resultSet.getString("userID");
-                String storedPasswordHash = resultSet.getString("password_hash");
-                boolean accountLocked = resultSet.getBoolean("account_locked");
+                String storedPasswordHash = resultSet.getString("password");
+                boolean accountLocked = resultSet.getBoolean("accountLocked");
 
                 //Check if account is locked
                 if (accountLocked){
-                    System.out.println("Account is locked. Please contact suport");
+                    System.out.println("Account is locked. Please contact support");
                     return false;
                 } else {
                     // Verify entered password against stored hash
                     if (verifyPassword(enteredPassword, storedPasswordHash)){
-                        CurrentUser user = new CurrentUser(userID, email, getRolesForUserId(connection, userID));
+                        User user = new User(userID, email, getRolesForUserId(connection, userID));
                         CurrentUserManager.setCurrentUser(user);
                         System.out.println("Login successful for user: " + user);
                         return true;
@@ -283,29 +283,6 @@ public class DatabaseOperations {
         } catch (SQLException ex) {
             ex.printStackTrace();
             return 0;
-        }
-    }
-
-    public boolean verifyEmailandPassword(Connection connection, String email, String password) throws SQLException {
-        try {
-            boolean isValid = false;
-            String query = "SELECT password FROM team060.Users WHERE email = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, email);
-
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            String storedPassword = resultSet.getString("password");
-            if(storedPassword.equals(password)) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
-            return isValid;
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
         }
     }
 
