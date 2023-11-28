@@ -349,6 +349,13 @@ public class DatabaseOperations {
             preparedStatement.setInt(6, 1);
 
             int rowAffected = preparedStatement.executeUpdate();
+
+            //By default, registered account are set to 'User' role
+            String insertSQL2 = "INSERT INTO Roles (userID,Role) VALUES (?,'User')";
+            PreparedStatement preparedStatement2 = connection.prepareStatement(insertSQL2);
+            preparedStatement2.setString(1,newUser.getUserID());
+            preparedStatement2.executeUpdate();
+
             System.out.println(rowAffected + "row(s) inserted successfully.");
             return true;
         } catch (SQLException e) {
