@@ -20,6 +20,23 @@ public class PromoteUser extends JFrame {
     private JComboBox<String> userComboBox;
     private final DatabaseOperations databaseOperations;
 
+    public PromoteUser(Connection connection, String id) {
+        super();
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+
+        setSize(screenSize.width / 2, screenSize.height / 2);
+        setLocation(screenSize.width / 4, screenSize.height / 4);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // initialise widgets and other components
+        initComponents(connection, id);
+
+        setVisible(true);
+    }
+
     /**
      * Constructor for the promoteUser.
      *

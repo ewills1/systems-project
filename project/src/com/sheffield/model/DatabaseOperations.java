@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 // import com.mysql.cj.x.protobuf.MysqlxPrepare.Prepare;
 
@@ -394,7 +395,7 @@ public class DatabaseOperations {
         }
     }
 
-    public boolean changeEmail(Connection connection, User user, String newEmail) throws SQLException{
+    public boolean changeEmail(Connection connection, User user, String newEmail) throws SQLException {
         try {
             String sql = "UPDATE Users SET email = ? WHERE userID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -404,13 +405,13 @@ public class DatabaseOperations {
 
             int rowsAffected = statement.executeUpdate();
             user.setEmail(newEmail);
-            if (rowsAffected >=1){
+            if (rowsAffected >= 1) {
                 return true;
-            } else{
+            } else {
                 System.out.println(currentUserID);
                 return false;
-            } 
-        } catch (SQLException e){
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
@@ -422,8 +423,8 @@ public class DatabaseOperations {
     public void insertProduct(Product newProduct, Connection connection) throws SQLException {
         try {
             // Create an SQL INSERT statement
-            String insertSQL = "INSERT INTO Products (productCode, name, brandName,"+
-            "price, quantity, gaugeScale) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertSQL = "INSERT INTO Products (productCode, name, brandName," +
+                    "price, quantity, gaugeScale) VALUES (?, ?, ?, ?, ?, ?)";
 
             // Prepare and execute the INSERT statement
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
@@ -442,7 +443,7 @@ public class DatabaseOperations {
         }
     }
 
-    //  insert the extened values to the foreign product table
+    // insert the extened values to the foreign product table
     public void insertForeignKey(int selectedIndex, Product newProduct, Connection connection) throws SQLException {
         try {
             // Create an SQL INSERT statement
@@ -543,23 +544,24 @@ public class DatabaseOperations {
         }
     }
 
-     // Get all products from the database
-     public ResultSet getAllProducts(Connection connection, String tableName) throws SQLException {
+    // Get all products from the database
+    public ResultSet getAllProducts(Connection connection, String tableName) throws SQLException {
         try {
             String selectSQL = "SELECT * FROM " + tableName;
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
             ResultSet resultSet = preparedStatement.executeQuery();
-            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
+            // System.out.println("<=================== GET ALL PRODUCTS
+            // ====================>");
             // while (resultSet.next()) {
-            //     // Print each product's information in the specified format
-            //     System.out.println("{" +
-            //             "productCode='" + resultSet.getString("productCode") + "'" +
-            //             ", name='" + resultSet.getString("name") + "'" +
-            //             ", brandName='" + resultSet.getString("brandName") + "'" +
-            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
-            //             ", price='" + resultSet.getDouble("price") + "'" +
-            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
-            //             "}");
+            // // Print each product's information in the specified format
+            // System.out.println("{" +
+            // "productCode='" + resultSet.getString("productCode") + "'" +
+            // ", name='" + resultSet.getString("name") + "'" +
+            // ", brandName='" + resultSet.getString("brandName") + "'" +
+            // ", quantity='" + resultSet.getInt("quantity") + "'" +
+            // ", price='" + resultSet.getDouble("price") + "'" +
+            // ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+            // "}");
             // }
             // System.out.println("<======================================================>");
             return resultSet;
@@ -570,23 +572,26 @@ public class DatabaseOperations {
     }
 
     // Get all subproducts from the database
-    public ResultSet getAllAggregatedProducts(Connection connection, String originTable, String foreignTable, String aggregatedColumns) throws SQLException {
+    public ResultSet getAllAggregatedProducts(Connection connection, String originTable, String foreignTable,
+            String aggregatedColumns) throws SQLException {
         ResultSet resultSet = null;
         try {
-            String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable + " a ON u.productCode = a.productCode";
+            String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable
+                    + " a ON u.productCode = a.productCode";
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
             resultSet = preparedStatement.executeQuery();
-            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
+            // System.out.println("<=================== GET ALL PRODUCTS
+            // ====================>");
             // while (resultSet.next()) {
-            //     // Print each product's information in the specified format
-            //     System.out.println("{" +
-            //             "productCode='" + resultSet.getString("productCode") + "'" +
-            //             ", name='" + resultSet.getString("name") + "'" +
-            //             ", brandName='" + resultSet.getString("brandName") + "'" +
-            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
-            //             ", price='" + resultSet.getDouble("price") + "'" +
-            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
-            //             "}");
+            // // Print each product's information in the specified format
+            // System.out.println("{" +
+            // "productCode='" + resultSet.getString("productCode") + "'" +
+            // ", name='" + resultSet.getString("name") + "'" +
+            // ", brandName='" + resultSet.getString("brandName") + "'" +
+            // ", quantity='" + resultSet.getInt("quantity") + "'" +
+            // ", price='" + resultSet.getDouble("price") + "'" +
+            // ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+            // "}");
             // }
             // System.out.println("<======================================================>");
         } catch (SQLException e) {
@@ -604,17 +609,19 @@ public class DatabaseOperations {
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
             preparedStatement.setString(1, productCode);
             ResultSet resultSet = preparedStatement.executeQuery();
-            // System.out.println("<==================== PRODUCT BY CODE =====================>");
+            // System.out.println("<==================== PRODUCT BY CODE
+            // =====================>");
             // if (resultSet.next()) {
-            //     System.out.println("{" +
-            //             "productCode='" + resultSet.getString("productCode") + "'" +
-            //             ", name='" + resultSet.getString("name") + "'" +
-            //             ", brandName='" + resultSet.getString("brand_name") + "'" +
-            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
-            //             ", price='" + resultSet.getDouble("price") + "'" +
-            //             "}");
+            // System.out.println("{" +
+            // "productCode='" + resultSet.getString("productCode") + "'" +
+            // ", name='" + resultSet.getString("name") + "'" +
+            // ", brandName='" + resultSet.getString("brand_name") + "'" +
+            // ", quantity='" + resultSet.getInt("quantity") + "'" +
+            // ", price='" + resultSet.getDouble("price") + "'" +
+            // "}");
             // } else {
-            //     System.out.println("Product with productCode " + productCode + " not found.");
+            // System.out.println("Product with productCode " + productCode + " not
+            // found.");
             // }
             // System.out.println("<=======================================================>");
             return resultSet;
@@ -624,23 +631,26 @@ public class DatabaseOperations {
         }
     }
 
-    public ResultSet getSelectedAggregatedProducts(String productCode, Connection connection, String originTable, String foreignTable, String aggregatedColumns) throws SQLException {
+    public ResultSet getSelectedAggregatedProducts(String productCode, Connection connection, String originTable,
+            String foreignTable, String aggregatedColumns) throws SQLException {
         try {
-            String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable + " a ON u.productCode = a.productCode WHERE u.productCode=?";
+            String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable
+                    + " a ON u.productCode = a.productCode WHERE u.productCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
             preparedStatement.setString(1, productCode);
             ResultSet resultSet = preparedStatement.executeQuery();
-            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
+            // System.out.println("<=================== GET ALL PRODUCTS
+            // ====================>");
             // while (resultSet.next()) {
-            //     // Print each product's information in the specified format
-            //     System.out.println("{" +
-            //             "productCode='" + resultSet.getString("productCode") + "'" +
-            //             ", name='" + resultSet.getString("name") + "'" +
-            //             ", brandName='" + resultSet.getString("brandName") + "'" +
-            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
-            //             ", price='" + resultSet.getDouble("price") + "'" +
-            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
-            //             "}");
+            // // Print each product's information in the specified format
+            // System.out.println("{" +
+            // "productCode='" + resultSet.getString("productCode") + "'" +
+            // ", name='" + resultSet.getString("name") + "'" +
+            // ", brandName='" + resultSet.getString("brandName") + "'" +
+            // ", quantity='" + resultSet.getInt("quantity") + "'" +
+            // ", price='" + resultSet.getDouble("price") + "'" +
+            // ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+            // "}");
             // }
             // System.out.println("<======================================================>");
             return resultSet;
@@ -653,8 +663,8 @@ public class DatabaseOperations {
     // Update an existing product in the database
     public void updateProduct(Product newProduct, Connection connection) throws SQLException {
         try {
-            String updateSQL = "UPDATE Products SET name=?, brandName=?,"+
-            "quantity=?, price=?, gaugeScale=? WHERE productCode=?";
+            String updateSQL = "UPDATE Products SET name=?, brandName=?," +
+                    "quantity=?, price=?, gaugeScale=? WHERE productCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
 
             preparedStatement.setString(1, newProduct.getName());
@@ -677,7 +687,7 @@ public class DatabaseOperations {
         }
     }
 
-    //  insert the extened values to the foreign product table
+    // insert the extened values to the foreign product table
     public void updateForeignKey(int selectedIndex, Product newProduct, Connection connection) throws SQLException {
         try {
             // Create an SQL INSERT statement
@@ -747,7 +757,7 @@ public class DatabaseOperations {
             PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL);
             preparedStatement.setString(1, productCode);
             preparedStatement.executeUpdate();
-            
+
             deleteSQL = "DELETE FROM Products WHERE productCode=?";
             preparedStatement = connection.prepareStatement(deleteSQL);
             preparedStatement.setString(1, productCode);
@@ -765,7 +775,8 @@ public class DatabaseOperations {
     }
 
     // Get list columnName from tableName
-    public List<Object> getListFromTable(Connection connection, String tableName, String columnName) throws SQLException {
+    public List<Object> getListFromTable(Connection connection, String tableName, String columnName)
+            throws SQLException {
         Statement st = connection.createStatement();
         String query = "SELECT " + columnName + " FROM team060." + tableName;
 
@@ -785,13 +796,14 @@ public class DatabaseOperations {
     }
 
     // Get record columnName with userID from tableName
-    public String getRecordFromTable(Connection connection, String columnName, String tableName, String id) throws SQLException {
+    public String getRecordFromTable(Connection connection, String columnName, String tableName, String id)
+            throws SQLException {
 
         String result = "";
-        String query = "SELECT " + columnName + " FROM " + tableName + " WHERE userID='" + id + "'" ;
+        String query = "SELECT " + columnName + " FROM " + tableName + " WHERE userID='" + id + "'";
 
         try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
+                ResultSet rs = st.executeQuery(query)) {
 
             if (rs.next()) {
                 result = rs.getString(columnName);
@@ -801,14 +813,14 @@ public class DatabaseOperations {
         return result;
     }
 
-    //Get UserID as token (from email) when logging in
+    // Get UserID as token (from email) when logging in
     public String getUserID(Connection connection, String email) throws SQLException {
 
         String userID = "";
         String query = "SELECT userID FROM Users WHERE email=" + "'" + email + "'";
 
         try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
+                ResultSet rs = st.executeQuery(query)) {
 
             if (rs.next()) {
                 userID = rs.getString("userID");
@@ -818,7 +830,7 @@ public class DatabaseOperations {
         return userID;
     }
 
-    //Update user details in ProfileScreen (ONLY FOR Users TABLE)
+    // Update user details in ProfileScreen (ONLY FOR Users TABLE)
     public void updateUserDetails(Connection connection, String columnName, String value, String id) {
         String query = "UPDATE Users SET " + columnName + " = ? WHERE userID = ?";
 
