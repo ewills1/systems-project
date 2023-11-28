@@ -185,26 +185,6 @@ public class DatabaseOperations {
         }
     }
 
-    public void printTEST(Connection connection) throws SQLException {
-        System.out.println("Dummy function to test connection to database");
-        System.out.println("Should print cityName from Addresses from DB");
-        Statement st = connection.createStatement();
-        String query = "select * from team060.Addresses";
-        ResultSet rs = st.executeQuery(query); // Execute query
-        while (rs.next()) { // Check if result set has data
-            String result = rs.getString("cityName"); // Retrieve name from db
-            System.out.println(result); // Print result on console
-        }
-        /*
-         * else {
-         * System.out.println("No data found in the result set");
-         * }
-         */
-
-        rs.close(); // Close result set
-        st.close(); // Close statement
-    }
-
     /**
      * Promotes the selected user to the role of Moderator.
      *
@@ -762,9 +742,8 @@ public class DatabaseOperations {
         }
     }
 
-    // Grab list <column> from Users table
-    public List<Object> getListFromTable(Connection connection, String tableName, String columnName)
-            throws SQLException {
+    // Get list columnName from tableName
+    public List<Object> getListFromTable(Connection connection, String tableName, String columnName) throws SQLException {
         Statement st = connection.createStatement();
         String query = "SELECT " + columnName + " FROM team060." + tableName;
 
@@ -783,16 +762,67 @@ public class DatabaseOperations {
         return columnList;
     }
 
+    // Get record columnName with userID from tableName
+    public String getRecordFromTable(Connection connection, String columnName, String tableName, String id) throws SQLException {
+
+        String result = "";
+        String query = "SELECT " + columnName + " FROM " + tableName + " WHERE userID='" + id + "'" ;
+
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+
+            if (rs.next()) {
+                result = rs.getString(columnName);
+            }
+        }
+
+        return result;
+    }
+
     //Get UserID as token (from email) when logging in
     public String getUserID(Connection connection, String email) throws SQLException {
-        Statement st = connection.createStatement();
-        String query = "SELECT userID FROM Users WHERE email=" + "\"" + email + "\""; // \ escape character to use " in String
 
-        ResultSet rs = st.executeQuery(query);
+        String userID = "";
+        String query = "SELECT userID FROM Users WHERE email=" + "'" + email + "'";
 
-        rs.close();
-        st.close();
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
 
-        return String.valueOf(rs);
+            if (rs.next()) {
+                userID = rs.getString("userID");
+            }
+        }
+
+        return userID;
     }
+
+    //Update user details in ProfileScreen (ONLY FOR Users TABLE)
+    public void updateUserDetails(Connection connection, String columnName, String value, String id) {
+        String query = "UPDATE Users SET " + columnName + " = ? WHERE userID = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, value); // Set the new value for the specified column
+            pst.setString(2, id); // Set the user ID for the WHERE clause
+
+            int rowsAffected = pst.executeUpdate(); // Execute the update statement
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateUserPassword(Connection connection, String newPassword, String id) {
+        char[] charPassword = newPassword.toCharArray();
+        String hashedPassword = HashedPasswordGenerator.hashPassword(charPassword);
+        String query = "UPDATE Users SET password= ? WHERE userID = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, hashedPassword);
+            pst.setString(2, id);
+
+            int rowsAffected = pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

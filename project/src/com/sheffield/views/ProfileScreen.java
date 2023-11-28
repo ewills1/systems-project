@@ -3,9 +3,11 @@ package com.sheffield.views;
  * @author afiq_ismail
  */
 import com.sheffield.model.DatabaseConnectionHandler;
+import com.sheffield.model.DatabaseOperations;
 
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class ProfileScreen extends JFrame {
@@ -34,8 +36,8 @@ public class ProfileScreen extends JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
 
-    // Create an instance of DatabaseConnectionHandler for managing database connections
-    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+    // Create an instance of DatabaseOperation to interact with database
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // End of variables declaration
     
@@ -140,13 +142,35 @@ public class ProfileScreen extends JFrame {
         jButton1.setText("UPDATE");
 
         //Display name, email, etc
-        jTextField1.setText("fore name");
-        jTextField2.setText("Surnameee");
-        jTextField3.setText("email??");
-        jTextField4.setText("pas");
-        jTextField5.setText("bank");
+        try {
+            jTextField1.setText(databaseOperations.getRecordFromTable(connection,"forename", "Users", id));
+            jTextField2.setText(databaseOperations.getRecordFromTable(connection,"surname", "Users", id));
+            jTextField3.setText(databaseOperations.getRecordFromTable(connection,"email", "Users", id));
+            jTextField4.setText(databaseOperations.getRecordFromTable(connection, "password", "Users", id));
+            jTextField5.setText(databaseOperations.getRecordFromTable(connection,"bankCardName", "Users", id));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                String[] oldCharPassword = new String[0];
+                try {
+                    oldCharPassword = new String[]{databaseOperations.getRecordFromTable(connection, "password", "Users", id)};
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText(), id);
+                databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText(), id);
+                databaseOperations.updateUserDetails(connection, "email", jTextField3.getText(), id);
+
+                String enteredPassword = jTextField4.getText();
+                if (!enteredPassword.equals(oldCharPassword[0])) {
+                    databaseOperations.updateUserPassword(connection, enteredPassword, id);
+                }
+
+                databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText(), id);
+                System.out.println("Profile updated");
                 jButton1ActionPerformed(evt);
             }
         });
