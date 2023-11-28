@@ -8,20 +8,20 @@ public class Order {
     private String orderID;
     private Date date;
     private double cost;
-    private Completed completed;
+    private Status status;
     private List<OrderLine> orderLines;
 
-    enum Completed {
+    enum Status {
         PENDING,
         CONFIRMED,
         FULFILLED
     }
 
-    public Order(String orderID, List<OrderLine> orderLines, Date date, Completed completed) {
+    public Order(String orderID, List<OrderLine> orderLines, Date date, Status status) {
         this.orderID = orderID;
         this.orderLines = orderLines;
         this.date = date;
-        this.completed = completed;
+        this.status = status;
     }
 
     public String getOrderID() {
@@ -40,12 +40,12 @@ public class Order {
         this.date = date;
     }
 
-    public Completed getCompleted() {
-        return completed;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setCompleted(Completed completed) {
-        this.completed = completed;
+    public void setCompleted(Status status) {
+        this.status = status;
     }
 
     public void addOrderLine(OrderLine o) {
@@ -67,6 +67,6 @@ public class Order {
     @Override
     public String toString() {
         return "OrderID: " + orderID + ", OrderLines: " + orderLines.toString()
-                + ",  Date: " + date + ", Completed: " + completed;
+                + ",  Date: " + date + ", Completed: " + status;
     }
 }
