@@ -1,5 +1,6 @@
 package com.sheffield.model;
 
+import com.sheffield.model.Order.Status;
 import com.sheffield.util.HashedPasswordGenerator;
 
 import javax.swing.table.DefaultTableModel;

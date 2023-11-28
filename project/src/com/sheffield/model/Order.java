@@ -11,11 +11,6 @@ public class Order {
     private Status status;
     private List<OrderLine> orderLines;
 
-    enum Status {
-        PENDING,
-        CONFIRMED,
-        FULFILLED
-    }
 
     public Order(String orderID, List<OrderLine> orderLines, Date date, Status status) {
         this.orderID = orderID;
