@@ -3,6 +3,7 @@ package com.sheffield.views;
  * @author afiq_ismail
  */
 import com.sheffield.model.DatabaseConnectionHandler;
+import com.sheffield.model.DatabaseOperations;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -29,6 +30,7 @@ public class MyOrderScreen extends JFrame {
 
     // Create an instance of DatabaseConnectionHandler for managing database connections
     DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // End of variables declaration
     

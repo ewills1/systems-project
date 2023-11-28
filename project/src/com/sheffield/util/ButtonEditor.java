@@ -44,9 +44,14 @@ public class ButtonEditor extends DefaultCellEditor {
         button.addActionListener(e -> {
             int row = this.table.getEditingRow(); // Get the row index of the clicked button
             int column = 1; // Get the column index of the clicked button
-            storedId = (String) table.getValueAt(row, column);
-            storedProductName = (String) table.getValueAt(row, column + 1);
-            quantity = (int) table.getValueAt(row, column + 4);
+            if (this.label == "Update/Delete") {
+                storedId = (String) table.getValueAt(row, column);
+                storedProductName = (String) table.getValueAt(row, column+1);
+                quantity = (int) table.getValueAt(row, column + 4);
+            } else if (this.label == "Promote | Demote") {
+                forename = (String) table.getValueAt(row, column+1);
+                role = (String) table.getValueAt(row, column + 4);
+            }
             // Perform different actions based on row and column indices
             fireEditingStopped();
         });
@@ -120,9 +125,9 @@ public class ButtonEditor extends DefaultCellEditor {
                     JOptionPane.showMessageDialog(button, "Input too large");
                 } else {
                     // create an orderLine
-                    OrderLine o = new OrderLine();
-                    int orderID = 1;
-                    Order order = new Order(orderID, this.date, );
+                    // OrderLine o = new OrderLine();
+                    // int orderID = 1;
+                    // Order order = new Order(orderID, this.date, );
                     // implement code that adds the storedProductName and its inputQuantity to the order as an
                     // orderLine
                     JOptionPane.showMessageDialog(button, "Product added to order");
