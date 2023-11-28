@@ -152,7 +152,7 @@ public class ProfileScreen extends JFrame {
             throw new RuntimeException(e);
         }
 
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        updateDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 String[] oldCharPassword = new String[0];
                 try {
@@ -171,7 +171,6 @@ public class ProfileScreen extends JFrame {
 
                 databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText(), id);
                 System.out.println("Profile updated");
-                jButton1ActionPerformed(evt);
             }
         });
 

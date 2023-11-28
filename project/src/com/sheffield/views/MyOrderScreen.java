@@ -6,7 +6,10 @@ import com.sheffield.model.DatabaseConnectionHandler;
 
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.SQLException;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class MyOrderScreen extends JFrame {
     /**
@@ -47,6 +50,8 @@ public class MyOrderScreen extends JFrame {
         initComponents(connection, id);
 
         setVisible(true);
+
+        displayListRecords(connection, "Orders", "orderID", )
     }
 
     /**
@@ -193,4 +198,25 @@ public class MyOrderScreen extends JFrame {
         dispose();
         new MyOrderFormScreen(connection, id);
     }  
+
+    public void displayListRecords(Connection connection, String tableName, String columnName, int colNum) {
+        try {
+            List<Object> userIDList = databaseOperations.getRecordFromTable(connection, columnName, tableName, );
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+            if (userIDList.size() > jTable1.getRowCount()) {
+                // Add new rows to table
+                int rowsToAdd = userIDList.size() - jTable1.getRowCount();
+                for (int i = 0; i < rowsToAdd; i++) {
+                    model.addRow(new Object[model.getColumnCount()]);
+                }
+            }
+
+            for (int i = 0; i  <  userIDList.size(); i++) {
+                model.setValueAt(userIDList.get(i), i, colNum);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
