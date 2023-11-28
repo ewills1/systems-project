@@ -3,22 +3,22 @@ package com.sheffield.model;
 public class OrderLine {
     
     private Product product;
-    private int lineNumber;
+    private int orderID;
     private int quantity;
     private double cost;
 
     public OrderLine(int lineNumber, Product product, int quantity){
-        this.lineNumber = lineNumber;
+        this.orderID = lineNumber;
         this.product = product;
         this.quantity = quantity;
     }
 
-    public int getLineNumber(){
-        return lineNumber;
+    public int getOrderID(){
+        return orderID;
     }
 
-    public void setLineNumber(int lineNumber){
-        this.lineNumber = lineNumber;
+    public void setOrderID(int lineNumber){
+        this.orderID= lineNumber;
     }
 
     public int getQuantity(){
@@ -45,7 +45,7 @@ public class OrderLine {
 
     @Override
     public String toString(){
-        return "Order line: "+ lineNumber + ", Name: "+product.getName()+", Quantity: "+
+        return "Order line: "+ orderID + ", Name: "+product.getName()+", Quantity: "+
         quantity+", Price: "+cost; //+cost
     }
 

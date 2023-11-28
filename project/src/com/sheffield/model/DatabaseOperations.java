@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
+import java.sql.Date;
 
 // import com.mysql.cj.x.protobuf.MysqlxPrepare.Prepare;
 
