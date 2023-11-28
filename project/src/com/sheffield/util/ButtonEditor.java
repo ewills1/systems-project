@@ -12,8 +12,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import com.sheffield.model.DatabaseConnectionHandler;
+import com.sheffield.model.DatabaseOperations;
 import com.sheffield.views.ItemFormScreen;
 import com.sheffield.views.ProductListingScreen;
+import com.sheffield.views.UserScreen;
 
 // Custom cell editor to handle button clicks
 public class ButtonEditor extends DefaultCellEditor {
@@ -25,6 +28,12 @@ public class ButtonEditor extends DefaultCellEditor {
     private String storedId;
     private String storedProductName;
     private int quantity;
+    // User related private data
+    private String forename;
+    private String role;
+
+    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     public ButtonEditor(JTextField textField, JTable table, Connection connection) {
         super(textField);
@@ -66,7 +75,43 @@ public class ButtonEditor extends DefaultCellEditor {
                 newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                 // Configure the new frame: set size, add components, etc.
                 newFrame.setVisible(true);
-            } else if (this.label == "Add to order") {
+            } else if (this.label == "Promote | Demote") {
+                String message = "";
+                if (this.role.equals("User")) {
+                    message = "Promote to Staff?";
+                } else if (this.role.equals("Staff")) {
+                    message = "Demote from Staff?";
+                } else {
+                    message = "You're a manager.";
+                }
+
+                int choice = JOptionPane.showConfirmDialog(null, "[" + this.forename + " | " + this.role + "] " + message , "Confirmation", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    System.out.println("User clicked Yes.");
+                    if (this.role.equals("User")) {
+                        databaseOperations.promoteToStaff(connection, this.forename);
+                        JOptionPane.showMessageDialog(null, this.forename + " has been promoted to Staff.");
+                    } else if (this.role.equals("Staff")) {
+                        databaseOperations.demoteStaff(connection, this.forename);
+                        JOptionPane.showMessageDialog(null, this.forename + " has been deomoted to User.");
+                    }
+
+                    // Close the current screen (frame)
+                    Window window = SwingUtilities.windowForComponent(button);
+                    if (window instanceof JFrame) {
+                        window.dispose();
+                    }
+
+                    // Open another screen (frame)
+                    JFrame newFrame = new UserScreen(connection, "");
+                    newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
+                    newFrame.setVisible(true);
+                } else {
+                    System.out.println("User clicked No or closed the dialog.");
+                    // Perform actions for 'No' selection or dialog close
+                }
+
+            } else if (this.label == "+ OrderLine") {
                 JFrame frame = new JFrame();
                 String inputQuantity = JOptionPane.showInputDialog(frame,
                         "Enter quantity for " + this.storedProductName + " :");
@@ -89,7 +134,7 @@ public class ButtonEditor extends DefaultCellEditor {
                     // JFrame newFrame = new ProductListingScreen(connection, "");
                     // newFrame.setVisible(true);
                 }
-            }
+            } 
         }
         isPushed = false;
         return label;
