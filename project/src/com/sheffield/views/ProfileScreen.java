@@ -152,26 +152,46 @@ public class ProfileScreen extends JFrame {
             throw new RuntimeException(e);
         }
 
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        updateDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String[] oldCharPassword = new String[0];
+                JFrame frame = new JFrame();
+
+                //Get oldPassword/Email to compare if there is any changes
+                String[] oldCharPassword;
+                String[] oldCharEmail;
+
                 try {
                     oldCharPassword = new String[]{databaseOperations.getRecordFromTable(connection, "password", "Users", id)};
+                    oldCharEmail = new String[]{databaseOperations.getRecordFromTable(connection, "email", "Users", id)};
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+
                 databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText(), id);
                 databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText(), id);
-                databaseOperations.updateUserDetails(connection, "email", jTextField3.getText(), id);
+
+                String enteredEmail = jTextField3.getText();
+                if (!enteredEmail.equals(oldCharEmail[0])) {
+                    try {
+                        if (!(databaseOperations.verifyEmailIsUsed(connection, enteredEmail))) { //Proceed if email is available
+                            databaseOperations.updateUserDetails(connection, "email", enteredEmail, id);
+                            System.out.println("Email address updated");
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Email already used. Email is not updated");
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
                 String enteredPassword = jTextField4.getText();
                 if (!enteredPassword.equals(oldCharPassword[0])) {
                     databaseOperations.updateUserPassword(connection, enteredPassword, id);
+                    System.out.println("Password updated");
                 }
 
                 databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText(), id);
                 System.out.println("Profile updated");
-                jButton1ActionPerformed(evt);
             }
         });
 
@@ -289,15 +309,14 @@ public class ProfileScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void updateDetails(Connection connection, java.awt.event.ActionEvent evt) {  
+    private void updateDetails(Connection connection, java.awt.event.ActionEvent evt) {
         try {
-          System.out.println(databaseOperations.changeEmail(connection, CurrentUserManager.getCurrentUser(), emailLabel.getText()));
+            System.out.println(databaseOperations.changeEmail(connection, CurrentUserManager.getCurrentUser(), emailLabel.getText()));
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }                                       
-
-        }                                     
+        }
+    }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:

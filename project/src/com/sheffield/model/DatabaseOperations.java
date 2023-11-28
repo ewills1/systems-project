@@ -350,6 +350,13 @@ public class DatabaseOperations {
             preparedStatement.setInt(6, 1);
 
             int rowAffected = preparedStatement.executeUpdate();
+
+            //By default, registered account are set to 'User' role
+            String insertSQL2 = "INSERT INTO Roles (userID,Role) VALUES (?,'User')";
+            PreparedStatement preparedStatement2 = connection.prepareStatement(insertSQL2);
+            preparedStatement2.setString(1,newUser.getUserID());
+            preparedStatement2.executeUpdate();
+
             System.out.println(rowAffected + "row(s) inserted successfully.");
             return true;
         } catch (SQLException e) {
@@ -857,6 +864,60 @@ public class DatabaseOperations {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // ========== ORDERLINE TABLE OPERATIONS
+
+    public void insertOrderLine(Connection connection, OrderLine orderLine){
+
+        String sql = "INSERT INTO OrderLines (orderID, productCode, productQuantity, orderLineCost)"+" VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            String orderID = orderLine.getOrderID();
+            preparedStatement.setString(1, orderID);
+
+            String productCode = orderLine.getProduct().getProductCode();
+            preparedStatement.setString(2, productCode);
+
+            int quantity = orderLine.getQuantity();
+            preparedStatement.setInt(3, quantity);
+
+            double orderLineCost = orderLine.getCost();
+            preparedStatement.setDouble(4, orderLineCost);
+
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+    }
+
+    // ========== ORDERS TABLE OPERATIONS ===========
+
+    public void insertOrder(Connection connection, Order order){
+
+        String sql = "INSERT INTO Orders(orderID, date, totalCost, placed) VALUES (?, ?, ?, ?) ";
+        try {
+            PreparedStatement pst = connection.prepareStatement(sql);
+
+            String orderID = order.getOrderID();
+            pst.setString(1, orderID);
+
+            Date date = order.getDate();
+            pst.setDate(2, date);
+
+            Double totalCost = order.getTotalCost();
+            pst.setDouble(3, totalCost);
+
+            pst.setString(4, "pending" );
+
+            pst.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+
     }
 
 }
