@@ -53,7 +53,7 @@ public class MyOrderScreen extends JFrame {
 
         setVisible(true);
 
-        displayListRecords(connection, "Orders", "orderID", )
+        // displayListRecords(connection, "Orders", "orderID", )
     }
 
     /**
@@ -202,23 +202,23 @@ public class MyOrderScreen extends JFrame {
     }  
 
     public void displayListRecords(Connection connection, String tableName, String columnName, int colNum) {
-        try {
-            List<Object> userIDList = databaseOperations.getRecordFromTable(connection, columnName, tableName, );
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        // try {
+        //     // List<Object> userIDList = databaseOperations.getRecordFromTable(connection, columnName, tableName, );
+        //     // DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-            if (userIDList.size() > jTable1.getRowCount()) {
-                // Add new rows to table
-                int rowsToAdd = userIDList.size() - jTable1.getRowCount();
-                for (int i = 0; i < rowsToAdd; i++) {
-                    model.addRow(new Object[model.getColumnCount()]);
-                }
-            }
+        //     // if (userIDList.size() > jTable1.getRowCount()) {
+        //     //     // Add new rows to table
+        //     //     int rowsToAdd = userIDList.size() - jTable1.getRowCount();
+        //     //     for (int i = 0; i < rowsToAdd; i++) {
+        //     //         model.addRow(new Object[model.getColumnCount()]);
+        //     //     }
+        //     // }
 
-            for (int i = 0; i  <  userIDList.size(); i++) {
-                model.setValueAt(userIDList.get(i), i, colNum);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        //     // for (int i = 0; i  <  userIDList.size(); i++) {
+        //     //     model.setValueAt(userIDList.get(i), i, colNum);
+        //     // }
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // }
     }
 }

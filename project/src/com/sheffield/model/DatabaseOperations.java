@@ -1,6 +1,4 @@
 package com.sheffield.model;
-
-import com.sheffield.model.Order.Status;
 import com.sheffield.util.HashedPasswordGenerator;
 
 import javax.swing.table.DefaultTableModel;
@@ -955,25 +953,25 @@ public class DatabaseOperations {
 
     public void insertOrder(Connection connection, Order order){
 
-        String sql = "INSERT INTO Orders(orderID, date, totalCost, placed) VALUES (?, ?, ?, ?) ";
-        try {
-            PreparedStatement pst = connection.prepareStatement(sql);
+        // String sql = "INSERT INTO Orders(orderID, date, totalCost, placed) VALUES (?, ?, ?, ?) ";
+        // try {
+        //     PreparedStatement pst = connection.prepareStatement(sql);
 
-            String orderID = order.getOrderID();
-            pst.setString(1, orderID);
+        //     String orderID = order.getOrderID();
+        //     pst.setString(1, orderID);
 
-            Date date = order.getDate();
-            pst.setDate(2, date);
+        //     Date date = order.getDate();
+        //     pst.setDate(2, date);
 
-            Double totalCost = order.getTotalCost();
-            pst.setDouble(3, totalCost);
+        //     Double totalCost = order.getTotalCost();
+        //     pst.setDouble(3, totalCost);
 
-            pst.setString(4, "pending" );
+        //     pst.setString(4, "pending" );
 
-            pst.execute();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+        //     pst.execute();
+        // }catch (SQLException e){
+        //     e.printStackTrace();
+        // }
         
 
     }
