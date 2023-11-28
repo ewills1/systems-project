@@ -310,7 +310,7 @@ public class InventoryScreen extends JFrame {
             
             switch (selectedIndex) {
                 case 0:
-                    productResultSet = databaseOperations.getAllProducts(connection, "Products");
+                    productResultSet = databaseOperations.getAllTableData(connection, "Products");
                     productModel = buildTableModel(productResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Products", connection); i++) {
                         countModel.addRow(new Object[]{i+1});
@@ -328,7 +328,7 @@ public class InventoryScreen extends JFrame {
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 1:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "TrainSets", ", a.era");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "TrainSets", ", a.era");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("TrainSets", connection); i++) {
                         countModel.addRow(new Object[]{i+1});
@@ -346,7 +346,7 @@ public class InventoryScreen extends JFrame {
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 2:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "TrackPacks", "");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "TrackPacks", "");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("TrackPacks", connection); i++) {
                         countModel.addRow(new Object[]{i+1});
@@ -364,7 +364,7 @@ public class InventoryScreen extends JFrame {
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 3:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "Tracks", "");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "Tracks", "");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Tracks", connection); i++) {
                         countModel.addRow(new Object[]{i+1});
@@ -382,7 +382,7 @@ public class InventoryScreen extends JFrame {
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 4:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "Locomotives", ", a.era, a.dcc");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "Locomotives", ", a.era, a.dcc");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Locomotives", connection); i++) {
                         countModel.addRow(new Object[]{i+1});
@@ -400,7 +400,7 @@ public class InventoryScreen extends JFrame {
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 5:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "RollingStocks", ", a.era, a.rollingStockType");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "RollingStocks", ", a.era, a.rollingStockType");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("RollingStocks", connection); i++) {
                         countModel.addRow(new Object[]{i+1});
@@ -418,7 +418,7 @@ public class InventoryScreen extends JFrame {
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 6:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "Controllers", ", a.dcc");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "Controllers", ", a.dcc");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Controllers", connection); i++) {
                         countModel.addRow(new Object[]{i+1});
