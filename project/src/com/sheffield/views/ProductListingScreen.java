@@ -4,13 +4,25 @@ package com.sheffield.views;
  */
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import com.sheffield.model.DatabaseConnectionHandler;
+import com.sheffield.model.DatabaseOperations;
+import com.sheffield.util.ButtonEditor;
+import com.sheffield.util.ButtonRenderer;
 
 public class ProductListingScreen extends JFrame {
     /**
      * Needed for serialisation
      */
     private static final long serialVersionUID = 1L;
+    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // Variables declaration                 
     private javax.swing.JButton jButton1;
@@ -27,8 +39,14 @@ public class ProductListingScreen extends JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable productsTable;
+    private javax.swing.JTabbedPane productTab;
+    private javax.swing.JPanel productPanel;
+    private javax.swing.JPanel trainSetPanel;
+    private javax.swing.JPanel trackPackPanel;
+    private javax.swing.JPanel trackPanel;
+    private javax.swing.JPanel locomotivePanel;
+    private javax.swing.JPanel rollingStockPanel;
+    private javax.swing.JPanel controllerPanel;
     // End of variables declaration
     
     /**
@@ -62,7 +80,7 @@ public class ProductListingScreen extends JFrame {
         jButton2 = new javax.swing.JButton();
         orderLineButton = new javax.swing.JButton();
         myOrderButton = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        productTab = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -71,6 +89,21 @@ public class ProductListingScreen extends JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        productPanel = createPanel(0, connection);
+        trainSetPanel = createPanel(1, connection);
+        trackPackPanel = createPanel(2, connection);
+        trackPanel = createPanel(3, connection);
+        locomotivePanel = createPanel(4, connection);
+        rollingStockPanel = createPanel(5, connection);
+        controllerPanel = createPanel(6, connection);
+
+        productTab.addTab("All Product", productPanel);
+        productTab.addTab("Train Set", trainSetPanel);
+        productTab.addTab("Track Pack", trackPackPanel);
+        productTab.addTab("Track", trackPanel);
+        productTab.addTab("Locomotive", locomotivePanel);
+        productTab.addTab("Rolling Stock", rollingStockPanel);
+        productTab.addTab("Controller", controllerPanel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Product Listing Screen");
@@ -139,89 +172,6 @@ public class ProductListingScreen extends JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jLabel1.setText("All");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(552, 552, 552)
-                .addComponent(jLabel1)
-                .addContainerGap(639, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(202, 202, 202)
-                .addComponent(jLabel1)
-                .addContainerGap(290, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("All", jPanel1);
-
-        jLabel3.setText("Train Set");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(552, 552, 552)
-                .addComponent(jLabel3)
-                .addContainerGap(608, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(202, 202, 202)
-                .addComponent(jLabel3)
-                .addContainerGap(290, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Train Set", jPanel3);
-
-        jLabel5.setText("Track Pack");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(558, 558, 558)
-                .addComponent(jLabel5)
-                .addContainerGap(591, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(212, 212, 212)
-                .addComponent(jLabel5)
-                .addContainerGap(280, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Track Pack", jPanel4);
-
-        jLabel4.setText("Individual Model & Parts");
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(544, 544, 544)
-                .addComponent(jLabel4)
-                .addContainerGap(530, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(212, 212, 212)
-                .addComponent(jLabel4)
-                .addContainerGap(280, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Parts", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -230,7 +180,7 @@ public class ProductListingScreen extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
+                    .addComponent(productTab)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -240,7 +190,7 @@ public class ProductListingScreen extends JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1)
+                .addComponent(productTab)
                 .addContainerGap())
         );
 
@@ -268,5 +218,271 @@ public class ProductListingScreen extends JFrame {
     private void goToMyOrderScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
         new MyOrderScreen(connection, id);
+    }
+
+    private JPanel createPanel(int selectedIndex, Connection connection) {
+        JPanel productPanel = new javax.swing.JPanel();
+        JTable productTable = new javax.swing.JTable();
+        JScrollPane jScrollPane2 = new javax.swing.JScrollPane();
+
+        GroupLayout productPanelLayout = new GroupLayout(productPanel);
+        
+        productPanel.setLayout(productPanelLayout);
+        productPanelLayout.setHorizontalGroup(
+            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(productPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        productPanelLayout.setVerticalGroup(
+            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(productPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
+        );
+
+        // try
+
+        try {
+            ResultSet productResultSet;
+            ResultSet foreignProductResultSet;
+            DefaultTableModel countModel = new DefaultTableModel();
+            countModel.addColumn("No.");
+            DefaultTableModel productModel = new DefaultTableModel();
+            DefaultTableModel foreignProductModel = new DefaultTableModel();
+            DefaultTableModel combinedTableModel = new DefaultTableModel();
+            // // Create a DefaultTableModel with a JButton column
+            DefaultTableModel actionModel = new DefaultTableModel() {
+                @Override
+                public Class<?> getColumnClass(int columnIndex) {
+                    return columnIndex == 2 ? JButton.class : Object.class; // Column index 2 contains buttons
+                }
+            };
+            
+            switch (selectedIndex) {
+                case 0:
+                    productResultSet = databaseOperations.getAllProducts(connection, "Products");
+                    productModel = buildTableModel(productResultSet);
+                    for (int i = 0; i < databaseOperations.countProduct("Products", connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, productModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countProduct("Products", connection); i++) {
+                        actionModel.addRow(new Object[]{ "+ OrderLine"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                case 1:
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "TrainSets", ", a.era");
+                    foreignProductModel = buildTableModel(foreignProductResultSet);
+                    for (int i = 0; i < databaseOperations.countProduct("TrainSets", connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countProduct("TrainSets", connection); i++) {
+                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                case 2:
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "TrackPacks", "");
+                    foreignProductModel = buildTableModel(foreignProductResultSet);
+                    for (int i = 0; i < databaseOperations.countProduct("TrackPacks", connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countProduct("TrackPacks", connection); i++) {
+                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                case 3:
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "Tracks", "");
+                    foreignProductModel = buildTableModel(foreignProductResultSet);
+                    for (int i = 0; i < databaseOperations.countProduct("Tracks", connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countProduct("Tracks", connection); i++) {
+                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                case 4:
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "Locomotives", ", a.era, a.dcc");
+                    foreignProductModel = buildTableModel(foreignProductResultSet);
+                    for (int i = 0; i < databaseOperations.countProduct("Locomotives", connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countProduct("Locomotives", connection); i++) {
+                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                case 5:
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "RollingStocks", ", a.era, a.rollingStockType");
+                    foreignProductModel = buildTableModel(foreignProductResultSet);
+                    for (int i = 0; i < databaseOperations.countProduct("RollingStocks", connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countProduct("RollingStocks", connection); i++) {
+                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                case 6:
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products", "Controllers", ", a.dcc");
+                    foreignProductModel = buildTableModel(foreignProductResultSet);
+                    for (int i = 0; i < databaseOperations.countProduct("Controllers", connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countProduct("Controllers", connection); i++) {
+                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                default:
+                    break;
+            }
+
+        } catch(SQLException e) {
+            productTable.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                    {null, null, null, null, null, null, null, null, null, null, null},
+                    {null, null, null, null, null, null, null, null, null, null, null},
+                    {null, null, null, null, null, null, null, null, null, null, null}
+                },
+                new String [] {
+                    "No.", "Product Code", "Product Name", "Brand Name", "Gauge Scale", "Era", "Locomotive Type", "Rolling Stock Type", "Controller Type", "Remark", "Action"
+                }
+            ) {
+                boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false, false, false, false, false, false, false
+                };
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit [columnIndex];
+                }
+            });
+            e.printStackTrace();
+        }
+
+        return productPanel;
+    }
+
+    public DefaultTableModel buildTableModel(ResultSet resultSet) throws SQLException {
+        java.sql.ResultSetMetaData metaData = resultSet.getMetaData();
+
+        // Get column count
+        int columnCount = metaData.getColumnCount();
+
+        // Create a DefaultTableModel to hold the data
+        DefaultTableModel tableModel = new DefaultTableModel();
+
+        // Add column names to the table model
+        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+            tableModel.addColumn(metaData.getColumnLabel(columnIndex));
+        }
+
+        // Add row data to the table model
+        while (resultSet.next()) {
+            Object[] rowData = new Object[columnCount];
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                rowData[columnIndex - 1] = resultSet.getObject(columnIndex);
+            }
+            tableModel.addRow(rowData);
+        }
+
+        return tableModel;
+    }
+
+    // Method to combine two DefaultTableModel instances
+    private static DefaultTableModel combineTableModels(DefaultTableModel model1, DefaultTableModel model2) {
+        DefaultTableModel combinedModel = new DefaultTableModel();
+
+        // Add columns from model1 to combinedModel
+        for (int i = 0; i < model1.getColumnCount(); i++) {
+            combinedModel.addColumn(model1.getColumnName(i));
+        }
+
+        // Add columns from model2 to combinedModel (ignoring columns present in model1)
+        for (int i = 0; i < model2.getColumnCount(); i++) {
+            String columnName = model2.getColumnName(i);
+            if (!containsColumn(combinedModel, columnName)) {
+                combinedModel.addColumn(columnName);
+            }
+        }
+
+        // Add rows from model1 and model2 to combinedModel
+        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
+        for (int i = 0; i < rowCount; i++) {
+            Vector<Object> rowData = new Vector<>();
+            for (int j = 0; j < combinedModel.getColumnCount(); j++) {
+                if (j < model1.getColumnCount()) {
+                    rowData.add(model1.getValueAt(i, j));
+                } else {
+                    rowData.add(model2.getValueAt(i, j - model1.getColumnCount()));
+                }
+            }
+            combinedModel.addRow(rowData);
+        }
+
+        return combinedModel;
+    }
+
+    // Method to check if a column exists in the DefaultTableModel
+    private static boolean containsColumn(DefaultTableModel model, String columnName) {
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            if (model.getColumnName(i).equals(columnName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

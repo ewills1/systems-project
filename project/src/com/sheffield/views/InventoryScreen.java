@@ -114,14 +114,14 @@ public class InventoryScreen extends JFrame {
         jButton1.setText("Staff Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt, connection);
+                goToStaffDashboard(evt, connection);
             }
         });
 
         jButton2.setText("Logout");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                goToLoginScreen(evt, connection);
             }
         });
 
@@ -249,16 +249,14 @@ public class InventoryScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+    private void goToLoginScreen(java.awt.event.ActionEvent evt, Connection connection) {                                         
+        dispose();
+        new NewLoginScreen(connection);
     }                                        
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt, Connection connection) {                                         
-        try {
-            databaseOperations.getAllProducts(connection, "Products");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private void goToStaffDashboard(java.awt.event.ActionEvent evt, Connection connection) {                                         
+        dispose();
+        new StaffDashboardScreen(connection, "fakeid");
     }                                        
 
     private void goToAddItemForm(java.awt.event.ActionEvent evt, Connection connection) {                                         
