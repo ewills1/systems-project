@@ -862,8 +862,8 @@ public class DatabaseOperations {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            String orderID = orderLine.getOrderID();
-            preparedStatement.setString(1, orderID);
+            int orderID = orderLine.getOrderID();
+            preparedStatement.setInt(1, orderID);
 
             String productCode = orderLine.getProduct().getProductCode();
             preparedStatement.setString(2, productCode);
@@ -876,6 +876,25 @@ public class DatabaseOperations {
 
             preparedStatement.execute();
         }catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+    }
+
+    public void deleteOrderLine(Connection connection, OrderLine orderLine){
+
+        String sql = "DELETE FROM OrderLines WHERE orderID = ? AND productCode = ?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(sql);
+
+            int orderID = orderLine.getOrderID();
+            pst.setInt(1, orderID);
+
+            String productCode = orderLine.getProduct().getProductCode();
+            pst.setString(2, productCode);
+
+            pst.execute();
+        }catch(SQLException e){
             e.printStackTrace();
         }
         
