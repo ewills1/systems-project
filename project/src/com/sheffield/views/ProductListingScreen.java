@@ -1,4 +1,5 @@
 package com.sheffield.views;
+
 /**
  * @author afiq_ismail
  */
@@ -24,7 +25,7 @@ public class ProductListingScreen extends JFrame {
     DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
     DatabaseOperations databaseOperations = new DatabaseOperations();
 
-    // Variables declaration                 
+    // Variables declaration
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton orderLineButton;
@@ -40,18 +41,18 @@ public class ProductListingScreen extends JFrame {
     private javax.swing.JPanel rollingStockPanel;
     private javax.swing.JPanel controllerPanel;
     // End of variables declaration
-    
+
     /**
      * Creates ProductListingScreen constructor
      */
-    public ProductListingScreen(Connection connection,String id) {
+    public ProductListingScreen(Connection connection, String id) {
         super();
 
-        Toolkit toolkit = Toolkit.getDefaultToolkit ();
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
 
-        setSize(screenSize.width/2, screenSize.height/2);
-        setLocation(screenSize.width/4, screenSize.height/4);
+        setSize(screenSize.width / 2, screenSize.height / 2);
+        setLocation(screenSize.width / 4, screenSize.height / 4);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -128,60 +129,60 @@ public class ProductListingScreen extends JFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(123, 123, 123)
-                .addComponent(myOrderButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(orderLineButton)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(16, 16, 16))
-        );
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addGap(123, 123, 123)
+                                .addComponent(myOrderButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(orderLineButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addGap(16, 16, 16)));
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(orderLineButton)
-                        .addComponent(myOrderButton))
-                    .addComponent(jLabel2)
-                    .addComponent(jButton2))
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
-
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jButton1)
+                                                .addComponent(orderLineButton)
+                                                .addComponent(myOrderButton))
+                                        .addComponent(jLabel2)
+                                        .addComponent(jButton2))
+                                .addContainerGap(15, Short.MAX_VALUE)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(productTab)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(productTab)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(productTab)
-                .addContainerGap())
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(productTab)
+                                .addContainerGap()));
 
         pack();
     }
-    
-    /** setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+    /**
+     * setExtendedState(JFrame.MAXIMIZED_BOTH);
      * Action-button || other functions | listeners
      */
     private void goToProfileScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
@@ -197,7 +198,7 @@ public class ProductListingScreen extends JFrame {
     private void goToOrderLineScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
         new OrderLineScreen(connection, id);
-    } 
+    }
 
     private void goToMyOrderScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
@@ -210,21 +211,20 @@ public class ProductListingScreen extends JFrame {
         JScrollPane jScrollPane2 = new javax.swing.JScrollPane();
 
         GroupLayout productPanelLayout = new GroupLayout(productPanel);
-        
+
         productPanel.setLayout(productPanelLayout);
         productPanelLayout.setHorizontalGroup(
-            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(productPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+                productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(productPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)
+                                .addContainerGap()));
         productPanelLayout.setVerticalGroup(
-            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(productPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
-        );
+                productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(productPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442,
+                                        Short.MAX_VALUE)));
 
         // try
 
@@ -243,23 +243,25 @@ public class ProductListingScreen extends JFrame {
                     return columnIndex == 2 ? JButton.class : Object.class; // Column index 2 contains buttons
                 }
             };
-            
+
             switch (selectedIndex) {
                 case 0:
                     productResultSet = databaseOperations.getAllTableData(connection, "Products");
                     productModel = buildTableModel(productResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Products", connection); i++) {
-                        countModel.addRow(new Object[]{i+1});
+                        countModel.addRow(new Object[] { i + 1 });
                     }
                     combinedTableModel = combineTableModels(countModel, productModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Products", connection); i++) {
-                        actionModel.addRow(new Object[]{ "+ OrderLine"});
+                        actionModel.addRow(new Object[] { "Add to order" });
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
@@ -267,17 +269,19 @@ public class ProductListingScreen extends JFrame {
                     foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "TrainSets", ", a.era");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("TrainSets", connection); i++) {
-                        countModel.addRow(new Object[]{i+1});
+                        countModel.addRow(new Object[] { i + 1 });
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("TrainSets", connection); i++) {
-                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                        actionModel.addRow(new Object[] { "Add to order" });
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
@@ -285,17 +289,19 @@ public class ProductListingScreen extends JFrame {
                     foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "TrackPacks", "");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("TrackPacks", connection); i++) {
-                        countModel.addRow(new Object[]{i+1});
+                        countModel.addRow(new Object[] { i + 1 });
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("TrackPacks", connection); i++) {
-                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                        actionModel.addRow(new Object[] { "Add to order" });
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
@@ -303,71 +309,82 @@ public class ProductListingScreen extends JFrame {
                     foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "Tracks", "");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Tracks", connection); i++) {
-                        countModel.addRow(new Object[]{i+1});
+                        countModel.addRow(new Object[] { i + 1 });
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Tracks", connection); i++) {
-                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                        actionModel.addRow(new Object[] { "Add to order" });
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 4:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "Locomotives", ", a.era, a.dcc");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products",
+                            "Locomotives", ", a.era, a.dcc");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Locomotives", connection); i++) {
-                        countModel.addRow(new Object[]{i+1});
+                        countModel.addRow(new Object[] { i + 1 });
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Locomotives", connection); i++) {
-                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                        actionModel.addRow(new Object[] { "Add to order" });
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 5:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "RollingStocks", ", a.era, a.rollingStockType");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products",
+                            "RollingStocks", ", a.era, a.rollingStockType");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("RollingStocks", connection); i++) {
-                        countModel.addRow(new Object[]{i+1});
+                        countModel.addRow(new Object[] { i + 1 });
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("RollingStocks", connection); i++) {
-                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                        actionModel.addRow(new Object[] { "Add to order" });
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
                 case 6:
-                    foreignProductResultSet = databaseOperations.getAllAggregatedTable(connection, "Products", "Controllers", ", a.dcc");
+                    foreignProductResultSet = databaseOperations.getAllAggregatedProducts(connection, "Products",
+                            "Controllers", ", a.dcc");
                     foreignProductModel = buildTableModel(foreignProductResultSet);
                     for (int i = 0; i < databaseOperations.countProduct("Controllers", connection); i++) {
-                        countModel.addRow(new Object[]{i+1});
+                        countModel.addRow(new Object[] { i + 1 });
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Controllers", connection); i++) {
-                        actionModel.addRow(new Object[]{"+ OrderLine"});
+                        actionModel.addRow(new Object[] { "Add to order" });
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1)
+                            .setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
@@ -375,23 +392,23 @@ public class ProductListingScreen extends JFrame {
                     break;
             }
 
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             productTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                    {null, null, null, null, null, null, null, null, null, null, null},
-                    {null, null, null, null, null, null, null, null, null, null, null},
-                    {null, null, null, null, null, null, null, null, null, null, null}
-                },
-                new String [] {
-                    "No.", "Product Code", "Product Name", "Brand Name", "Gauge Scale", "Era", "Locomotive Type", "Rolling Stock Type", "Controller Type", "Remark", "Action"
-                }
-            ) {
-                boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false, false, false, false, false, false
+                    new Object[][] {
+                            { null, null, null, null, null, null, null, null, null, null, null },
+                            { null, null, null, null, null, null, null, null, null, null, null },
+                            { null, null, null, null, null, null, null, null, null, null, null }
+                    },
+                    new String[] {
+                            "No.", "Product Code", "Product Name", "Brand Name", "Gauge Scale", "Era",
+                            "Locomotive Type", "Rolling Stock Type", "Controller Type", "Remark", "Action"
+                    }) {
+                boolean[] canEdit = new boolean[] {
+                        false, false, false, false, false, false, false, false, false, false, false
                 };
 
                 public boolean isCellEditable(int rowIndex, int columnIndex) {
-                    return canEdit [columnIndex];
+                    return canEdit[columnIndex];
                 }
             });
             e.printStackTrace();

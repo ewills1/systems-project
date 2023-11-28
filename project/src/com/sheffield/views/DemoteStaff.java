@@ -48,7 +48,7 @@ public class DemoteStaff extends JFrame {
         panel.add(welcomeLabel);
 
         // Check if the current user is a manager or staff
-        if (isUserAuthorised(Role.MANAGER)) {
+        if (isUserAuthorised(Role.MANAGER) || isUserAuthorised(Role.STAFF)) {
             // Create a JComboBox for user selection
             userComboBox = new JComboBox<>();
             // Populate the combo box with user data (you need to have a method to get

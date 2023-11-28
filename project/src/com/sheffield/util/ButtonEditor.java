@@ -44,14 +44,9 @@ public class ButtonEditor extends DefaultCellEditor {
         button.addActionListener(e -> {
             int row = this.table.getEditingRow(); // Get the row index of the clicked button
             int column = 1; // Get the column index of the clicked button
-            if (this.label == "Update/Delete") {
-                storedId = (String) table.getValueAt(row, column);
-                storedProductName = (String) table.getValueAt(row, column+1);
-                quantity = (int) table.getValueAt(row, column + 4);
-            } else if (this.label == "Promote | Demote") {
-                forename = (String) table.getValueAt(row, column+1);
-                role = (String) table.getValueAt(row, column + 4);
-            }
+            storedId = (String) table.getValueAt(row, column);
+            storedProductName = (String) table.getValueAt(row, column + 1);
+            quantity = (int) table.getValueAt(row, column + 4);
             // Perform different actions based on row and column indices
             fireEditingStopped();
         });
@@ -118,17 +113,24 @@ public class ButtonEditor extends DefaultCellEditor {
 
             } else if (this.label == "+ OrderLine") {
                 JFrame frame = new JFrame();
-                String inputQuantity = JOptionPane.showInputDialog(frame, "Enter quantity for "+ this.storedProductName + " :");
-                
+                String inputQuantity = JOptionPane.showInputDialog(frame,
+                        "Enter quantity for " + this.storedProductName + " :");
+
                 if (Integer.parseInt(inputQuantity) > quantity) {
                     JOptionPane.showMessageDialog(button, "Input too large");
                 } else {
-                    JOptionPane.showMessageDialog(button, "Product added  to OrderLine");
+                    // create an orderLine
+                    OrderLine o = new OrderLine();
+                    int orderID = 1;
+                    Order order = new Order(orderID, this.date, );
+                    // implement code that adds the storedProductName and its inputQuantity to the order as an
+                    // orderLine
+                    JOptionPane.showMessageDialog(button, "Product added to order");
                     // Window window = SwingUtilities.windowForComponent(button);
                     // if (window instanceof JFrame) {
-                    //     window.dispose();
+                    // window.dispose();
                     // }
-                    
+
                     // JFrame newFrame = new ProductListingScreen(connection, "");
                     // newFrame.setVisible(true);
                 }
