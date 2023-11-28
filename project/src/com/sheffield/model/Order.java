@@ -1,9 +1,10 @@
 package com.sheffield.model;
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.List;
 
 public class Order {
-    
+
     private String orderID;
     private Date date;
     private double cost;
@@ -16,56 +17,56 @@ public class Order {
         FULFILLED
     }
 
-    public Order(String orderID, List<OrderLine> orderLines, Date date, Completed completed){
+    public Order(String orderID, List<OrderLine> orderLines, Date date, Completed completed) {
         this.orderID = orderID;
         this.orderLines = orderLines;
         this.date = date;
         this.completed = completed;
     }
 
-    public String getOrderID(){
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(String orderID){
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
-    public Date getDate(){
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date){
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public Completed getCompleted(){
+    public Completed getCompleted() {
         return completed;
     }
 
-    public void setCompleted(Completed completed){
+    public void setCompleted(Completed completed) {
         this.completed = completed;
     }
 
-    public void addOrderLine(OrderLine o){
+    public void addOrderLine(OrderLine o) {
         orderLines.add(o);
     }
 
-    public void removeOrderLine(OrderLine o){
+    public void removeOrderLine(OrderLine o) {
         orderLines.remove(o);
     }
 
-    public double getTotalCost(){
+    public double getTotalCost() {
         double cost = 0;
-        for (OrderLine o : orderLines){
+        for (OrderLine o : orderLines) {
             cost += o.getCost();
         }
         return cost;
     }
 
     @Override
-    public String toString(){
-       return "OrderID: "+orderID+ ", OrderLines: "+ orderLines.toString()
-        +",  Date: "+date+", Completed: "+completed;
+    public String toString() {
+        return "OrderID: " + orderID + ", OrderLines: " + orderLines.toString()
+                + ",  Date: " + date + ", Completed: " + completed;
     }
 }
