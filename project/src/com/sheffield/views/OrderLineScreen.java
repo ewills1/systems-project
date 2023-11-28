@@ -92,16 +92,22 @@ public class OrderLineScreen extends JFrame {
         );
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            String[] itemList = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return itemList.length; }
+            public String getElementAt(int i) { return itemList[i]; }
         });
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setText(" Checkout");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToCheckoutScreen(connection, id, evt);
+                JFrame frame = new JFrame();
+                if (jList1.getModel().getSize()<=0) {
+                    System.out.println("Cart is empty. Cannot proceed to checkout");
+                    JOptionPane.showMessageDialog(frame, "OrderLine(Cart) is empty. Add items to checkout!");
+                } else {
+                    goToCheckoutScreen(connection, id, evt);
+                }
             }
         });
 
