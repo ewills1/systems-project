@@ -152,7 +152,7 @@ public class ProfileScreen extends JFrame {
             throw new RuntimeException(e);
         }
 
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        updateDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 String[] oldCharPassword = new String[0];
                 try {
@@ -171,7 +171,6 @@ public class ProfileScreen extends JFrame {
 
                 databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText(), id);
                 System.out.println("Profile updated");
-                jButton1ActionPerformed(evt);
             }
         });
 
@@ -289,15 +288,14 @@ public class ProfileScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void updateDetails(Connection connection, java.awt.event.ActionEvent evt) {  
+    private void updateDetails(Connection connection, java.awt.event.ActionEvent evt) {
         try {
-          System.out.println(databaseOperations.changeEmail(connection, CurrentUserManager.getCurrentUser(), emailLabel.getText()));
+            System.out.println(databaseOperations.changeEmail(connection, CurrentUserManager.getCurrentUser(), emailLabel.getText()));
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }                                       
-
-        }                                     
+        }
+    }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
