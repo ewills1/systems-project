@@ -2,8 +2,11 @@ package com.sheffield.views;
 /**
  * @author afiq_ismail
  */
+import com.sheffield.model.DatabaseOperations;
+
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class CheckoutScreen extends JFrame {
@@ -57,6 +60,8 @@ public class CheckoutScreen extends JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
+        DatabaseOperations databaseOperations = new DatabaseOperations();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Order Line Screen");
         setMinimumSize(new java.awt.Dimension(623, 574));
@@ -103,7 +108,23 @@ public class CheckoutScreen extends JFrame {
         jButton1.setText("Place Order");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMyOrderScreen(connection, id, evt);
+                try {
+                    JFrame frame = new JFrame();
+                    String bankName = databaseOperations.getRecordFromTable(connection, "bankCardName", "Users", id);
+                    if (bankName == null || bankName.isEmpty()) {
+                        JOptionPane.showMessageDialog(frame, "No bank detected. Please insert payment method");
+                        System.out.println("No bank detected. Redirecting to Profile");
+                        goToProfile(connection, id, evt);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Your order has been confirmed!");
+                        System.out.println("Bank Name: " + bankName);
+                        System.out.println("Order confirmed. Redirecting to my Order");
+                        //Set Order.placed to Confirm
+                        goToMyOrderScreen(connection, id, evt);
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -173,5 +194,10 @@ public class CheckoutScreen extends JFrame {
     private void goToOrderLine(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
         new OrderLineScreen(connection, id);
-    } 
+    }
+
+    private void goToProfile(Connection connection, String id, java.awt.event.ActionEvent evt) {
+        dispose();
+        new ProfileScreen(connection, id);
+    }
 }
