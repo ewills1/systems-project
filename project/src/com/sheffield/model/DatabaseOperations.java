@@ -414,6 +414,28 @@ public class DatabaseOperations {
         }
     }
 
+    public boolean changeEmail(Connection connection, User user, String newEmail) throws SQLException{
+        try {
+            String sql = "UPDATE Users SET email = ? WHERE userID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newEmail);
+            String currentUserID = CurrentUserManager.getCurrentUser().getUserID();
+            statement.setString(2, currentUserID);
+
+            int rowsAffected = statement.executeUpdate();
+            user.setEmail(newEmail);
+            if (rowsAffected >=1){
+                return true;
+            } else{
+                System.out.println(currentUserID);
+                return false;
+            } 
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     // =========== PRODUCTS TABLE OPERATIONS ===========
 
     // Insert a new product into the database

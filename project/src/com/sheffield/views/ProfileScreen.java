@@ -1,11 +1,16 @@
 package com.sheffield.views;
+import com.sheffield.model.CurrentUserManager;
 /**
  * @author afiq_ismail
  */
 import com.sheffield.model.DatabaseConnectionHandler;
+import com.sheffield.model.DatabaseOperations;
+import com.sheffield.model.CurrentUserManager;
 
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.SQLException;
+
 import javax.swing.*;
 
 public class ProfileScreen extends JFrame {
@@ -15,14 +20,14 @@ public class ProfileScreen extends JFrame {
     private static final long serialVersionUID = 1L;
 
     // Variables declaration                 
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton updateDetailsButton;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -37,6 +42,7 @@ public class ProfileScreen extends JFrame {
     // Create an instance of DatabaseConnectionHandler for managing database connections
     DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 
+    DatabaseOperations databaseOperations = new DatabaseOperations();
     // End of variables declaration
     
     /**
@@ -73,11 +79,11 @@ public class ProfileScreen extends JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        updateDetailsButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -133,11 +139,11 @@ public class ProfileScreen extends JFrame {
 
         jLabel3.setText("Surname:");
 
-        jLabel4.setText("Email:");
+        emailLabel.setText("Email:");
 
         jLabel5.setText("Password:");
 
-        jButton1.setText("UPDATE");
+        updateDetailsButton.setText("UPDATE");
 
         //Display name, email, etc
         jTextField1.setText("fore name");
@@ -145,9 +151,9 @@ public class ProfileScreen extends JFrame {
         jTextField3.setText("email??");
         jTextField4.setText("pas");
         jTextField5.setText("bank");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        updateDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                updateDetails(connection, evt);   
             }
         });
 
@@ -193,7 +199,7 @@ public class ProfileScreen extends JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
+                            .addComponent(emailLabel)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5)
                             .addComponent(jLabel2))
@@ -209,7 +215,7 @@ public class ProfileScreen extends JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(231, 231, 231)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(updateDetailsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -225,7 +231,7 @@ public class ProfileScreen extends JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                    .addComponent(emailLabel)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,7 +240,7 @@ public class ProfileScreen extends JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
-                .addComponent(jButton1)
+                .addComponent(updateDetailsButton)
                 .addContainerGap(81, Short.MAX_VALUE))
         );
 
@@ -265,9 +271,15 @@ public class ProfileScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
-    }                                        
+    private void updateDetails(Connection connection, java.awt.event.ActionEvent evt) {  
+        try {
+          System.out.println(databaseOperations.changeEmail(connection, CurrentUserManager.getCurrentUser(), emailLabel.getText()));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }                                       
+
+        }                                     
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
