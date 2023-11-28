@@ -5,25 +5,24 @@ import java.util.List;
 
 public class Order {
 
-    private String orderID;
+    private int orderID;
     private Date date;
     private double cost;
     private Status status;
     private List<OrderLine> orderLines;
 
-
-    public Order(String orderID, List<OrderLine> orderLines, Date date, Status status) {
+    public Order(int orderID, List<OrderLine> orderLines, Date date, Status status) {
         this.orderID = orderID;
         this.orderLines = orderLines;
         this.date = date;
         this.status = status;
     }
 
-    public String getOrderID() {
+    public int getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(int orderID) {
         this.orderID = orderID;
     }
 
