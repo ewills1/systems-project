@@ -2,7 +2,10 @@ package com.sheffield.util;
 
 import java.awt.Component;
 import java.awt.Window;
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
+import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -12,11 +15,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import com.sheffield.model.DatabaseConnectionHandler;
-import com.sheffield.model.DatabaseOperations;
 import com.sheffield.views.ItemFormScreen;
 import com.sheffield.views.ProductListingScreen;
-import com.sheffield.views.UserScreen;
+import com.sheffield.model.Product;
+import com.sheffield.model.OrderLine;
+import com.sheffield.model.DatabaseOperations;
+import com.sheffield.model.Order;
+import com.sheffield.model.Status;
 
 // Custom cell editor to handle button clicks
 public class ButtonEditor extends DefaultCellEditor {
@@ -27,12 +32,15 @@ public class ButtonEditor extends DefaultCellEditor {
     private Connection connection;
     private String storedId;
     private String storedProductName;
-    private int quantity;
-    // User related private data
-    private String forename;
-    private String role;
+    private String storedBrandName;
+    private BigDecimal storedPrice;
+    private String storedGauge;
+    private int storedQuantity;
+    private int orderID;
+    private List<OrderLine> orderLines;
+    private Date date;
+    private double totalCost;
 
-    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
     DatabaseOperations databaseOperations = new DatabaseOperations();
 
     public ButtonEditor(JTextField textField, JTable table, Connection connection) {
@@ -44,14 +52,12 @@ public class ButtonEditor extends DefaultCellEditor {
         button.addActionListener(e -> {
             int row = this.table.getEditingRow(); // Get the row index of the clicked button
             int column = 1; // Get the column index of the clicked button
-            if (this.label == "Update/Delete") {
-                storedId = (String) table.getValueAt(row, column);
-                storedProductName = (String) table.getValueAt(row, column+1);
-                quantity = (int) table.getValueAt(row, column + 4);
-            } else if (this.label == "Promote | Demote") {
-                forename = (String) table.getValueAt(row, column+1);
-                role = (String) table.getValueAt(row, column + 4);
-            }
+            storedId = (String) table.getValueAt(row, column);
+            storedProductName = (String) table.getValueAt(row, column + 1);
+            storedBrandName = (String) table.getValueAt(row, column + 2);
+            storedPrice = (BigDecimal) table.getValueAt(row, column + 3);
+            storedQuantity = (int) table.getValueAt(row, column + 4);
+            storedGauge = (String) table.getValueAt(row, column + 5);
             // Perform different actions based on row and column indices
             fireEditingStopped();
         });
@@ -80,55 +86,36 @@ public class ButtonEditor extends DefaultCellEditor {
                 newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                 // Configure the new frame: set size, add components, etc.
                 newFrame.setVisible(true);
-            } else if (this.label == "Promote | Demote") {
-                String message = "";
-                if (this.role.equals("User")) {
-                    message = "Promote to Staff?";
-                } else if (this.role.equals("Staff")) {
-                    message = "Demote from Staff?";
-                } else {
-                    message = "You're a manager.";
-                }
-
-                int choice = JOptionPane.showConfirmDialog(null, "[" + this.forename + " | " + this.role + "] " + message , "Confirmation", JOptionPane.YES_NO_OPTION);
-                if (choice == JOptionPane.YES_OPTION) {
-                    System.out.println("User clicked Yes.");
-                    if (this.role.equals("User")) {
-                        databaseOperations.promoteToStaff(connection, this.forename);
-                        JOptionPane.showMessageDialog(null, this.forename + " has been promoted to Staff.");
-                    } else if (this.role.equals("Staff")) {
-                        databaseOperations.demoteStaff(connection, this.forename);
-                        JOptionPane.showMessageDialog(null, this.forename + " has been deomoted to User.");
-                    }
-
-                    // Close the current screen (frame)
-                    Window window = SwingUtilities.windowForComponent(button);
-                    if (window instanceof JFrame) {
-                        window.dispose();
-                    }
-
-                    // Open another screen (frame)
-                    JFrame newFrame = new UserScreen(connection, "");
-                    newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
-                    newFrame.setVisible(true);
-                } else {
-                    System.out.println("User clicked No or closed the dialog.");
-                    // Perform actions for 'No' selection or dialog close
-                }
-
-            } else if (this.label == "+ OrderLine") {
+            } else if (this.label == "Add to order") {
                 JFrame frame = new JFrame();
                 String inputQuantity = JOptionPane.showInputDialog(frame,
                         "Enter quantity for " + this.storedProductName + " :");
 
-                if (Integer.parseInt(inputQuantity) > quantity) {
+                int inpQ = Integer.parseInt(inputQuantity);
+                if (inpQ > storedQuantity) {
                     JOptionPane.showMessageDialog(button, "Input too large");
                 } else {
+                    Product product = new Product(storedId, storedProductName, storedBrandName,
+                            storedQuantity, storedPrice, storedGauge);
                     // create an orderLine
-                    // OrderLine o = new OrderLine();
-                    // int orderID = 1;
-                    // Order order = new Order(orderID, this.date, );
-                    // implement code that adds the storedProductName and its inputQuantity to the order as an
+                    OrderLine line = new OrderLine(orderID, product, inpQ);
+                    orderLines.add(line);
+                    databaseOperations.insertOrderLine(connection, line);
+
+                    /*
+                     * THIS CODE CREATES THE ORDER AND ADDS IT TO THE DATABASE
+                     * CREATE A SEPARATE BUTTON FOR THIS
+                     * 
+                     * Order order = new Order(orderID, orderLines, date, Status.PENDING);
+                     * totalCost = order.getTotalCost();
+                     * 
+                     * databaseOperations.insertOrder(connection, order); // confirm order
+                     * 
+                     * orderID += 1;
+                     */
+
+                    // implement code that adds the storedProductName and its inputQuantity to the
+                    // order as an
                     // orderLine
                     JOptionPane.showMessageDialog(button, "Product added to order");
                     // Window window = SwingUtilities.windowForComponent(button);
@@ -139,7 +126,7 @@ public class ButtonEditor extends DefaultCellEditor {
                     // JFrame newFrame = new ProductListingScreen(connection, "");
                     // newFrame.setVisible(true);
                 }
-            } 
+            }
         }
         isPushed = false;
         return label;
