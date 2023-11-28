@@ -11,21 +11,98 @@ import java.util.List;
 
 public class DatabaseOperations {
 
+    // ======GENERAL DATABASE OPERATION=====
+
+    // Get all products from the database
+    public ResultSet getAllTableData(Connection connection, String tableName) throws SQLException {
+        try {
+            if (tableName == "Users") {
+                String selectSQL = "SELECT email, forename, surname, accountLocked FROM " + tableName;
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet;
+            } else {
+                String selectSQL = "SELECT * FROM " + tableName;
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                // System.out.println("<=================== GET ALL PRODUCTS
+                // ====================>");
+                // while (resultSet.next()) {
+                // // Print each product's information in the specified format
+                // System.out.println("{" +
+                // "productCode='" + resultSet.getString("productCode") + "'" +
+                // ", name='" + resultSet.getString("name") + "'" +
+                // ", brandName='" + resultSet.getString("brandName") + "'" +
+                // ", quantity='" + resultSet.getInt("quantity") + "'" +
+                // ", price='" + resultSet.getDouble("price") + "'" +
+                // ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+                // "}");
+                // }
+                // System.out.println("<======================================================>");
+                return resultSet;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    // Get all subproducts from the database
+    public ResultSet getAllAggregatedTable(Connection connection, String originTable, String extendedTable,
+        String extendedColumns) throws SQLException {
+        ResultSet resultSet = null;
+        try {
+            if (originTable == "Users") {
+                String selectSQL = "SELECT u.email, u.forename, u.surname, u.accountLocked " + extendedColumns + " FROM " + originTable + " u JOIN " + extendedTable
+                    + " a ON u.userID = a.userID";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                resultSet = preparedStatement.executeQuery();
+
+            } else if (originTable == "Products") {
+                String selectSQL = "SELECT u.* " + extendedColumns + " FROM " + originTable + " u JOIN " + extendedTable
+                    + " a ON u.productCode = a.productCode";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                resultSet = preparedStatement.executeQuery();
+                // System.out.println("<=================== GET ALL PRODUCTS
+                // ====================>");
+                // while (resultSet.next()) {
+                // // Print each product's information in the specified format
+                // System.out.println("{" +
+                // "productCode='" + resultSet.getString("productCode") + "'" +
+                // ", name='" + resultSet.getString("name") + "'" +
+                // ", brandName='" + resultSet.getString("brandName") + "'" +
+                // ", quantity='" + resultSet.getInt("quantity") + "'" +
+                // ", price='" + resultSet.getDouble("price") + "'" +
+                // ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
+                // "}");
+                // }
+                // System.out.println("<======================================================>");
+                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+
+        return resultSet;
+    }
+
+    // =====USER OPERATIONS=====
+
     /**
      * Promotes the selected user to the role of Staff.
      *
      * @param connection   The database connection.
-     * @param selectedUser The username of the user to be promoted.
+     * @param forename The forename of the user to be promoted.
      */
-    public void promoteToStaff(Connection connection, String selectedUser) {
+    public void promoteToStaff(Connection connection, String forename) {
         PreparedStatement preparedStatement = null;
 
         try {
-            // Get the userID based on the username
-            String userID = getuserIDByUsername(connection, selectedUser);
+            // Get the userID based on the forename
+            String userID = getuserIDByForename(connection, forename);
 
             // Prepare the SQL statement to update the user's role to "Staff"
-            String sql = "INSERT INTO Roles (userID, role) VALUES (?, 'Staff')";
+            String sql = "UPDATE Roles SET role = 'Staff' WHERE userID = ?";
             preparedStatement = connection.prepareStatement(sql);
 
             // Set the parameters for the prepared statement
@@ -54,17 +131,17 @@ public class DatabaseOperations {
      * Demotes the selected staff to the role of user.
      *
      * @param connection   The database connection.
-     * @param selectedUser The username of the user to be promoted.
+     * @param forename The forename of the user to be promoted.
      */
-    public void demoteStaff(Connection connection, String selectedUser) {
+    public void demoteStaff(Connection connection, String forename) {
         PreparedStatement preparedStatement = null;
 
         try {
-            // Get the userID based on the username
-            String userID = getuserIDByUsername(connection, selectedUser);
+            // Get the userID based on the forename
+            String userID = getuserIDByForename(connection, forename);
 
             // Prepare the SQL statement to update the staff's role to "User"
-            String sql = "INSERT INTO Roles (userID, role) VALUES (?, 'User')";
+            String sql = "UPDATE Roles SET role = 'User' WHERE userID = ?";
             preparedStatement = connection.prepareStatement(sql);
 
             // Set the parameters for the prepared statement
@@ -90,23 +167,23 @@ public class DatabaseOperations {
     }
 
     /**
-     * Gets the userID based on the username from the 'Users' table.
+     * Gets the userID based on the forename from the 'Users' table.
      *
      * @param connection The database connection.
-     * @param username   The username for which to retrieve the userID.
-     * @return The userID corresponding to the given username.
+     * @param forename   The forename for which to retrieve the userID.
+     * @return The userID corresponding to the given forename.
      */
-    public String getuserIDByUsername(Connection connection, String username) {
+    public String getuserIDByForename(Connection connection, String forename) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            // Prepare the SQL statement to select the userID based on the username
-            String sql = "SELECT userID FROM Users WHERE username = ?";
+            // Prepare the SQL statement to select the userID based on the forename
+            String sql = "SELECT userID FROM Users WHERE forename = ?";
             preparedStatement = connection.prepareStatement(sql);
 
             // Set the parameter for the prepared statement
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, forename);
 
             // Execute the query
             resultSet = preparedStatement.executeQuery();
@@ -115,7 +192,7 @@ public class DatabaseOperations {
             if (resultSet.next()) {
                 return resultSet.getString("userID");
             } else {
-                System.out.println("User with username " + username + " not found.");
+                System.out.println("User with forename " + forename + " not found.");
                 return null; // Or throw an exception or handle the case as appropriate for your application
             }
         } catch (SQLException e) {
@@ -149,8 +226,8 @@ public class DatabaseOperations {
         ResultSet resultSet = null;
 
         try {
-            // Prepare the SQL statement to select the userId based on the username
-            String sql = "SELECT userId FROM Users WHERE username = ?";
+            // Prepare the SQL statement to select the userId based on the forename
+            String sql = "SELECT userId FROM Users WHERE forename = ?";
             preparedStatement = connection.prepareStatement(sql);
 
             // Set the parameter for the prepared statement
@@ -163,7 +240,7 @@ public class DatabaseOperations {
             if (resultSet.next()) {
                 return resultSet.getString("userId");
             } else {
-                System.out.println("User with username " + email + " not found.");
+                System.out.println("User with forename " + email + " not found.");
                 return null; // Or throw an exception or handle the case as appropriate for your application
             }
         } catch (SQLException e) {
@@ -176,45 +253,6 @@ public class DatabaseOperations {
                 if (resultSet != null) {
                     resultSet.close();
                 }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace(); // Handle the exception according to your application's needs
-            }
-        }
-    }
-
-    /**
-     * Promotes the selected user to the role of Moderator.
-     *
-     * @param connection The database connection.
-     * @param User       The user to be promoted.
-     */
-    public void promoteToStaff(Connection connection, User selectedUser) {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            // Get the userId based on the username
-            String userId = selectedUser.getUserID();
-
-            // Prepare the SQL statement to update the user's role to "Staff"
-            String sql = "INSERT INTO Roles (userId, role) VALUES (?, 'Staff')";
-            preparedStatement = connection.prepareStatement(sql);
-
-            // Set the parameters for the prepared statement
-            preparedStatement.setString(1, userId);
-
-            // Execute the update
-            preparedStatement.executeUpdate();
-
-            // Additional actions may be performed here if needed after the user is promoted
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception according to your application's needs
-        } finally {
-            // Close the prepared statement in a finally block to ensure it's closed even if
-            // an exception occurs
-            try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
                 }
@@ -251,18 +289,18 @@ public class DatabaseOperations {
     }
 
     /**
-     * Retrieves a result set containing all usernames from the 'Users' table.
+     * Retrieves a result set containing all forenames from the 'Users' table.
      *
      * @param connection The database connection.
-     * @return A result set containing all usernames.
+     * @return A result set containing all forenames.
      */
     public ResultSet getAllUsers(Connection connection) {
         ResultSet resultSet = null;
         PreparedStatement statement = null;
 
         try {
-            // Execute the query to select all usernames from the 'Users' table
-            String query = "SELECT u.userId, u.username, r.role FROM Users u, Roles r WHERE u.userId=r.userId";
+            // Execute the query to select all forenames from the 'Users' table
+            String query = "SELECT u.userId, u.forename, r.role FROM Users u, Roles r WHERE u.userId=r.userId";
 
             // Create a statement
             statement = connection.prepareStatement(query);
@@ -384,7 +422,7 @@ public class DatabaseOperations {
         }
     }
 
-    public int countUsers(Connection connection) throws SQLException {
+    public int countUser(Connection connection) throws SQLException {
         try {
             String query = "SELECT COUNT(*) AS rowCount FROM Users";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -548,60 +586,6 @@ public class DatabaseOperations {
             ex.printStackTrace();
             return 0;
         }
-    }
-
-     // Get all products from the database
-     public ResultSet getAllProducts(Connection connection, String tableName) throws SQLException {
-        try {
-            String selectSQL = "SELECT * FROM " + tableName;
-            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
-            // while (resultSet.next()) {
-            //     // Print each product's information in the specified format
-            //     System.out.println("{" +
-            //             "productCode='" + resultSet.getString("productCode") + "'" +
-            //             ", name='" + resultSet.getString("name") + "'" +
-            //             ", brandName='" + resultSet.getString("brandName") + "'" +
-            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
-            //             ", price='" + resultSet.getDouble("price") + "'" +
-            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
-            //             "}");
-            // }
-            // System.out.println("<======================================================>");
-            return resultSet;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;// Re-throw the exception to signal an error.
-        }
-    }
-
-    // Get all subproducts from the database
-    public ResultSet getAllAggregatedProducts(Connection connection, String originTable, String foreignTable, String aggregatedColumns) throws SQLException {
-        ResultSet resultSet = null;
-        try {
-            String selectSQL = "SELECT u.* " + aggregatedColumns + " FROM " + originTable + " u JOIN " + foreignTable + " a ON u.productCode = a.productCode";
-            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-            resultSet = preparedStatement.executeQuery();
-            // System.out.println("<=================== GET ALL PRODUCTS ====================>");
-            // while (resultSet.next()) {
-            //     // Print each product's information in the specified format
-            //     System.out.println("{" +
-            //             "productCode='" + resultSet.getString("productCode") + "'" +
-            //             ", name='" + resultSet.getString("name") + "'" +
-            //             ", brandName='" + resultSet.getString("brandName") + "'" +
-            //             ", quantity='" + resultSet.getInt("quantity") + "'" +
-            //             ", price='" + resultSet.getDouble("price") + "'" +
-            //             ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
-            //             "}");
-            // }
-            // System.out.println("<======================================================>");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;// Re-throw the exception to signal an error.
-        }
-
-        return resultSet;
     }
 
     // Get a product by it's productCode
