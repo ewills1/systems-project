@@ -810,4 +810,19 @@ public class DatabaseOperations {
         }
     }
 
+    public void updateUserPassword(Connection connection, String newPassword, String id) {
+        char[] charPassword = newPassword.toCharArray();
+        String hashedPassword = HashedPasswordGenerator.hashPassword(charPassword);
+        String query = "UPDATE Users SET password= ? WHERE userID = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, hashedPassword);
+            pst.setString(2, id);
+
+            int rowsAffected = pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
