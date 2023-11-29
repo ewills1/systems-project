@@ -10,11 +10,9 @@ import java.text.ParseException;
 import java.util.Vector;
 
 import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
 import javax.swing.table.DefaultTableModel;
 
 import com.sheffield.model.CurrentUserManager;
-import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.model.DatabaseOperations;
 import com.sheffield.model.Order;
 import com.sheffield.model.Status;
@@ -26,7 +24,6 @@ public class OrderLineScreen extends JFrame {
      * Needed for serialisation
      */
     private static final long serialVersionUID = 1L;
-    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
     DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // Variables declaration                 
