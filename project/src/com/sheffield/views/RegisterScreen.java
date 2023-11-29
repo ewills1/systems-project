@@ -6,6 +6,8 @@ import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.model.DatabaseOperations;
 import com.sheffield.model.User;
 
+import com.sheffield.util.EmailValidator;
+
 import java.awt.*;
 import java.sql.Connection;
 import javax.swing.*;
@@ -276,6 +278,9 @@ public class RegisterScreen extends JFrame {
             }
             JOptionPane.showMessageDialog(frame, "Text field cannot be empty");
 
+        } else if (!(EmailValidator.isValidEmail(email))) {
+            System.out.println("Email address is invalid");
+            JOptionPane.showMessageDialog(frame, "Email address is invalid");
         } else {
             try {
                 databaseConnectionHandler.openConnection();
