@@ -150,15 +150,14 @@ public class OrderLineScreen extends JFrame {
                         String userIDLast2Char = id.substring(id.length() - 2).toUpperCase();
                         int itemInOrderLineCount = databaseOperations.countUserOrderLine(orderID + userIDLast2Char, connection);
 
-                        if (itemInOrderLineCount>0) { // proceed to checkout if cart is not empty
-                            goToCheckoutScreen(connection, id, evt);
-                        } else { // stay if cart is empty
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
-                        }
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                    if (itemInOrderLineCount>0) { // proceed to checkout if cart is not empty
+                        goToCheckoutScreen(connection, id, orderID, evt);
+                    } else { // stay if cart is empty
+                        JFrame frame = new JFrame();
+                        JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
                     }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -251,9 +250,9 @@ public class OrderLineScreen extends JFrame {
     /**
      * Action-button || other functions | listeners
      */
-    private void goToCheckoutScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
+    private void goToCheckoutScreen(Connection connection, String id, String orderID, java.awt.event.ActionEvent evt) {
         dispose();
-        new CheckoutScreen(connection, id);
+        new CheckoutScreen(connection, id, orderID);
     }                                        
 
     private void goToMainScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
