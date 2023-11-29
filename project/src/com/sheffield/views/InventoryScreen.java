@@ -318,7 +318,7 @@ public class InventoryScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, productModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Products", connection); i++) {
-                        actionModel.addRow(new Object[]{ "Update/Delete"});
+                        actionModel.addRow(new Object[]{ "Update | Delete"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
@@ -336,7 +336,7 @@ public class InventoryScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("TrainSets", connection); i++) {
-                        actionModel.addRow(new Object[]{"Update/Delete"});
+                        actionModel.addRow(new Object[]{"Update | Delete"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
@@ -354,7 +354,7 @@ public class InventoryScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("TrackPacks", connection); i++) {
-                        actionModel.addRow(new Object[]{"Update/Delete"});
+                        actionModel.addRow(new Object[]{"Update | Delete"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
@@ -372,7 +372,7 @@ public class InventoryScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Tracks", connection); i++) {
-                        actionModel.addRow(new Object[]{"Update/Delete"});
+                        actionModel.addRow(new Object[]{"Update | Delete"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
@@ -390,7 +390,7 @@ public class InventoryScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Locomotives", connection); i++) {
-                        actionModel.addRow(new Object[]{"Update/Delete"});
+                        actionModel.addRow(new Object[]{"Update | Delete"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
@@ -408,7 +408,7 @@ public class InventoryScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("RollingStocks", connection); i++) {
-                        actionModel.addRow(new Object[]{"Update/Delete"});
+                        actionModel.addRow(new Object[]{"Update | Delete"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
@@ -426,7 +426,7 @@ public class InventoryScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countProduct("Controllers", connection); i++) {
-                        actionModel.addRow(new Object[]{"Update/Delete"});
+                        actionModel.addRow(new Object[]{"Update | Delete"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
