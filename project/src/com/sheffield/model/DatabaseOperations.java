@@ -987,6 +987,58 @@ public class DatabaseOperations {
 
     // ========== ORDERS TABLE OPERATIONS ===========
 
+    // ========== ORDERS TABLE OPERATIONS ===========
+
+    public ResultSet getAllOrdersDataWhere(Connection connection, Status status) throws SQLException {
+        try {
+            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED)) {
+                String selectSQL = "SELECT * FROM Orders WHERE status = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                preparedStatement.setString(1, status.name());
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet;
+            } else {
+                String selectSQL = "SELECT * FROM Orders WHERE status = ? OR status = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                preparedStatement.setString(1, Status.CONFIRMED.name());
+                preparedStatement.setString(2, Status.FULFILLED.name());
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    // count the number of product in the table
+    public int countOrderStatus(Status status, Connection connection) throws SQLException {
+        try {
+            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED)) {
+                String query = "SELECT COUNT(*) AS rowCount FROM Orders WHERE status = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, status.name());
+                ResultSet resultSet = statement.executeQuery();
+                resultSet.next();
+                int rowCount = resultSet.getInt("rowCount");
+                return rowCount;
+            } else {
+                String query = "SELECT COUNT(*) AS rowCount FROM Orders WHERE status = ? OR status = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, Status.CONFIRMED.name());
+                statement.setString(2, Status.FULFILLED.name());
+                ResultSet resultSet = statement.executeQuery();
+                resultSet.next();
+                int rowCount = resultSet.getInt("rowCount");
+                return rowCount;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+
     public void insertOrder(Connection connection, Order order){
 
         String sql = "INSERT INTO Orders(orderID, userID, totalCost, status, date) VALUES (?, ?, ?, ?, ?)";

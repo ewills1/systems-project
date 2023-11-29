@@ -75,6 +75,8 @@ public class ButtonEditor extends DefaultCellEditor {
                 storedGauge = (String) table.getValueAt(row, column + 5);
             } else if (this.label.equals("Remove")) {
                 storedOrderLine = (String) table.getValueAt(row, column);
+            } else if (this.label.equals("Fulfill | Decline")) {
+                storedProductCode = (String) table.getValueAt(row, column);
             }
             // Perform different actions based on row and column indices
             fireEditingStopped();
@@ -215,6 +217,19 @@ public class ButtonEditor extends DefaultCellEditor {
                     JFrame newFrame = new OrderLineScreen(connection, "");
                     newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                     newFrame.setVisible(true);
+            } else if (this.label.equals("Fulfill | Decline")) {
+                JOptionPane.showMessageDialog(button, "Viewing: " + storedProductCode);
+                // Close the current screen (frame)
+                Window window = SwingUtilities.windowForComponent(button);
+                if (window instanceof JFrame) {
+                    window.dispose();
+                }
+
+                // Open another screen (frame)
+                JFrame newFrame = new ItemFormScreen(connection, storedProductCode);
+                newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
+                // Configure the new frame: set size, add components, etc.
+                newFrame.setVisible(true);
             }
         }
         isPushed = false;
