@@ -8,7 +8,6 @@ import com.sheffield.model.Status;
 import com.sheffield.util.ButtonRenderer;
 import com.sheffield.util.ButtonEditor;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,10 +38,6 @@ public class OrderScreen extends JFrame {
     private javax.swing.JPanel productPanel;
     private javax.swing.JPanel trainSetPanel;
     private javax.swing.JPanel trackPackPanel;
-    private javax.swing.JPanel trackPanel;
-    private javax.swing.JPanel locomotivePanel;
-    private javax.swing.JPanel rollingStockPanel;
-    private javax.swing.JPanel controllerPanel;
     private javax.swing.JTabbedPane productTab;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -309,14 +304,7 @@ public class OrderScreen extends JFrame {
                         countModel.addRow(new Object[]{i+1});
                     }
                     combinedTableModel = combineTableModels(countModel, productModel);
-                    actionModel.addColumn("Action");
-                    for (int i = 0; i < databaseOperations.countOrderStatus(Status.PENDING, connection); i++) {
-                        actionModel.addRow(new Object[]{ "Fulfill | Decline"});
-                    }
-                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
@@ -345,14 +333,18 @@ public class OrderScreen extends JFrame {
                         countModel.addRow(new Object[]{i+1});
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
-                    actionModel.addColumn("Action");
-                    for (int i = 0; i < databaseOperations.countOrderStatus(Status.FULFILLED, connection); i++) {
-                        actionModel.addRow(new Object[]{"Fulfill | Decline"});
-                    }
-                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
+                    productTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(productTable);
+                    break;
+                case 3:
+                    foreignProductResultSet = databaseOperations.getAllOrdersDataWhere(connection, Status.DECLINED);
+                    foreignProductModel = buildTableModel(foreignProductResultSet);
+                    for (int i = 0; i < databaseOperations.countOrderStatus(Status.DECLINED, connection); i++) {
+                        countModel.addRow(new Object[]{i+1});
+                    }
+                    combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    productTable.setModel(combinedTableModel);
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;

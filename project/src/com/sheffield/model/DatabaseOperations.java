@@ -987,11 +987,9 @@ public class DatabaseOperations {
 
     // ========== ORDERS TABLE OPERATIONS ===========
 
-    // ========== ORDERS TABLE OPERATIONS ===========
-
     public ResultSet getAllOrdersDataWhere(Connection connection, Status status) throws SQLException {
         try {
-            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED)) {
+            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED) || status.equals(Status.DECLINED)) {
                 String selectSQL = "SELECT * FROM Orders WHERE status = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
                 preparedStatement.setString(1, status.name());
@@ -1014,7 +1012,7 @@ public class DatabaseOperations {
     // count the number of product in the table
     public int countOrderStatus(Status status, Connection connection) throws SQLException {
         try {
-            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED)) {
+            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED) || status.equals(Status.DECLINED)) {
                 String query = "SELECT COUNT(*) AS rowCount FROM Orders WHERE status = ?";
                 PreparedStatement statement = connection.prepareStatement(query);
                 statement.setString(1, status.name());
@@ -1097,6 +1095,44 @@ public class DatabaseOperations {
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
+        }
+    }
+
+    /**
+     * Demotes the selected staff to the role of user.
+     *
+     * @param connection   The database connection.
+     * @param forename The forename of the user to be promoted.
+     */
+    public void updateOrderStatus(Connection connection, String orderID, Status status) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+
+            // Prepare the SQL statement to update the staff's role to "User"
+            String sql = "UPDATE Orders SET status = ? WHERE orderID = ?";
+            preparedStatement = connection.prepareStatement(sql);
+
+            // Set the parameters for the prepared statement
+            preparedStatement.setString(1, status.name());
+            preparedStatement.setString(2, orderID);
+
+            // Execute the update
+            preparedStatement.executeUpdate();
+
+            // Additional actions may be performed here if needed after the user is demoted
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your application's needs
+        } finally {
+            // Close the prepared statement in a finally block to ensure it's closed even if
+            // an exception occurs
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle the exception according to your application's needs
+            }
         }
     }
 

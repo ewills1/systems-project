@@ -25,10 +25,12 @@ public class OrderLineScreen extends JFrame {
      */
     private static final long serialVersionUID = 1L;
     DatabaseOperations databaseOperations = new DatabaseOperations();
+    private String orderID = "";
 
     // Variables declaration                 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -58,9 +60,24 @@ public class OrderLineScreen extends JFrame {
         setVisible(true);
     }
     
-    /**
-     * Creates OrderLineScreen constructor
-     */
+    public OrderLineScreen(Connection connection, String id, String orderID) {
+        super();
+        this.orderID = orderID;
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit ();
+        Dimension screenSize = toolkit.getScreenSize();
+
+        setSize(screenSize.width/2, screenSize.height/2);
+        setLocation(screenSize.width/4, screenSize.height/4);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // initialise widgets and other components
+        initComponents(connection, id);
+
+        setVisible(true);
+    }
+    
     private void initComponents(Connection connection, String id) {
 
         
@@ -69,6 +86,7 @@ public class OrderLineScreen extends JFrame {
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         orderLineTab = new javax.swing.JTabbedPane();
         jLabel2 = new javax.swing.JLabel();
         orderLinePanel = createPanel(connection);
@@ -87,7 +105,11 @@ public class OrderLineScreen extends JFrame {
         jButton2.setText("Main Screen");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(connection, id, evt);
+                if (jButton2.getText().equals("Back")) {
+                    goToOrderScreen(connection, id, evt);
+                } else {
+                    goToMainScreen(connection, id, evt);
+                }
             }
         });
 
@@ -115,28 +137,48 @@ public class OrderLineScreen extends JFrame {
         jButton1.setText(" Checkout");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
+                if (jButton1.getText().equals("Fulfill Order")) {
+                    fulfillOrder(connection, evt);
+                } else {
+                    try {
+                        // constructing defined orderID
+                        String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
+                        String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
+                        int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
+                        orderID = orderID + userOrderCount;
 
-                    // constructing defined orderID
-                    String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
-                    String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
-                    int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
-                    orderID = orderID + userOrderCount;
+                        String userIDLast2Char = id.substring(id.length() - 2).toUpperCase();
+                        int itemInOrderLineCount = databaseOperations.countUserOrderLine(orderID + userIDLast2Char, connection);
 
-                    String userIDLast2Char = id.substring(id.length() - 2).toUpperCase();
-                    int itemInOrderLineCount = databaseOperations.countUserOrderLine(orderID + userIDLast2Char, connection);
-
-                    if (itemInOrderLineCount>0) { // proceed to checkout if cart is not empty
-                        goToCheckoutScreen(connection, id, evt);
-                    } else { // stay if cart is empty
-                        JFrame frame = new JFrame();
-                        JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
+                        if (itemInOrderLineCount>0) { // proceed to checkout if cart is not empty
+                            goToCheckoutScreen(connection, id, evt);
+                        } else { // stay if cart is empty
+                            JFrame frame = new JFrame();
+                            JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
             }
         });
+
+        jButton3.setText("Decline Order");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                declineOrder(connection, evt);
+            }
+        });
+
+        if (this.orderID.equals("")) {
+            jButton3.setVisible(false);
+            jButton1.setVisible(true);
+        } else {
+            jButton3.setVisible(true);
+            jButton1.setText("Fulfill Order");
+            jButton2.setText("Back");
+        }
+
 
         jLabel2.setText("Messages: ");
 
@@ -151,7 +193,9 @@ public class OrderLineScreen extends JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(245, 500, 500)
-                        .addComponent(jButton1))
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -166,13 +210,17 @@ public class OrderLineScreen extends JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel2)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(orderLineTab, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addGap(18, 18, 18)
+                    .addGap(29, 29, 29)
+                    .addComponent(jButton3))
                 .addGap(29, 29, 29))
         );
 
@@ -212,6 +260,27 @@ public class OrderLineScreen extends JFrame {
         dispose();
         new ProductListingScreen(connection, id);
     }   
+
+    private void goToOrderScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
+        dispose();
+        new OrderScreen(connection, id);
+    }
+
+    private void fulfillOrder(Connection connection,java.awt.event.ActionEvent evt) {
+        databaseOperations.updateOrderStatus(connection, this.orderID, Status.FULFILLED);
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(frame,   "[" + this.orderID + "] The order has been fulfilled.");
+        dispose();
+        new OrderScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
+    }
+
+    private void declineOrder(Connection connection,java.awt.event.ActionEvent evt) {
+        databaseOperations.updateOrderStatus(connection, this.orderID, Status.DECLINED);
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(frame,   "[" + this.orderID + "] The order has been declined.");
+        dispose();
+        new OrderScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
+    } 
 
     private JPanel createPanel(Connection connection) {
         JPanel productPanel = new javax.swing.JPanel();
@@ -257,9 +326,14 @@ public class OrderLineScreen extends JFrame {
             int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
             orderID = orderID + userOrderCount;
 
+            if(!(this.orderID.equals(""))) {
+                orderID = this.orderID;
+            }
+
+
             Order order = databaseOperations.getOrderModel(orderID, connection);
             
-            if (order.getStatus().equals(Status.PENDING) && (databaseOperations.countOrderIDOrderLine(orderID, connection)) != 0) {
+            if (order.getStatus().equals(Status.PENDING) || !(this.orderID.equals(""))) {
                 orderIDOrderLineResultSet = databaseOperations.getAllOrderIDOrderLineData(connection, orderID);
                 userModel = buildTableModel(orderIDOrderLineResultSet);
                 for (int i = 0; i < databaseOperations.countOrderIDOrderLine(orderID, connection); i++) {
@@ -272,30 +346,19 @@ public class OrderLineScreen extends JFrame {
                     actionModel.addRow(new Object[]{ "Remove"});
                 }
                 
-                combinedTableModel = combineTableModels(combinedTableModel, actionModel);
-                userTable.setModel(combinedTableModel);
-                userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), userTable, connection));
-                userTable.setColumnSelectionAllowed(true);
-                jScrollPane2.setViewportView(userTable);
-            } else {
-                userTable.setModel(new javax.swing.table.DefaultTableModel(
-                    new Object [][] {
-                    },
-                    new String [] {
-                        "No.", " productCode", "productQuantity", "orderLineCost", "Action"
-                    }
-                ) {
-                    boolean[] canEdit = new boolean [] {
-                        false, false, false, false, false
-                    };
-
-                    public boolean isCellEditable(int rowIndex, int columnIndex) {
-                        return canEdit [columnIndex];
-                    }
-                });
-            }
-
+                if (!(this.orderID.equals(""))) {
+                    userTable.setModel(combinedTableModel);
+                    userTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(userTable);
+                } else {
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                    userTable.setModel(combinedTableModel);
+                    userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), userTable, connection));
+                    userTable.setColumnSelectionAllowed(true);
+                    jScrollPane2.setViewportView(userTable);
+                }
+            } 
         } catch(SQLException e) {
             e.printStackTrace();
         } catch (ParseException e) {

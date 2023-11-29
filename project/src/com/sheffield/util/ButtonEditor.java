@@ -47,6 +47,8 @@ public class ButtonEditor extends DefaultCellEditor {
     private String role;
     // OrderLine related private data
     private String storedOrderLine;
+    // Orders related private data
+    private String storedOrderID;
 
     DatabaseOperations databaseOperations = new DatabaseOperations();
     java.util.Date utilDate = new java.util.Date();
@@ -76,7 +78,7 @@ public class ButtonEditor extends DefaultCellEditor {
             } else if (this.label.equals("Remove")) {
                 storedOrderLine = (String) table.getValueAt(row, column);
             } else if (this.label.equals("Fulfill | Decline")) {
-                storedProductCode = (String) table.getValueAt(row, column);
+                storedOrderID = (String) table.getValueAt(row, column);
             }
             // Perform different actions based on row and column indices
             fireEditingStopped();
@@ -218,7 +220,7 @@ public class ButtonEditor extends DefaultCellEditor {
                     newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                     newFrame.setVisible(true);
             } else if (this.label.equals("Fulfill | Decline")) {
-                JOptionPane.showMessageDialog(button, "Viewing: " + storedProductCode);
+                JOptionPane.showMessageDialog(button, "Viewing: " + this.storedOrderID);
                 // Close the current screen (frame)
                 Window window = SwingUtilities.windowForComponent(button);
                 if (window instanceof JFrame) {
@@ -226,7 +228,7 @@ public class ButtonEditor extends DefaultCellEditor {
                 }
 
                 // Open another screen (frame)
-                JFrame newFrame = new ItemFormScreen(connection, storedProductCode);
+                JFrame newFrame = new OrderLineScreen(connection, "", this.storedOrderID);
                 newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                 // Configure the new frame: set size, add components, etc.
                 newFrame.setVisible(true);
