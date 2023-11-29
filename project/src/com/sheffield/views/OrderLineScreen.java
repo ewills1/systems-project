@@ -90,7 +90,7 @@ public class OrderLineScreen extends JFrame {
         jButton2.setText("Main Screen");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(connection, "", evt);
+                goToMainScreen(connection, id, evt);
             }
         });
 
@@ -118,7 +118,26 @@ public class OrderLineScreen extends JFrame {
         jButton1.setText(" Checkout");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToCheckoutScreen(connection, "", evt);
+                try {
+
+                    // constructing defined orderID
+                    String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
+                    String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
+                    int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
+                    orderID = orderID + userOrderCount;
+
+                    String userIDLast2Char = id.substring(id.length() - 2).toUpperCase();
+                    int itemInOrderLineCount = databaseOperations.countUserOrderLine(orderID + userIDLast2Char, connection);
+
+                    if (itemInOrderLineCount>0) { // proceed to checkout if cart is not empty
+                        goToCheckoutScreen(connection, id, evt);
+                    } else { // stay if cart is empty
+                        JFrame frame = new JFrame();
+                        JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
