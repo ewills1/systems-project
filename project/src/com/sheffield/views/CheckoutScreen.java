@@ -11,13 +11,16 @@ import com.sheffield.util.ButtonRenderer;
 
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.transform.Result;
 
 public class CheckoutScreen extends JFrame {
     /**
@@ -42,7 +45,7 @@ public class CheckoutScreen extends JFrame {
     /**
      * Creates CheckoutScreen constructor
      */
-    public CheckoutScreen(Connection connection, String id) {
+    public CheckoutScreen(Connection connection, String id, String orderID) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -54,7 +57,7 @@ public class CheckoutScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection, id);
+        initComponents(connection, id, orderID);
 
         setVisible(true);
     }
@@ -62,7 +65,7 @@ public class CheckoutScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection, String id) {
+    private void initComponents(Connection connection, String id, String orderID) {
 
         
         jPanel1 = new javax.swing.JPanel();
@@ -129,6 +132,7 @@ public class CheckoutScreen extends JFrame {
                         JOptionPane.showMessageDialog(frame, "Your order has been confirmed!");
                         System.out.println("Bank Name: " + bankName);
                         System.out.println("Order confirmed. Redirecting to my Order");
+                        updateCurrentStock(connection, orderID);
                         //Set Order.placed to Confirm
                         goToMyOrderScreen(connection, id, evt);
                     }
@@ -387,5 +391,63 @@ public class CheckoutScreen extends JFrame {
             }
         }
         return false;
+    }
+
+    private void updateCurrentStock(Connection connection, String orderID) throws SQLException {
+
+        // Get each orderLineNumber from orderID
+        ArrayList<String> orderLineNumberList = new ArrayList<>();
+
+        String query = "SELECT * FROM OrderLines WHERE orderID=?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, orderID);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            String result = resultSet.getString("orderLineNumber");
+            orderLineNumberList.add(result);
+        }
+
+        for (String orderLineNumberX : orderLineNumberList) {
+            String query2 = "SELECT * FROM OrderLines WHERE orderLineNumber=?";
+            PreparedStatement statement2 = connection.prepareStatement(query2);
+            statement2.setString(1, orderLineNumberX);
+            ResultSet resultSet2 = statement2.executeQuery();
+
+            while (resultSet2.next()) {
+                String resultProductCode = resultSet2.getString("productCode");
+                Integer resultProductQuantity = resultSet2.getInt("productQuantity");
+
+                // get Current stock
+                String query3 = "SELECT quantity FROM Products WHERE productCode=?";
+                PreparedStatement statement3 = connection.prepareStatement(query3);
+                statement3.setString(1, resultProductCode);
+                ResultSet resultSet3 = statement3.executeQuery();
+
+                if (resultSet3.next()) {
+                    Integer currentStock = resultSet3.getInt("quantity");
+                    Integer newStockQuantity = currentStock - resultProductQuantity;
+
+                    String query4 = "UPDATE Products SET quantity = ? WHERE productCode = ?";
+                    PreparedStatement statement4 = connection.prepareStatement(query4);
+                    statement4.setInt(1, newStockQuantity);
+                    statement4.setString(2, resultProductCode);
+                    int rowsUpdated = statement4.executeUpdate();
+
+                    if (rowsUpdated > 0) {
+                        System.out.println("Quantity updated successfully for ProductCode: " + resultProductCode);
+                    } else {
+                        System.out.println("No rows updated for ProductCode: " + resultProductCode);
+                    }
+                    statement4.close();
+                }
+                resultSet3.close();
+                statement3.close();
+            }
+            resultSet2.close();
+            statement2.close();
+        }
+        resultSet.close();
+        statement.close();
     }
 }
