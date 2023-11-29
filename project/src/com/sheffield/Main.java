@@ -5,6 +5,8 @@ package com.sheffield;
 import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.views.NewLoginScreen;
 
+import java.sql.Connection;
+
 import javax.swing.*;
 
 public class Main {
@@ -15,13 +17,15 @@ public class Main {
 
         // Execute the Swing GUI application on the Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
-            NewLoginScreen newLoginScreen = null;
+            JFrame initialScreen = null;
             try {
                 // Open a database connection
                 databaseConnectionHandler.openConnection();
+                Connection connection = databaseConnectionHandler.getConnection();
 
                 // Create and initialize the LoanTableDisplay view using the database connection
-                newLoginScreen = new NewLoginScreen(databaseConnectionHandler.getConnection());
+                initialScreen = new NewLoginScreen(connection);
+                initialScreen.setVisible(true);
 
             } catch (Throwable t) {
                 // Close connection if database crashes.
