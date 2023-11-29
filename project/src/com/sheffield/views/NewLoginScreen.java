@@ -70,6 +70,10 @@ public class NewLoginScreen extends JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
+        // will remove it later for development
+        emailField.setText("user@user.com");
+        passwordField.setText("123456");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Screen");
         setMinimumSize(new java.awt.Dimension(623, 574));
