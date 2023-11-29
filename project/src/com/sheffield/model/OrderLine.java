@@ -1,24 +1,45 @@
 package com.sheffield.model;
 
+import java.math.BigDecimal;
+
 public class OrderLine {
     
-    private Product product;
-    private int orderID;
+    private String orderLineNumber;
+    private String productCode;
+    private String orderID;
     private int quantity;
-    private double cost;
+    private BigDecimal orderLineCost;
 
-    public OrderLine(int lineNumber, Product product, int quantity){
-        this.orderID = lineNumber;
-        this.product = product;
+    public OrderLine(String orderLineNumber, String productCode, String orderID, int quantity, BigDecimal orderLineCost){
+        this.orderLineNumber = orderLineNumber;
+        this.productCode = productCode;
+        this.orderID = orderID;
         this.quantity = quantity;
+        this.orderLineCost = orderLineCost;
     }
 
-    public int getOrderID(){
+    public String getOrderLineNumber(){
+        return orderLineNumber;
+    }
+
+    public void setOrderLineNumber(String orderLineNumber){
+        this.orderLineNumber = orderLineNumber;
+    }
+
+    public String getProductCode(){
+        return productCode;
+    }
+
+    public void setProductCode(String productCode){
+        this.productCode = productCode;
+    }
+
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int lineNumber){
-        this.orderID= lineNumber;
+    public void setOrderID(String orderID) {
+        this.orderID = orderID;
     }
 
     public int getQuantity(){
@@ -29,24 +50,18 @@ public class OrderLine {
         this.quantity = quantity;
     }
 
-    public Product getProduct(){
-        return product;
+    public BigDecimal getOrderLineCost() {
+        return orderLineCost;
     }
 
-    public void setProduct(Product p){
-        this.product = p;
-    }
-
-    public double getCost(){
-        double price = product.getPrice().doubleValue();
-        double cost = price * quantity;
-        return cost;
+    public void setOrderLineCost(BigDecimal orderLineCost) {
+        this.orderLineCost = orderLineCost;
     }
 
     @Override
     public String toString(){
-        return "Order line: "+ orderID + ", Name: "+product.getName()+", Quantity: "+
-        quantity+", Price: "+cost; //+cost
+        return "OrderLineNumber: "+ orderLineNumber + ", productCode: " + productCode + ", Quantity: "+
+        quantity+", Price: "+ orderLineCost; //+cost
     }
 
 

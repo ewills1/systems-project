@@ -11,7 +11,7 @@ public class User {
     private String surname;
     private String email;
     private String password;
-    private List<Role> roles;
+    private String role;
 
      /**
      * Constructor for Registration.
@@ -28,10 +28,18 @@ public class User {
         this.setUserID();
     }
 
-    public User(String email, String password, List<Role> roles){
+    public User(String userID, String forename, String surname, String email, String role) {
+        this.setForename(forename);
+        this.setSurname(surname);
+        this.setEmail(email);
+        this.userID = userID;
+        this.setRole(role);
+    }
+
+    public User(String email, String password, String role){
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
     }
 
     //Getter and setter methods for userID 
@@ -84,8 +92,8 @@ public class User {
      *
      * @return The list of roles.
      */
-    public List<Role> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
     /**
@@ -93,8 +101,8 @@ public class User {
      *
      * @param roles The list of roles to be set.
      */
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 
 
@@ -102,6 +110,6 @@ public class User {
     public String toString() {
         return "{ " + " userID = " + getUserID() + 
             ", email = " + getEmail() + ", role= "
-            + roles.toString()+"}";
+            + getRole() + "}";
     }
 }

@@ -1,29 +1,48 @@
 package com.sheffield.model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
 public class Order {
 
-    private int orderID;
-    private Date date;
-    private double cost;
+    private String orderID;
+    private String userID;
+    private BigDecimal totalCost;
     private Status status;
+    private Date date;
     private List<OrderLine> orderLines;
 
-    public Order(int orderID, List<OrderLine> orderLines, Date date, Status status) {
+    public Order(String orderID, String userID, BigDecimal totalCost, Status status, Date date) {
         this.orderID = orderID;
-        this.orderLines = orderLines;
-        this.date = date;
+        this.userID = userID;
+        this.totalCost = totalCost;
         this.status = status;
+        this.date = date;
     }
 
-    public int getOrderID() {
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public BigDecimal getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
     }
 
     public Date getDate() {
@@ -38,29 +57,16 @@ public class Order {
         return status;
     }
 
-    public void setCompleted(Status status) {
+    public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public void addOrderLine(OrderLine o) {
-        orderLines.add(o);
-    }
-
-    public void removeOrderLine(OrderLine o) {
-        orderLines.remove(o);
-    }
-
-    public double getTotalCost() {
-        double cost = 0;
-        for (OrderLine o : orderLines) {
-            cost += o.getCost();
-        }
-        return cost;
     }
 
     @Override
     public String toString() {
-        return "OrderID: " + orderID + ", OrderLines: " + orderLines.toString()
-                + ",  Date: " + date + ", Completed: " + status;
+        return "orderID: " + orderID + 
+               ", userID: " + userID + 
+               ", totalCost: " + totalCost +
+               ", placed: " + status +
+               ", date: " + date;  
     }
 }
