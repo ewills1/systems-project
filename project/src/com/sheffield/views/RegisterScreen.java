@@ -278,7 +278,7 @@ public class RegisterScreen extends JFrame {
             }
             JOptionPane.showMessageDialog(frame, "Text field cannot be empty");
 
-        } else if (!(EmailValidator.isValidEmail(email))) {
+        } else if (!(EmailValidator.isValidEmail(email.trim()))) {
             System.out.println("Email address is invalid");
             JOptionPane.showMessageDialog(frame, "Email address is invalid");
         } else {
