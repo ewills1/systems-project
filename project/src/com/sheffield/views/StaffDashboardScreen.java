@@ -1,9 +1,11 @@
 package com.sheffield.views;
 
+import com.sheffield.model.CurrentUserManager;
 /**
  * @author afiq_ismail
  */
 import com.sheffield.model.DatabaseConnectionHandler;
+import com.sheffield.model.Role;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -147,6 +149,12 @@ public class StaffDashboardScreen extends JFrame {
             }
         });
 
+        if (Role.MANAGER == CurrentUserManager.getCurrentUser().getRole()) {
+                jButton5.setVisible(true);
+        } else {
+                jButton5.setVisible(false);
+        }
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -286,7 +294,7 @@ public class StaffDashboardScreen extends JFrame {
      */
     private void goToMainScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
-        new ProductListingScreen(connection, id);
+        new ProductListingScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
     }
 
     private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
