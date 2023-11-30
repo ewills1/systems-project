@@ -338,14 +338,14 @@ public class RegisterScreen extends JFrame {
         postcodeLabel.setForeground(Color.BLACK);
 
         JFrame frame = new JFrame();
-        String forename = forenameField.getText();
-        String surname = surnameField.getText();
-        String email = emailField.getText();
-        String password = passwordField.getText();
-        String houseNumber = housenumberField.getText();
-        String roadName = roadnameField.getText();
-        String cityName = citynameField.getText();
-        String postcode = postcodeField.getText();
+        String forename = forenameField.getText().trim();
+        String surname = surnameField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = passwordField.getText().trim();
+        String houseNumber = housenumberField.getText().trim();
+        String roadName = roadnameField.getText().trim();
+        String cityName = citynameField.getText().trim();
+        String postcode = postcodeField.getText().trim();
 
         if (forename.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || houseNumber.isEmpty() || roadName.isEmpty() || cityName.isEmpty() || postcode.isEmpty()) {
             if (forename.isEmpty()) {
