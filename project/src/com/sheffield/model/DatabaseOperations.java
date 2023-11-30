@@ -378,7 +378,7 @@ public class DatabaseOperations {
     // USER OPERATION
     public boolean registerNewUser(Connection connection, User newUser) throws SQLException {
         try {
-            String insertSQL = "INSERT INTO Users (userID, forename, surname, email, password, addressID)" +
+            String insertSQL = "INSERT INTO Users (userID, forename, surname, email, password, houseNumber)" +
                     " VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
