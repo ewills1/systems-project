@@ -258,18 +258,16 @@ public class DatabaseOperations {
      * @param userId     The userId for which to retrieve roles.
      * @return The user's roles.
      */
-    private List<Role> getRolesForUserId(Connection connection, String userId) {
-        List<Role> listOfRoles = new ArrayList<>();
+    private Role getRolesForUserId(Connection connection, String userId) {
+        Role role;
         try {
             String sql = "SELECT role FROM Roles WHERE userId = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, userId);
             ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                listOfRoles.add(Role.fromString(resultSet.getString("role")));
-            }
-            return listOfRoles;
+            resultSet.next();
+            role = Role.valueOf(resultSet.getString("role"));
+            return role;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -361,11 +359,11 @@ public class DatabaseOperations {
         }
     }
 
-    // USER OPERATION
-    public boolean registerNewUser(Connection connection, User newUser) throws SQLException {
+    // =========== USER OPERATIONS ===========
+    public void registerNewUser(Connection connection, User newUser) throws SQLException {
         try {
-            String insertSQL = "INSERT INTO Users (userID, forename, surname, email, password, houseNumber)" +
-                    " VALUES (?, ?, ?, ?, ?, ?)";
+            String insertSQL = "INSERT INTO Users (userID, forename, surname, email, password, postcode, houseNumber)" +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
             preparedStatement.setString(1, newUser.getUserID());
@@ -373,18 +371,19 @@ public class DatabaseOperations {
             preparedStatement.setString(3, newUser.getSurname());
             preparedStatement.setString(4, newUser.getEmail());
             preparedStatement.setString(5, newUser.getPassword());
-            preparedStatement.setInt(6, 1);
+            preparedStatement.setString(6, newUser.getPostcode());
+            preparedStatement.setString(7, newUser.getHouseNumber());
 
             int rowAffected = preparedStatement.executeUpdate();
 
             //By default, registered account are set to 'User' role
-            String insertSQL2 = "INSERT INTO Roles (userID,Role) VALUES (?,'User')";
-            PreparedStatement preparedStatement2 = connection.prepareStatement(insertSQL2);
-            preparedStatement2.setString(1,newUser.getUserID());
-            preparedStatement2.executeUpdate();
+            insertSQL = "INSERT INTO Roles (userID, Role) VALUES (?, ?)";
+            preparedStatement = connection.prepareStatement(insertSQL);
+            preparedStatement.setString(1, newUser.getUserID());
+            preparedStatement.setString(2, newUser.getRole().name());
+            preparedStatement.executeUpdate();
 
             System.out.println(rowAffected + "row(s) inserted successfully.");
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e; // Re-throw the exception to signal an error.
@@ -410,6 +409,50 @@ public class DatabaseOperations {
             return false;
         }
     }
+
+
+    // ========= ADDRESS OPERATIONS =========
+    public void addNewAddress(Connection connection, Address newAddress) throws SQLException {
+        try {
+            String insertSQL = "INSERT INTO Addresses (postcode, houseNumber, roadName, cityName)" +
+                    " VALUES (?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
+            preparedStatement.setString(1, newAddress.getPostcode());
+            preparedStatement.setString(2, newAddress.getHouseNumber());
+            preparedStatement.setString(3, newAddress.getroadName());
+            preparedStatement.setString(4, newAddress.getCityName());
+
+            int rowAffected = preparedStatement.executeUpdate();
+            System.out.println(rowAffected + " row(s) inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Re-throw the exception to signal an error.
+        }
+    }
+
+    public boolean verifyAddressIsUsed(Connection connection, String houseNumber, String postcode) throws SQLException {
+        try {
+            String query = "SELECT COUNT(*) AS count FROM Addresses WHERE houseNumber = ? AND postcode = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, houseNumber);
+            preparedStatement.setString(2, postcode);
+
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt("count");
+
+            if (count > 0) {
+                return true;
+            } else
+                return false;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
 
     public int countUser(Connection connection) throws SQLException {
         try {
@@ -463,7 +506,7 @@ public class DatabaseOperations {
                 resultSet.getString("forename"), 
                 resultSet.getString("surname"), 
                 resultSet.getString("email"), 
-                resultSet.getString("role")
+                Role.valueOf(resultSet.getString("role"))
             );
 
         } catch (SQLException e) {
