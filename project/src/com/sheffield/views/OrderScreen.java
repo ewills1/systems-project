@@ -242,7 +242,7 @@ public class OrderScreen extends JFrame {
      */
     private void goToLoginScreen(java.awt.event.ActionEvent evt, Connection connection) {                                         
         dispose();
-        new NewLoginScreen(connection);
+        new LoginScreen(connection);
     }                                        
 
     private void goToStaffDashboard(java.awt.event.ActionEvent evt, Connection connection) {                                         

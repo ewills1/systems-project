@@ -248,7 +248,7 @@ public class RegisterScreen extends JFrame {
      */
    private void goToLoginScreen(java.awt.event.ActionEvent evt, Connection connection) {
         dispose();
-        new NewLoginScreen(connection);
+        new LoginScreen(connection);
     }
 
     private void register(java.awt.event.ActionEvent evt, Connection connection) {

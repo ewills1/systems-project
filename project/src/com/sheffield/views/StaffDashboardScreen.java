@@ -291,7 +291,7 @@ public class StaffDashboardScreen extends JFrame {
 
     private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(connection);
+        new LoginScreen(connection);
     }
 
     private void goToInventoryScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {

@@ -194,7 +194,7 @@ public class UserScreen extends JFrame {
      */
     private void goToLogout(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(connection);
+        new LoginScreen(connection);
     }                                        
 
     private void goToStaffDashboard(Connection connection, String id, java.awt.event.ActionEvent evt) {

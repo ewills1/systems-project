@@ -3,7 +3,7 @@
 package com.sheffield;
 
 import com.sheffield.model.DatabaseConnectionHandler;
-import com.sheffield.views.NewLoginScreen;
+import com.sheffield.views.LoginScreen;
 
 import java.sql.Connection;
 
@@ -24,7 +24,7 @@ public class Main {
                 Connection connection = databaseConnectionHandler.getConnection();
 
                 // Create and initialize the LoanTableDisplay view using the database connection
-                initialScreen = new NewLoginScreen(connection);
+                initialScreen = new LoginScreen(connection);
                 initialScreen.setVisible(true);
 
             } catch (Throwable t) {

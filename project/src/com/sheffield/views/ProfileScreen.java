@@ -329,6 +329,6 @@ public class ProfileScreen extends JFrame {
 
     private void goToLoginScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
-        new NewLoginScreen(connection);
+        new LoginScreen(connection);
     }  
 }

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-public class NewLoginScreen extends JFrame {
+public class LoginScreen extends JFrame {
     /**
      * Needed for serialisation
      */
@@ -38,7 +38,7 @@ public class NewLoginScreen extends JFrame {
     /**
      * Creates NewLoginScreen constructor
      */
-    public NewLoginScreen(Connection connection) {
+    public LoginScreen(Connection connection) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
