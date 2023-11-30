@@ -12,8 +12,11 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import com.sheffield.model.CurrentUserManager;
 import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.model.DatabaseOperations;
+import com.sheffield.model.Status;
+import com.sheffield.model.Role;
 import com.sheffield.util.ButtonEditor;
 import com.sheffield.util.ButtonRenderer;
 
@@ -105,10 +108,14 @@ public class ProductListingScreen extends JFrame {
             }
         });
 
-        jButton2.setText("Staff Dashboard");
+        jButton2.setText("Logout");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(connection, id, evt);
+                if (jButton2.getText().equals("Logout")) {
+                    goToLoginScreen(connection, id, evt);
+                } else if (jButton2.getText().equals("Staff Dashboard")){
+                    goToStaffDashboard(connection, id, evt);
+                }
             }
         });
 
@@ -126,6 +133,9 @@ public class ProductListingScreen extends JFrame {
             }
         });
 
+        if (Role.STAFF == CurrentUserManager.getCurrentUser().getRole() || Role.MANAGER == CurrentUserManager.getCurrentUser().getRole()) {
+            jButton2.setText("Staff Dashboard");
+        }
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -203,6 +213,11 @@ public class ProductListingScreen extends JFrame {
     private void goToMyOrderScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
         new MyOrderScreen(connection, id);
+    }
+
+    private void goToLoginScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
+        dispose();
+        new LoginScreen(connection);
     }
 
     private JPanel createPanel(int selectedIndex, Connection connection) {
