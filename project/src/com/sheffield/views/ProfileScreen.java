@@ -147,7 +147,7 @@ public class ProfileScreen extends JFrame {
             jTextField1.setText(databaseOperations.getRecordFromTable(connection,"forename", "Users", id));
             jTextField2.setText(databaseOperations.getRecordFromTable(connection,"surname", "Users", id));
             jTextField3.setText(databaseOperations.getRecordFromTable(connection,"email", "Users", id));
-            jTextField4.setText(databaseOperations.getRecordFromTable(connection, "password", "Users", id));
+            jTextField4.setText("*********");
             jTextField5.setText(databaseOperations.getRecordFromTable(connection,"bankCardName", "Users", id));
         } catch (SQLException e) {
             throw new RuntimeException(e);
