@@ -982,10 +982,11 @@ public class DatabaseOperations {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 return resultSet;
             } else {
-                String selectSQL = "SELECT * FROM Orders WHERE status = ? OR status = ?";
+                String selectSQL = "SELECT * FROM Orders WHERE status = ? OR status = ? OR status = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
                 preparedStatement.setString(1, Status.CONFIRMED.name());
                 preparedStatement.setString(2, Status.FULFILLED.name());
+                preparedStatement.setString(3, Status.DECLINED.name());
                 ResultSet resultSet = preparedStatement.executeQuery();
                 return resultSet;
             }
@@ -1007,10 +1008,11 @@ public class DatabaseOperations {
                 int rowCount = resultSet.getInt("rowCount");
                 return rowCount;
             } else {
-                String query = "SELECT COUNT(*) AS rowCount FROM Orders WHERE status = ? OR status = ?";
+                String query = "SELECT COUNT(*) AS rowCount FROM Orders WHERE status = ? OR status = ? OR status = ?";
                 PreparedStatement statement = connection.prepareStatement(query);
                 statement.setString(1, Status.CONFIRMED.name());
                 statement.setString(2, Status.FULFILLED.name());
+                statement.setString(3, Status.DECLINED.name());
                 ResultSet resultSet = statement.executeQuery();
                 resultSet.next();
                 int rowCount = resultSet.getInt("rowCount");
@@ -1021,6 +1023,67 @@ public class DatabaseOperations {
             return 0;
         }
     }
+
+    public ResultSet getAllOrdersDataWhereUserID(Connection connection, Status status, String userID) throws SQLException {
+        try {
+            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED) || status.equals(Status.DECLINED)) {
+                String selectSQL = "SELECT * FROM Orders WHERE status = ? AND userID = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                preparedStatement.setString(1, status.name());
+                preparedStatement.setString(2, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet;
+            } else {
+                String selectSQL = "SELECT * FROM Orders WHERE (status = ? AND userID = ?) OR (status = ?  AND userID = ?) OR (status = ? AND userID = ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                preparedStatement.setString(1, Status.CONFIRMED.name());
+                preparedStatement.setString(2, userID);
+                preparedStatement.setString(3, Status.FULFILLED.name());
+                preparedStatement.setString(4, userID);
+                preparedStatement.setString(5, Status.DECLINED.name());
+                preparedStatement.setString(6, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+    // count the number of product in the table
+    public int countOrderStatusWhereUserID(Status status, Connection connection, String userID) throws SQLException {
+        try {
+            if (status.equals(Status.CONFIRMED) || status.equals(Status.FULFILLED) || status.equals(Status.DECLINED)) {
+                String query = "SELECT COUNT(*) AS rowCount FROM Orders WHERE status = ? AND userID = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, status.name());
+                statement.setString(2, userID);
+                ResultSet resultSet = statement.executeQuery();
+                resultSet.next();
+                int rowCount = resultSet.getInt("rowCount");
+                return rowCount;
+            } else {
+                String query = "SELECT COUNT(*) AS rowCount FROM Orders WHERE (status = ? AND userID = ?) OR (status = ?  AND userID = ?) OR (status = ? AND userID = ?)";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, Status.CONFIRMED.name());
+                statement.setString(2, userID);
+                statement.setString(3, Status.FULFILLED.name());
+                statement.setString(4, userID);
+                statement.setString(5, Status.DECLINED.name());
+                statement.setString(6, userID);
+                ResultSet resultSet = statement.executeQuery();
+                resultSet.next();
+                int rowCount = resultSet.getInt("rowCount");
+                return rowCount;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+
 
 
     public void insertOrder(Connection connection, Order order){
