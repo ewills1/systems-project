@@ -26,6 +26,7 @@ public class OrderLineScreen extends JFrame {
     private static final long serialVersionUID = 1L;
     DatabaseOperations databaseOperations = new DatabaseOperations();
     private String orderID = "";
+    private Status status = Status.PENDING;
 
     // Variables declaration                 
     private javax.swing.JButton jButton1;
@@ -60,9 +61,10 @@ public class OrderLineScreen extends JFrame {
         setVisible(true);
     }
     
-    public OrderLineScreen(Connection connection, String id, String orderID) {
+    public OrderLineScreen(Connection connection, String id, String orderID, Status status) {
         super();
         this.orderID = orderID;
+        this.status = status;
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
         Dimension screenSize = toolkit.getScreenSize();
@@ -170,16 +172,6 @@ public class OrderLineScreen extends JFrame {
             }
         });
 
-        if (this.orderID.equals("")) {
-            jButton3.setVisible(false);
-            jButton1.setVisible(true);
-        } else {
-            jButton3.setVisible(true);
-            jButton1.setText("Fulfill Order");
-            jButton2.setText("Back");
-        }
-
-
         jLabel2.setText("Messages: ");
 
         jTextField1.setEditable(false);
@@ -244,6 +236,32 @@ public class OrderLineScreen extends JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        // change what to see here
+        if (this.orderID.equals("") && this.status.equals(Status.PENDING)) {
+            jButton3.setVisible(false);
+            jButton1.setVisible(true);
+            jTextField1.setText("This order is pending. Go checkout now.");
+        } else if (!this.orderID.equals("") && this.status.equals(Status.PENDING)) {
+            jButton3.setVisible(false);
+            jButton1.setVisible(false);
+            jTextField1.setText("View of your order.");
+        } else if (this.status.equals(Status.CONFIRMED)) {
+            jButton3.setVisible(true);
+            jButton1.setText("Fulfill Order");
+            jButton2.setText("Back");
+            jTextField1.setText("[Staff] This order has been confirmed. Choose your action.");
+        } else if (this.status.equals(Status.FULFILLED)) {
+            jButton3.setVisible(false);
+            jButton1.setVisible(false);
+            jButton2.setText("Back");
+            jTextField1.setText("[OrderID: " + this.orderID + "] This order has been fulfilled.");
+        } else if (this.status.equals(Status.DECLINED)) {
+            jButton3.setVisible(false);
+            jButton1.setVisible(false);
+            jButton2.setText("Back");
+            jTextField1.setText("[OrderID: " + this.orderID + "] This order has been declined.");
+        }
 
         pack();
     }

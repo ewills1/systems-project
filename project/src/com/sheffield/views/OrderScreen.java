@@ -38,6 +38,7 @@ public class OrderScreen extends JFrame {
     private javax.swing.JPanel productPanel;
     private javax.swing.JPanel trainSetPanel;
     private javax.swing.JPanel trackPackPanel;
+    private javax.swing.JPanel trackPanel;
     private javax.swing.JTabbedPane productTab;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -87,10 +88,12 @@ public class OrderScreen extends JFrame {
         productPanel = createPanel(0, connection);
         trainSetPanel = createPanel(1, connection);
         trackPackPanel = createPanel(2, connection);
+        trackPanel = createPanel(3, connection);
 
         productTab.addTab("All", productPanel);
         productTab.addTab("Confirmed", trainSetPanel);
         productTab.addTab("Fulfilled", trackPackPanel);
+        productTab.addTab("Declined", trackPanel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1216, 636));
@@ -304,7 +307,14 @@ public class OrderScreen extends JFrame {
                         countModel.addRow(new Object[]{i+1});
                     }
                     combinedTableModel = combineTableModels(countModel, productModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countOrderStatus(Status.PENDING, connection); i++) {
+                        actionModel.addRow(new Object[]{"View"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
@@ -317,7 +327,7 @@ public class OrderScreen extends JFrame {
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
                     actionModel.addColumn("Action");
                     for (int i = 0; i < databaseOperations.countOrderStatus(Status.CONFIRMED, connection); i++) {
-                        actionModel.addRow(new Object[]{"Fulfill | Decline"});
+                        actionModel.addRow(new Object[]{"View"});
                     }
                     combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
@@ -333,7 +343,14 @@ public class OrderScreen extends JFrame {
                         countModel.addRow(new Object[]{i+1});
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countOrderStatus(Status.FULFILLED, connection); i++) {
+                        actionModel.addRow(new Object[]{"View"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
@@ -344,7 +361,14 @@ public class OrderScreen extends JFrame {
                         countModel.addRow(new Object[]{i+1});
                     }
                     combinedTableModel = combineTableModels(countModel, foreignProductModel);
+                    actionModel.addColumn("Action");
+                    for (int i = 0; i < databaseOperations.countOrderStatus(Status.DECLINED, connection); i++) {
+                        actionModel.addRow(new Object[]{"View"});
+                    }
+                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                     productTable.setModel(combinedTableModel);
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                    productTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), productTable, connection));
                     productTable.setColumnSelectionAllowed(true);
                     jScrollPane2.setViewportView(productTable);
                     break;
