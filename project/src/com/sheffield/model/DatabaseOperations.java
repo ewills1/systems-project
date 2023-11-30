@@ -506,7 +506,7 @@ public class DatabaseOperations {
                 resultSet.getString("forename"), 
                 resultSet.getString("surname"), 
                 resultSet.getString("email"), 
-                Role.valueOf(resultSet.getString("role"))
+                Role.valueOf(resultSet.getString("role").toUpperCase())
             );
 
         } catch (SQLException e) {

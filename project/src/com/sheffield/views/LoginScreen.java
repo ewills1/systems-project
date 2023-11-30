@@ -19,7 +19,6 @@ public class LoginScreen extends JFrame {
      * Needed for serialisation
      */
     private static final long serialVersionUID = 1L;
-    DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
     DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // Variables declaration                   
@@ -222,7 +221,6 @@ public class LoginScreen extends JFrame {
 
         } else {
             try {
-                databaseConnectionHandler.openConnection();
                 char[] charPassword = password.toCharArray();
                 if(databaseOperations.verifyLogin(connection, email, charPassword)) {
                         JOptionPane.showMessageDialog(frame, "User successfully logged in.");

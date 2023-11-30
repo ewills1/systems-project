@@ -152,64 +152,65 @@ public class ButtonEditor extends DefaultCellEditor {
                 JFrame frame = new JFrame();
                 String inputQuantity = JOptionPane.showInputDialog(frame,
                         "Enter quantity for " + this.storedProductName + " :");
+                if (inputQuantity != null) {
+                    int inpQ = Integer.parseInt(inputQuantity);
+                    if (inpQ > storedQuantity) {
+                        JOptionPane.showMessageDialog(button, "Input too large");
+                    } else {
+                        // creating order if there is no order created from the user
+                        String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
+                        String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
+                        try {
+                            int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
+                            if (userOrderCount == 0) {
 
-                int inpQ = Integer.parseInt(inputQuantity);
-                if (inpQ > storedQuantity) {
-                    JOptionPane.showMessageDialog(button, "Input too large");
-                } else {
-                    // creating order if there is no order created from the user
-                    String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
-                    String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
-                    try {
-                        int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
-                        if (userOrderCount == 0) {
-
-                            orderID = orderID + (userOrderCount + 1);
-                            String userID = CurrentUserManager.getCurrentUser().getUserID();
-                            BigDecimal totalCost = new BigDecimal(Double.parseDouble("0"));
-                            Date date = new Date(utilDate.getTime());
-
-                            Order order = new Order(orderID, userID, totalCost, Status.PENDING,  date);
-                            databaseOperations.insertOrder(connection, order);
-
-                        } else {
-                            userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
-                            orderID = orderID + userOrderCount;
-                            Order order = databaseOperations.getOrderModel(orderID, connection);
-                            if(order.getStatus().equals(Status.CONFIRMED)) {
-                                orderID = orderID.substring(0, Math.min(orderID.length(), 2));
                                 orderID = orderID + (userOrderCount + 1);
                                 String userID = CurrentUserManager.getCurrentUser().getUserID();
                                 BigDecimal totalCost = new BigDecimal(Double.parseDouble("0"));
                                 Date date = new Date(utilDate.getTime());
-                                order = new Order(orderID, userID, totalCost, Status.PENDING,  date);
+
+                                Order order = new Order(orderID, userID, totalCost, Status.PENDING,  date);
                                 databaseOperations.insertOrder(connection, order);
 
+                            } else {
+                                userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
+                                orderID = orderID + userOrderCount;
+                                Order order = databaseOperations.getOrderModel(orderID, connection);
+                                if(order.getStatus().equals(Status.CONFIRMED)) {
+                                    orderID = orderID.substring(0, Math.min(orderID.length(), 2));
+                                    orderID = orderID + (userOrderCount + 1);
+                                    String userID = CurrentUserManager.getCurrentUser().getUserID();
+                                    BigDecimal totalCost = new BigDecimal(Double.parseDouble("0"));
+                                    Date date = new Date(utilDate.getTime());
+                                    order = new Order(orderID, userID, totalCost, Status.PENDING,  date);
+                                    databaseOperations.insertOrder(connection, order);
+
+                                }
                             }
+
+                            // orderLine insert
+                            Product product = databaseOperations.getProductModel(this.storedProductCode, connection);
+                            String userIDLast2Char = CurrentUserManager.getCurrentUser().getUserID();
+                            userIDLast2Char = userIDLast2Char.substring(userIDLast2Char.length() - 2).toUpperCase();
+                            int orderLineCount = databaseOperations.countUserOrderLine((orderID + userIDLast2Char), connection);
+                            String orderLineNumber = orderID + userIDLast2Char + (orderLineCount + 1);
+                            
+                            // System.out.println("ORDERLINE: " + orderLineNumber);
+                            // System.out.println("PRODUCTCODE: " + product.getProductCode());
+                            // System.out.println("ORDERID: " + orderID);
+                            // System.out.println("QUANTITY: " + inpQ);
+                            // System.out.println("ORDERLINECOST: " + product.getPrice());
+                            BigDecimal orderLineCost = product.getPrice().multiply(new BigDecimal(Double.parseDouble(inputQuantity)));
+                            OrderLine orderLine = new OrderLine(orderLineNumber, product.getProductCode(), orderID, inpQ, orderLineCost);
+                            databaseOperations.insertOrderLine(connection, orderLine);
+
+                        } catch(SQLException e) {
+                            e.getStackTrace();
+                        } catch(ParseException e) {
+                            e.getStackTrace();
                         }
-
-                        // orderLine insert
-                        Product product = databaseOperations.getProductModel(this.storedProductCode, connection);
-                        String userIDLast2Char = CurrentUserManager.getCurrentUser().getUserID();
-                        userIDLast2Char = userIDLast2Char.substring(userIDLast2Char.length() - 2).toUpperCase();
-                        int orderLineCount = databaseOperations.countUserOrderLine((orderID + userIDLast2Char), connection);
-                        String orderLineNumber = orderID + userIDLast2Char + (orderLineCount + 1);
-                        
-                        // System.out.println("ORDERLINE: " + orderLineNumber);
-                        // System.out.println("PRODUCTCODE: " + product.getProductCode());
-                        // System.out.println("ORDERID: " + orderID);
-                        // System.out.println("QUANTITY: " + inpQ);
-                        // System.out.println("ORDERLINECOST: " + product.getPrice());
-                        BigDecimal orderLineCost = product.getPrice().multiply(new BigDecimal(Double.parseDouble(inputQuantity)));
-                        OrderLine orderLine = new OrderLine(orderLineNumber, product.getProductCode(), orderID, inpQ, orderLineCost);
-                        databaseOperations.insertOrderLine(connection, orderLine);
-
-                    } catch(SQLException e) {
-                        e.getStackTrace();
-                    } catch(ParseException e) {
-                        e.getStackTrace();
+                        JOptionPane.showMessageDialog(button, "Product added to order");
                     }
-                    JOptionPane.showMessageDialog(button, "Product added to order");
                 }
             } else if (this.label.equals("Remove")) {
                 databaseOperations.deleteOrderLine(connection, storedOrderLine);
