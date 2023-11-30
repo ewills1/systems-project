@@ -3,48 +3,41 @@ import java.math.BigDecimal;
 
 public class RollingStock extends Product{
 
-private String era;
-private String rollingStockType;
-
-    enum Type {
-        CARRIAGE, WAGON;
-    }
+    private String era;
+    private RollingStockType rollingStockType;
 
     public RollingStock(String productCode, String name, String brandName, int quantity, BigDecimal price, String gaugeScale, String era, String rollingStockType){
         super(productCode, name, brandName, quantity, price, gaugeScale);
-        this.era = era;
-        this.rollingStockType = rollingStockType;
-    }
-
-    public String getRollingStockType(){
-        return rollingStockType;
+        this.setEra(era);
+        this.setRollingStockType(rollingStockType);
     }
 
     public String getEra(){
         return era;
     }
 
-    public void setRollingStockType(Type type) {
-        if (isValidType(type)) {
-            this.rollingStockType = rollingStockType;
-        } else {
-            throw new IllegalArgumentException("This type of rolling stock is not valid");
-        }
-    }
-
     public void setEra(String era) {
-        if (isValidEra(era)) {
+        if (era != null) {
             this.era = era;
         } else {
             throw new IllegalArgumentException("era is not valid.");
         }
     }
 
-    public boolean isValidType (Type type) {
-        return type != null;
-    }
-
     public boolean isValidEra (String era) {
         return era != null && era.length() <= 50;
+    }
+
+
+    public RollingStockType getRollingStockType(){
+        return rollingStockType;
+    }
+
+    public void setRollingStockType(String rollingStockType) {
+        try {
+            this.rollingStockType = RollingStockType.valueOf(rollingStockType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("This type of rolling stock is not valid");
+        }
     }
 }

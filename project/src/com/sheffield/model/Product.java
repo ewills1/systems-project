@@ -8,7 +8,7 @@ public class Product {
     private String brandName;
     private int quantity;
     private BigDecimal price;
-    private String gaugeScale;
+    private GaugeScale gaugeScale;
 
 
     // Constructor to initialize a Product object with its attributes
@@ -87,12 +87,16 @@ public class Product {
     }
 
     // Getter and setter methods for the gaugeScale attribute with validation
-    public String getGaugeScale() {
+    public GaugeScale getGaugeScale() {
         return gaugeScale;
     }
 
     public void setGaugeScale(String gaugeScale) {
-        this.gaugeScale = gaugeScale;
+        try {
+            this.gaugeScale = GaugeScale.valueOf(gaugeScale.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("This type of gauge scale is not valid");
+        }
     }
 
     // Private validation methods for each attribute

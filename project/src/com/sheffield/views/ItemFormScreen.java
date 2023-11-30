@@ -294,7 +294,7 @@ public class ItemFormScreen extends JFrame {
 
         eraLabel.setText("Era:");
 
-        gaugeScaleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select gauge scale", "OO Gauge (1/76th scale)", "TT Gauge  (1/120th scale)", "N Gauge (1/148th scale)"}));
+        gaugeScaleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select gauge scale", "OO-Gauge", "TT-Gauge", "N-GAUGE"}));
         
         typeComboBox.setModel(typeValues);
 
@@ -570,6 +570,7 @@ public class ItemFormScreen extends JFrame {
                 String retailPrice = retailpriceField.getText();
                 String quantity = quantityField.getText();
                 String gaugeScale = (String) gaugeScaleComboBox.getSelectedItem();
+                gaugeScale = gaugeScale.replace("-", "_");
                 String era = eraField.getText();
                 String typeValue = (String) typeComboBox.getSelectedItem();
 
@@ -632,6 +633,9 @@ public class ItemFormScreen extends JFrame {
                                     databaseOperations.insertForeignKey(selectedIndex, newTrack,  connection);
                                     break;
                                 case 3:
+                                    if (typeValue.contains("-")) {
+                                        typeValue = typeValue.replace("-", "_");
+                                    } 
                                     Locomotive newLocomotive = new Locomotive(productCode, productName, brandName, quantityInt, retailPriceBD, gaugeScale, era, typeValue);
                                     databaseOperations.insertProduct(newLocomotive, connection);
                                     databaseOperations.insertForeignKey(selectedIndex, newLocomotive,  connection);
@@ -673,6 +677,9 @@ public class ItemFormScreen extends JFrame {
                                     databaseOperations.updateProduct(newTrack, connection);
                                     break;
                                 case 3:
+                                    if (typeValue.contains("-")) {
+                                        typeValue = typeValue.replace("-", "_");
+                                    }
                                     Locomotive newLocomotive = new Locomotive(productCode, productName, brandName, quantityInt, retailPriceBD, gaugeScale, era, typeValue);
                                     databaseOperations.updateProduct(newLocomotive, connection);
                                     databaseOperations.updateForeignKey(selectedIndex, newLocomotive,  connection);

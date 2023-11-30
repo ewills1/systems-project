@@ -555,7 +555,7 @@ public class DatabaseOperations {
             preparedStatement.setString(3, newProduct.getBrandName());
             preparedStatement.setBigDecimal(4, newProduct.getPrice());
             preparedStatement.setInt(5, newProduct.getQuantity());
-            preparedStatement.setString(6, newProduct.getGaugeScale());
+            preparedStatement.setString(6, newProduct.getGaugeScale().name());
 
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println(rowsAffected + " row(s) inserted successfully.");
@@ -611,7 +611,7 @@ public class DatabaseOperations {
                     preparedStatement = connection.prepareStatement(insertSQL);
                     preparedStatement.setString(1, newLocomotive.getProductCode());
                     preparedStatement.setString(2, newLocomotive.getEra());
-                    preparedStatement.setString(3, newLocomotive.getLocomotiveType());
+                    preparedStatement.setString(3, newLocomotive.getLocomotiveType().name());
 
                     rowsAffected = preparedStatement.executeUpdate();
                     System.out.println(rowsAffected + " row(s) inserted successfully.");
@@ -624,7 +624,7 @@ public class DatabaseOperations {
                     preparedStatement = connection.prepareStatement(insertSQL);
                     preparedStatement.setString(1, newRollingStock.getProductCode());
                     preparedStatement.setString(2, newRollingStock.getEra());
-                    preparedStatement.setString(3, newRollingStock.getRollingStockType());
+                    preparedStatement.setString(3, newRollingStock.getRollingStockType().name());
 
                     rowsAffected = preparedStatement.executeUpdate();
                     System.out.println(rowsAffected + " row(s) inserted successfully.");
@@ -635,7 +635,7 @@ public class DatabaseOperations {
                     // Prepare and execute the INSERT statement
                     preparedStatement = connection.prepareStatement(insertSQL);
                     preparedStatement.setString(1, newController.getProductCode());
-                    preparedStatement.setString(2, newController.getControllerType());
+                    preparedStatement.setString(2, newController.getControllerType().name());
 
                     rowsAffected = preparedStatement.executeUpdate();
                     System.out.println(rowsAffected + " row(s) inserted successfully.");
@@ -793,7 +793,7 @@ public class DatabaseOperations {
             preparedStatement.setString(2, newProduct.getBrandName());
             preparedStatement.setInt(3, newProduct.getQuantity());
             preparedStatement.setBigDecimal(4, newProduct.getPrice());
-            preparedStatement.setString(5, newProduct.getGaugeScale());
+            preparedStatement.setString(5, newProduct.getGaugeScale().name());
             preparedStatement.setString(6, newProduct.getProductCode());
 
             int rowsAffected = preparedStatement.executeUpdate();
@@ -834,7 +834,7 @@ public class DatabaseOperations {
                     // Prepare and execute the INSERT statement
                     preparedStatement = connection.prepareStatement(updateSQL);
                     preparedStatement.setString(1, newLocomotive.getEra());
-                    preparedStatement.setString(2, newLocomotive.getLocomotiveType());
+                    preparedStatement.setString(2, newLocomotive.getLocomotiveType().name());
                     preparedStatement.setString(3, newLocomotive.getProductCode());
 
                     rowsAffected = preparedStatement.executeUpdate();
@@ -846,7 +846,7 @@ public class DatabaseOperations {
                     // Prepare and execute the INSERT statement
                     preparedStatement = connection.prepareStatement(updateSQL);
                     preparedStatement.setString(1, newRollingStock.getEra());
-                    preparedStatement.setString(2, newRollingStock.getRollingStockType());
+                    preparedStatement.setString(2, newRollingStock.getRollingStockType().name());
                     preparedStatement.setString(3, newRollingStock.getProductCode());
 
                     rowsAffected = preparedStatement.executeUpdate();
@@ -857,7 +857,7 @@ public class DatabaseOperations {
                     updateSQL = "UPDATE Controllers SET dcc=? WHERE productCode=?";
                     // Prepare and execute the INSERT statement
                     preparedStatement = connection.prepareStatement(updateSQL);
-                    preparedStatement.setString(1, newController.getControllerType());
+                    preparedStatement.setString(1, newController.getControllerType().name());
                     preparedStatement.setString(2, newController.getProductCode());
 
                     rowsAffected = preparedStatement.executeUpdate();
