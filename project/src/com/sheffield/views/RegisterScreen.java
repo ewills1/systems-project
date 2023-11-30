@@ -387,7 +387,9 @@ public class RegisterScreen extends JFrame {
                     User newUser = new User(forename, surname, email, charPassword, Role.USER, postcode, houseNumber);
                     databaseOperations.registerNewUser(connection, newUser);
 
-                    JOptionPane.showMessageDialog(frame, "Text fields cannot be empty.");
+                    JOptionPane.showMessageDialog(frame, "Register success. Redirecting to login screen");
+                    dispose();
+                    new LoginScreen(connection);
                 } else {
                     if (databaseOperations.verifyEmailIsUsed(connection, email) == true) {
                         JOptionPane.showMessageDialog(frame, "Email already used.");
