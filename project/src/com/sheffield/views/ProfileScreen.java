@@ -147,7 +147,7 @@ public class ProfileScreen extends JFrame {
             jTextField1.setText(databaseOperations.getRecordFromTable(connection,"forename", "Users", id));
             jTextField2.setText(databaseOperations.getRecordFromTable(connection,"surname", "Users", id));
             jTextField3.setText(databaseOperations.getRecordFromTable(connection,"email", "Users", id));
-            jTextField4.setText("*********");
+            jTextField4.setText(null);
             jTextField5.setText(databaseOperations.getRecordFromTable(connection,"bankCardName", "Users", id));
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -155,50 +155,67 @@ public class ProfileScreen extends JFrame {
 
         updateDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JFrame frame = new JFrame();
 
-                //Get oldPassword/Email to compare if there is any changes
-                String[] oldCharPassword;
-                String[] oldCharEmail;
-
+                //Initialize
                 try {
-                    oldCharPassword = new String[]{databaseOperations.getRecordFromTable(connection, "password", "Users", id)};
-                    oldCharEmail = new String[]{databaseOperations.getRecordFromTable(connection, "email", "Users", id)};
+                    JFrame frame = new JFrame();
+
+                    String oldForename = databaseOperations.getRecordFromTable(connection,"forename", "Users", id);
+                    String oldSurname = databaseOperations.getRecordFromTable(connection,"surname", "Users", id);
+                    String oldEmail = databaseOperations.getRecordFromTable(connection,"email", "Users", id);
+                    String oldBankName = databaseOperations.getRecordFromTable(connection,"bankCardName", "Users", id);
+
+                    String enteredForename = jTextField1.getText().trim();
+                    String enteredSurname = jTextField2.getText().trim();
+                    String enteredEmail = jTextField3.getText().trim();
+                    String enteredPassword = jTextField4.getText();
+                    String enteredBankName = jTextField5.getText().trim();
+
+                    //Check if X is changed, update X
+                    if (!oldForename.equals(enteredForename)) {
+                        databaseOperations.updateUserDetails(connection, "forename", enteredForename, id);
+                        System.out.println("Forename updated");
+                    }
+
+                    if (!oldSurname.equals(enteredSurname)) {
+                        databaseOperations.updateUserDetails(connection, "surname", enteredSurname, id);
+                        System.out.println("Surname updated");
+                    }
+
+                    if (!oldBankName.equals(enteredBankName)) {
+                        databaseOperations.updateUserDetails(connection, "bankCardName", enteredBankName, id);
+                        System.out.println("Bank name updated");
+                    }
+
+                    if (!enteredEmail.equals(oldEmail)) {
+                        //Email is changed
+                        if (EmailValidator.isValidEmail(enteredEmail)) {
+                            //Email entered is valid format
+                            if (!databaseOperations.verifyEmailIsUsed(connection, enteredEmail)) {
+                                //Email entered is available
+                                databaseOperations.updateUserDetails(connection, "email", enteredEmail, id);
+                                System.out.println("Email address updated");
+                            } else { //Email entered is not available
+                                JOptionPane.showMessageDialog(frame, "Email already used. Email is not updated");
+                            }
+                        } else { //Email entered is invalid format
+                            JOptionPane.showMessageDialog(frame, "Email is invalid. Email is not updated");
+                        }
+                    }
+
+                    if (enteredPassword != null) { //Check if password is NOT in its initialized value
+                        if (!(enteredPassword.isEmpty())) { //Check if password is NOT empty
+                            //Both of these if statement will assume User wanted to change his/her password
+                            //Password is changed
+                            databaseOperations.updateUserPassword(connection, enteredPassword, id);
+                            System.out.println("Password updated");
+                        }
+                    }
+
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
 
-                databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText().trim(), id);
-                databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText().trim(), id);
-
-                String enteredEmail = jTextField3.getText().trim();
-
-                if (EmailValidator.isValidEmail(enteredEmail)) {
-                    //valid email
-                    if (!enteredEmail.equals(oldCharEmail[0])) { // Check if email is changed
-                        try { // Proceed if email is changed
-                            if (!(databaseOperations.verifyEmailIsUsed(connection, enteredEmail))) { //Proceed if email is available
-                                databaseOperations.updateUserDetails(connection, "email", enteredEmail, id);
-                                System.out.println("Email address updated");
-                            } else {
-                                JOptionPane.showMessageDialog(frame, "Email already used. Email is not updated");
-                            }
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                } else { //invalid email
-                    JOptionPane.showMessageDialog(frame, "Email is invalid. Email is not updated");
-                }
-
-                String enteredPassword = jTextField4.getText();
-                if (!enteredPassword.equals(oldCharPassword[0])) {
-                    databaseOperations.updateUserPassword(connection, enteredPassword, id);
-                    System.out.println("Password updated");
-                }
-
-                databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText().trim(), id);
-                System.out.println("Profile updated");
                 goToProfile(connection, id, evt);
             }
         });
