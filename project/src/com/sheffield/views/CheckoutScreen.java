@@ -133,7 +133,7 @@ public class CheckoutScreen extends JFrame {
                         System.out.println("Bank Name: " + bankName);
                         System.out.println("Order confirmed. Redirecting to my Order");
                         updateCurrentStock(connection, orderID);
-                        //Set Order.placed to Confirm
+                        databaseOperations.updateOrderStatus(connection, orderID, Status.CONFIRMED);
                         goToMyOrderScreen(connection, id, evt);
                     }
                 } catch (SQLException e) {
