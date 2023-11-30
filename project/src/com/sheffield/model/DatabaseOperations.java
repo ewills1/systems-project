@@ -66,20 +66,6 @@ public class DatabaseOperations {
                     + " a ON u.productCode = a.productCode";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
                 resultSet = preparedStatement.executeQuery();
-                // System.out.println("<=================== GET ALL PRODUCTS
-                // ====================>");
-                // while (resultSet.next()) {
-                // // Print each product's information in the specified format
-                // System.out.println("{" +
-                // "productCode='" + resultSet.getString("productCode") + "'" +
-                // ", name='" + resultSet.getString("name") + "'" +
-                // ", brandName='" + resultSet.getString("brandName") + "'" +
-                // ", quantity='" + resultSet.getInt("quantity") + "'" +
-                // ", price='" + resultSet.getDouble("price") + "'" +
-                // ", gaugeScale='" + resultSet.getString("gaugeScale") + "'" +
-                // "}");
-                // }
-                // System.out.println("<======================================================>");
                 }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -582,7 +568,7 @@ public class DatabaseOperations {
                     preparedStatement = connection.prepareStatement(insertSQL);
                     preparedStatement.setString(1, newLocomotive.getProductCode());
                     preparedStatement.setString(2, newLocomotive.getEra());
-                    preparedStatement.setString(3, newLocomotive.getControllerType());
+                    preparedStatement.setString(3, newLocomotive.getLocomotiveType());
 
                     rowsAffected = preparedStatement.executeUpdate();
                     System.out.println(rowsAffected + " row(s) inserted successfully.");
@@ -805,7 +791,7 @@ public class DatabaseOperations {
                     // Prepare and execute the INSERT statement
                     preparedStatement = connection.prepareStatement(updateSQL);
                     preparedStatement.setString(1, newLocomotive.getEra());
-                    preparedStatement.setString(2, newLocomotive.getControllerType());
+                    preparedStatement.setString(2, newLocomotive.getLocomotiveType());
                     preparedStatement.setString(3, newLocomotive.getProductCode());
 
                     rowsAffected = preparedStatement.executeUpdate();

@@ -1,8 +1,3 @@
-package com.sheffield.model;
-
-import java.math.BigDecimal;
-
-public class Locomotive extends Product {
 
     // private Type type;
     // private String era;
@@ -42,38 +37,69 @@ public class Locomotive extends Product {
     //     }
     // }
 
-    // public boolean isValidType(Type type) {
-    //     return type != null;
-    // }
+
 
     // public boolean isValidEra(String era) {
     //     return era != null && era.length() <= 50;
     // }
 
     // redefine locomotives class
-    private String era;
-    private String controllerType;
-    
+package com.sheffield.model;
 
-    public Locomotive(String productCode, String name, String brandName, int quantity, BigDecimal price, String gaugeScale, String era, String controllerType){
+
+import java.math.BigDecimal;
+
+
+public class Locomotive extends Product {
+
+
+    private String era;
+    private String locomotiveType;
+
+
+    public Locomotive(String productCode, String name, String brandName, int quantity, BigDecimal price,
+            String gaugeScale, String era, String locomotiveType) {
         super(productCode, name, brandName, quantity, price, gaugeScale);
         this.era = era;
-        this.controllerType = controllerType;
+        this.locomotiveType = locomotiveType;
     }
 
+
     public void setEra(String era) {
-        this.era = era;
+        if (isValidEra(era)) {
+            this.era = era;
+        } else {
+            throw new IllegalArgumentException("Era is not valid");
+        }
     }
+
 
     public String getEra() {
         return era;
     }
 
-    public void setControllerType(String controllerType) {
-        this.controllerType = controllerType;
+
+    public void setLocomotiveType(String locomotiveType) {
+        if (isValidLocomotiveType(locomotiveType)) {
+            this.locomotiveType = locomotiveType;
+        } else {
+            throw new IllegalArgumentException("This type of locomotive is not valid");
+        }
     }
 
-    public String getControllerType() {
-        return controllerType;
+
+    public String getLocomotiveType() {
+        return locomotiveType;
+    }
+
+
+    public boolean isValidEra(String era) {
+        return era != null && era.length() <= 50;
+    }
+
+
+    public boolean isValidLocomotiveType(String locomotiveType) {
+        return locomotiveType != null && locomotiveType.length() <= 100;
     }
 }
+

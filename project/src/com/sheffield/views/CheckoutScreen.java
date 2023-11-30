@@ -146,6 +146,7 @@ public class CheckoutScreen extends JFrame {
         jLabel2.setVisible(false);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        // Order order = databaseOperations.getOrderModel(orderID, connection);
         jLabel3.setText("Total: £ XXXX");
 
         jTextField1.setEditable(false);
