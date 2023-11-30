@@ -11,15 +11,29 @@ public class User {
     private String surname;
     private String email;
     private String password;
-    private String role;
+    private Role role;
+    private String postcode;
+    private String houseNumber;
 
-     /**
+    /**
      * Constructor for Registration.
      *
      * @param userId   The unique identifier for the user.
      * @param email    The email address of the user.
      * @param roles     The role assigned to the user.
      */
+
+    public User(String forename, String surname, String email, char[] password, Role role, String postcode, String houseNumber) {
+        this.setUserID();
+        this.setForename(forename);
+        this.setSurname(surname);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setRole(role);
+        this.setPostcode(postcode);
+        this.setHouseNumber(houseNumber);
+    }
+
     public User(String forename, String surname, String email, char[] password) {
         this.setForename(forename);
         this.setSurname(surname);
@@ -28,7 +42,7 @@ public class User {
         this.setUserID();
     }
 
-    public User(String userID, String forename, String surname, String email, String role) {
+    public User(String userID, String forename, String surname, String email, Role role) {
         this.setForename(forename);
         this.setSurname(surname);
         this.setEmail(email);
@@ -36,7 +50,7 @@ public class User {
         this.setRole(role);
     }
 
-    public User(String email, String password, String role){
+    public User(String email, String password, Role role){
         this.email = email;
         this.password = password;
         this.role = role;
@@ -92,7 +106,7 @@ public class User {
      *
      * @return The list of roles.
      */
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -101,8 +115,24 @@ public class User {
      *
      * @param roles The list of roles to be set.
      */
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
 

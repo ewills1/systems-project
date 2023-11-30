@@ -5,15 +5,22 @@ import java.util.ArrayList;
 public class Address {
 
     private String houseNumber;
-    private String streetName;
+    private String roadName;
     private String cityName;
     private String postcode;
     private ArrayList<String> users;
+
+    public Address (String houseNumber, String roadName, String cityName, String postcode ){
+        this.houseNumber = houseNumber;
+        this.roadName = roadName;
+        this.cityName = cityName;
+        this.postcode = postcode;
+    }
     
 
-    public Address (String houseNumber, String streetName, String cityName, String postcode, ArrayList<String> users ){
+    public Address (String houseNumber, String roadName, String cityName, String postcode, ArrayList<String> users ){
         this.houseNumber = houseNumber;
-        this.streetName = streetName;
+        this.roadName = roadName;
         this.cityName = cityName;
         this.postcode = postcode;
         this.users = users;
@@ -27,12 +34,12 @@ public class Address {
         this.houseNumber = houseNumber;
     }
 
-    public String getStreetName(){
-        return streetName;
+    public String getroadName(){
+        return roadName;
     }
 
-    public void setStreetName(String streetName){
-        this.streetName = streetName;
+    public void setroadName(String roadName){
+        this.roadName = roadName;
     }
 
     public String getCityName(){
@@ -65,6 +72,6 @@ public class Address {
 
     @Override
     public String toString(){
-        return houseNumber+", "+streetName+", "+cityName+", "+postcode;
+        return houseNumber+", "+roadName+", "+cityName+", "+postcode;
     }
 }

@@ -286,15 +286,7 @@ public class CheckoutScreen extends JFrame {
                 }
                 combinedTableModel = countModel;
                 combinedTableModel = combineTableModels(countModel, userModel);
-                actionModel.addColumn("Action");
-                for (int i = 0; i < databaseOperations.countOrderIDOrderLine(orderID, connection); i++) {
-                    actionModel.addRow(new Object[]{ "Remove"});
-                }
-                
-                combinedTableModel = combineTableModels(combinedTableModel, actionModel);
                 userTable.setModel(combinedTableModel);
-                userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), userTable, connection));
                 userTable.setColumnSelectionAllowed(true);
                 jScrollPane2.setViewportView(userTable);
             } else {
