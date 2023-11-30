@@ -9,6 +9,7 @@ import com.sheffield.model.Role;
 import com.sheffield.model.User;
 
 import com.sheffield.util.EmailValidator;
+import com.sheffield.util.InputSanitizer;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -338,14 +339,14 @@ public class RegisterScreen extends JFrame {
         postcodeLabel.setForeground(Color.BLACK);
 
         JFrame frame = new JFrame();
-        String forename = forenameField.getText().trim();
-        String surname = surnameField.getText().trim();
+        String forename = InputSanitizer.trimMiddleWhitespaces(forenameField.getText().trim());
+        String surname = InputSanitizer.trimMiddleWhitespaces(surnameField.getText().trim());
         String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
-        String houseNumber = housenumberField.getText().trim();
-        String roadName = roadnameField.getText().trim();
-        String cityName = citynameField.getText().trim();
-        String postcode = postcodeField.getText().trim();
+        String houseNumber = InputSanitizer.trimMiddleWhitespaces(housenumberField.getText().trim());
+        String roadName = InputSanitizer.trimMiddleWhitespaces(roadnameField.getText().trim());
+        String cityName = InputSanitizer.trimMiddleWhitespaces(citynameField.getText().trim());
+        String postcode = InputSanitizer.trimMiddleWhitespaces(postcodeField.getText().trim());
 
         if (forename.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || houseNumber.isEmpty() || roadName.isEmpty() || cityName.isEmpty() || postcode.isEmpty()) {
             if (forename.isEmpty()) {

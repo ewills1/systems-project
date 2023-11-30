@@ -6,6 +6,7 @@ import com.sheffield.model.CurrentUserManager;
 import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.model.DatabaseOperations;
 import com.sheffield.util.EmailValidator;
+import com.sheffield.util.InputSanitizer;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -165,11 +166,11 @@ public class ProfileScreen extends JFrame {
                     String oldEmail = databaseOperations.getRecordFromTable(connection,"email", "Users", id);
                     String oldBankName = databaseOperations.getRecordFromTable(connection,"bankCardName", "Users", id);
 
-                    String enteredForename = jTextField1.getText().trim();
-                    String enteredSurname = jTextField2.getText().trim();
+                    String enteredForename = InputSanitizer.trimMiddleWhitespaces(jTextField1.getText().trim());
+                    String enteredSurname = InputSanitizer.trimMiddleWhitespaces(jTextField2.getText().trim());
                     String enteredEmail = jTextField3.getText().trim();
                     String enteredPassword = jTextField4.getText();
-                    String enteredBankName = jTextField5.getText().trim();
+                    String enteredBankName = InputSanitizer.trimMiddleWhitespaces(jTextField5.getText().trim());
 
                     //Check if X is changed, update X
                     if (!oldForename.equals(enteredForename)) {
