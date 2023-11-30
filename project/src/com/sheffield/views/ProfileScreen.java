@@ -5,6 +5,7 @@ import com.sheffield.model.CurrentUserManager;
  */
 import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.model.DatabaseOperations;
+import com.sheffield.util.EmailValidator;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -171,17 +172,23 @@ public class ProfileScreen extends JFrame {
                 databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText(), id);
 
                 String enteredEmail = jTextField3.getText();
-                if (!enteredEmail.equals(oldCharEmail[0])) {
-                    try {
-                        if (!(databaseOperations.verifyEmailIsUsed(connection, enteredEmail))) { //Proceed if email is available
-                            databaseOperations.updateUserDetails(connection, "email", enteredEmail, id);
-                            System.out.println("Email address updated");
-                        } else {
-                            JOptionPane.showMessageDialog(frame, "Email already used. Email is not updated");
+
+                if (EmailValidator.isValidEmail(enteredEmail)) {
+                    //valid email
+                    if (!enteredEmail.equals(oldCharEmail[0])) { // Check if email is changed
+                        try { // Proceed if email is changed
+                            if (!(databaseOperations.verifyEmailIsUsed(connection, enteredEmail))) { //Proceed if email is available
+                                databaseOperations.updateUserDetails(connection, "email", enteredEmail, id);
+                                System.out.println("Email address updated");
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Email already used. Email is not updated");
+                            }
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
                         }
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
                     }
+                } else { //invalid email
+                    JOptionPane.showMessageDialog(frame, "Email is invalid. Email is not updated");
                 }
 
                 String enteredPassword = jTextField4.getText();
