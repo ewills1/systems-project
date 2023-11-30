@@ -168,10 +168,10 @@ public class ProfileScreen extends JFrame {
                     throw new RuntimeException(e);
                 }
 
-                databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText(), id);
-                databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText(), id);
+                databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText().trim(), id);
+                databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText().trim(), id);
 
-                String enteredEmail = jTextField3.getText();
+                String enteredEmail = jTextField3.getText().trim();
 
                 if (EmailValidator.isValidEmail(enteredEmail)) {
                     //valid email
