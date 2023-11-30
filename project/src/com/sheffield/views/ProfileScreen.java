@@ -168,10 +168,10 @@ public class ProfileScreen extends JFrame {
                     throw new RuntimeException(e);
                 }
 
-                databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText(), id);
-                databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText(), id);
+                databaseOperations.updateUserDetails(connection, "forename", jTextField1.getText().trim(), id);
+                databaseOperations.updateUserDetails(connection, "surname", jTextField2.getText().trim(), id);
 
-                String enteredEmail = jTextField3.getText();
+                String enteredEmail = jTextField3.getText().trim();
 
                 if (EmailValidator.isValidEmail(enteredEmail)) {
                     //valid email
@@ -197,8 +197,9 @@ public class ProfileScreen extends JFrame {
                     System.out.println("Password updated");
                 }
 
-                databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText(), id);
+                databaseOperations.updateUserDetails(connection, "bankCardName", jTextField5.getText().trim(), id);
                 System.out.println("Profile updated");
+                goToProfile(connection, id, evt);
             }
         });
 
@@ -337,5 +338,10 @@ public class ProfileScreen extends JFrame {
     private void goToLoginScreen(Connection connection, java.awt.event.ActionEvent evt) {
         dispose();
         new LoginScreen(connection);
-    }  
+    }
+
+    private void goToProfile(Connection connection, String id, java.awt.event.ActionEvent evt) {
+        dispose();
+        new ProfileScreen(connection, id);
+    }
 }
