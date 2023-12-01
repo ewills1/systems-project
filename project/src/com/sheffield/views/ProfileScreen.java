@@ -154,6 +154,8 @@ public class ProfileScreen extends JFrame {
             throw new RuntimeException(e);
         }
 
+        final Boolean[] bankValid = {false};
+
         updateDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -174,19 +176,31 @@ public class ProfileScreen extends JFrame {
 
                     //Check if X is changed, update X
                     if (!oldForename.equals(enteredForename)) {
-                        databaseOperations.updateUserDetails(connection, "forename", enteredForename, id);
-                        System.out.println("Forename updated");
+                        if (!enteredForename.isEmpty()) {
+                            databaseOperations.updateUserDetails(connection, "forename", enteredForename, id);
+                            System.out.println("Forename updated");
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Forename cannot be empty");
+                        }
                     }
 
                     if (!oldSurname.equals(enteredSurname)) {
-                        databaseOperations.updateUserDetails(connection, "surname", enteredSurname, id);
-                        System.out.println("Surname updated");
+                        if (!enteredSurname.isEmpty()) {
+                            databaseOperations.updateUserDetails(connection, "surname", enteredSurname, id);
+                            System.out.println("Surname updated");
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Surname cannot be empty");
+                        }
                     }
 
                     if (oldBankName!=null) {
                         if (!oldBankName.equals(enteredBankName)) {
-                            databaseOperations.updateUserDetails(connection, "bankCardName", enteredBankName, id);
-                            System.out.println("Bank name updated");
+                            if (bankValid[0]) {
+                                databaseOperations.updateUserDetails(connection, "bankCardName", enteredBankName, id);
+                                System.out.println("Bank name updated");
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Seems you have changed your Bank name. Please verify it before update");
+                            }
                         }
                     }
 
@@ -225,9 +239,18 @@ public class ProfileScreen extends JFrame {
 
         jLabel6.setText("Payment Method:");
 
-        jButton2.setText("CHECK BANKING DETAILS");
+        jButton2.setText("VERIFY PAYMENT METHOD");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JFrame frame = new JFrame();
+                System.out.println(jTextField5.getText());
+                String enteredBankName = jTextField5.getText();
+                if (InputSanitizer.isLettersOnly(enteredBankName)) {
+                    bankValid[0] = true;
+                    JOptionPane.showMessageDialog(frame, "Payment method is accepted. You can update your payment method now");
+                } else { // Contains non-letters (symbol,numbers,etc)
+                    JOptionPane.showMessageDialog(frame, "Payment method cannot be used");
+                }
                 jButton2ActionPerformed(evt);
             }
         });

@@ -21,7 +21,7 @@ public class InputSanitizer {
         }
     }
 
-    public static boolean isStringOnly(String input) {
+    public static boolean isLettersOnly(String input) {
         if (input == null) {
             return false;
         }
@@ -71,7 +71,7 @@ public class InputSanitizer {
         String testString = "abcDEF";
 
         System.out.println("Is '" + testInteger + "' an integer: " + isInteger(testInteger));
-        System.out.println("Is '" + testString + "' a string: " + isStringOnly(testString));
+        System.out.println("Is '" + testString + "' a string: " + isLettersOnly(testString));
 
         String nameInput = "joHn DoE"; // Example name input
         String normalizedName = normalizeName(nameInput);
