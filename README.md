@@ -23,10 +23,11 @@ git clone git@github.com:ewills1/systems-project.git
 ```console
 cd system-project
 ```
+2. Then import mySQL connector library (.jar) file that has been provided in the zip file to the referenced library of this project (system-project).  
 
-2. Then execute the Main.java class
+3. Then execute the Main.java class
 
-3. This only created account is manager. The remaining account will need to go through the self-registration process. But here is the default account can be used for testing.
+4. This only created account is manager. The remaining account will need to go through the self-registration process. But here is the default account can be used for testing.
 
 | Email                    | Default Password         |
 | -------------------------| -------------------------|
@@ -35,4 +36,4 @@ cd system-project
 | user@user.com            | 123456                   |
 
 
-4. Closing any close icon will terminate the program and the user need to go through the login process back to access the system dashboard or prouct listing (as users)
+5. Closing any close icon will terminate the program and the user need to go through the login process back to access the system dashboard or prouct listing (as users)
