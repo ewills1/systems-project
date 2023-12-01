@@ -1,97 +1,109 @@
-CREATE TABLE Products ( 
-    productCode VARCHAR(100) NOT NULL PRIMARY KEY,
-    name VARCHAR (100),
-    price DECIMAL(8,2),
-    quantity INT
+CREATE TABLE Products (
+  productCode varchar(100) NOT NULL,
+  name varchar(100) DEFAULT NULL,
+  brandName varchar(45) DEFAULT NULL,
+  price decimal(8,2) DEFAULT NULL,
+  quantity int DEFAULT NULL,
+  gaugeScale enum('OO_GAUGE','TT_GAUGE','N_GAUGE') DEFAULT NULL,
+  PRIMARY KEY (productCode)
 );
 
 CREATE TABLE OrderLines (
-    orderID INT,
-    productCode VARCHAR(100),
-    orderLineNumber INT,
-    productQuantity INT, 
-    orderLineCost DECIMAL (8,2),
-    PRIMARY KEY (orderID, productCode),
-    FOREIGN KEY (orderID) REFERENCES `Orders` (orderID),
-    FOREIGN KEY (productCode) REFERENCES Products (productCode)
+  orderLineNumber varchar(50) NOT NULL,
+  productCode varchar(100) NOT NULL,
+  orderID varchar(50) NOT NULL,
+  productQuantity int DEFAULT NULL,
+  orderLineCost decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (orderLineNumber),
+  KEY productCode (productCode),
+  KEY OrderLines_ibfk_1 (orderID),
+  CONSTRAINT OrderLines_ibfk_1 FOREIGN KEY (orderID) REFERENCES Orders (orderID),
+  CONSTRAINT OrderLines_ibfk_2 FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
-CREATE TABLE `Orders` (
-    orderID INT,
-    date DATE,
-    totalCost DECIMAL (8,2),
-    placed ENUM('pending ', 'confirmed ', 'fulfilled ') NOT NULL,
-    PRIMARY KEY (orderID)
+CREATE TABLE Orders (
+  orderID varchar(50) NOT NULL,
+  userID varchar(100) DEFAULT NULL,
+  totalCost decimal(8,2) DEFAULT NULL,
+  status enum('PENDING','CONFIRMED','FULFILLED','DECLINED') NOT NULL,
+  date date DEFAULT NULL,
+  PRIMARY KEY (orderID),
+  KEY Orders_ib1fk_1_idx (userID),
+  CONSTRAINT Orders_ib1fk_1 FOREIGN KEY (userID) REFERENCES Users (userID)
 );
 
 CREATE TABLE Users (
-    userID VARCHAR(100),
-    email VARCHAR(100),
-    password VARCHAR(100),
-    forename VARCHAR (100),
-    surname VARCHAR (100),
-    bankCardName VARCHAR (100),
-    addressID INT,
-    cardHolderName VARCHAR (100),
-    expiryDate VARCHAR (100),
-    securityCode INT,
-    PRIMARY KEY (userID),
-	FOREIGN KEY (addressID) REFERENCES Addresses (addressID)
+  userID varchar(100) NOT NULL,
+  forename varchar(100) DEFAULT NULL,
+  surname varchar(100) DEFAULT NULL,
+  email varchar(100) DEFAULT NULL,
+  password varchar(100) DEFAULT NULL,
+  bankCardName varchar(100) DEFAULT NULL,
+  cardHolderName varchar(100) DEFAULT NULL,
+  expiryDate varchar(100) DEFAULT NULL,
+  securityCode int DEFAULT NULL,
+  accountLocked tinyint(1) DEFAULT NULL,
+  postcode varchar(50) DEFAULT NULL,
+  houseNumber varchar(50) DEFAULT NULL,
+  PRIMARY KEY (userID),
+  KEY postcode (postcode,houseNumber),
+  CONSTRAINT Users_ibfk_1 FOREIGN KEY (postcode, houseNumber) REFERENCES Addresses (postcode, houseNumber),
+  CONSTRAINT Users_ibfk_2 FOREIGN KEY (postcode, houseNumber) REFERENCES Addresses (postcode, houseNumber)
 );
 
 CREATE TABLE Roles (
-userID VARCHAR (50) NOT NULL ,
-role ENUM('Manager ', 'Staff ', 'User ') NOT NULL ,
-PRIMARY KEY (userID , role),
-FOREIGN KEY (userID) REFERENCES Users(userID)
-); 
+  userID varchar(50) NOT NULL,
+  role enum('MANAGER','STAFF','USER') NOT NULL,
+  PRIMARY KEY (userID,role),
+  CONSTRAINT Roles_ibfk_1 FOREIGN KEY (userID) REFERENCES Users (userID)
+);
 
 CREATE TABLE Addresses (
-    addressID INT,
-    streetName VARCHAR (100),
-    cityName VARCHAR (100),
-    postcode VARCHAR (100),
-    houseNumber VARCHAR(50),
-    PRIMARY KEY (addressID)
+  postcode varchar(100) NOT NULL,
+  houseNumber varchar(50) NOT NULL,
+  roadName varchar(100) DEFAULT NULL,
+  cityName varchar(100) DEFAULT NULL,
+  PRIMARY KEY (postcode,houseNumber)
 );
 
 CREATE TABLE Locomotives (
-    productCode VARCHAR(100),
-    era VARCHAR(50),
-    dcc VARCHAR(50),
-	PRIMARY KEY (productCode),
-    FOREIGN KEY (productCode) REFERENCES Products (productCode)
+  productCode varchar(100) NOT NULL,
+  era varchar(50) DEFAULT NULL,
+  dcc enum('ANALOGUE','DCC_READY','DCC_FITTED','DCC_SOUND') DEFAULT NULL,
+  PRIMARY KEY (productCode),
+  CONSTRAINT Locomotives_ibfk_1 FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
 CREATE TABLE RollingStocks (
-    productCode VARCHAR(100),
-    era VARCHAR(50),
-	PRIMARY KEY (productCode),
-	FOREIGN KEY (productCode) REFERENCES Products(productCode)
+  productCode varchar(100) NOT NULL,
+  era varchar(50) DEFAULT NULL,
+  rollingStockType enum('CARRIAGE','WAGON') DEFAULT NULL,
+  PRIMARY KEY (productCode),
+  CONSTRAINT RollingStocks_ibfk_1 FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
 CREATE TABLE Controllers (
-    productCode VARCHAR(100),
-    dcc VARCHAR(50),
-	PRIMARY KEY (productCode),
-    FOREIGN KEY (productCode) REFERENCES Products (productCode)
+  productCode varchar(100) NOT NULL,
+  dcc enum('ANALOGUE','DIGITAL') DEFAULT NULL,
+  PRIMARY KEY (productCode),
+  CONSTRAINT Controllers_ibfk_1 FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
 CREATE TABLE TrainSets (
-    productCode VARCHAR(100),
-    era VARCHAR(50),
-    PRIMARY KEY (productCode),
-    FOREIGN KEY (productCode) REFERENCES Products (productCode)
+  productCode varchar(100) NOT NULL,
+  era varchar(50) DEFAULT NULL,
+  PRIMARY KEY (productCode),
+  CONSTRAINT TrainSets_ibfk_1 FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
 CREATE TABLE TrackPacks (
-    productCode VARCHAR(100),
-	PRIMARY KEY (productCode),
-    FOREIGN KEY (productCode) REFERENCES Products (productCode)
+  productCode varchar(100) NOT NULL,
+  PRIMARY KEY (productCode),
+  CONSTRAINT TrackPacks_ibfk_1 FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
 
 CREATE TABLE Tracks (
-	productCode VARCHAR(100),
-    PRIMARY KEY (productCode),
-    FOREIGN KEY (productCode) REFERENCES Products (productCode)
+  productCode varchar(100) NOT NULL,
+  PRIMARY KEY (productCode),
+  CONSTRAINT Tracks_ibfk_1 FOREIGN KEY (productCode) REFERENCES Products (productCode)
 );
