@@ -3,7 +3,7 @@ Welcome to Team 60 Sheffield e-Train Store System.
 
 ## How to clone our repository?
 If you want to clone our repository, please follow these steps below:
-1. Once you are in Team 60's Project repository, click on the blue "Clone" button next to the download button.
+1. Once you are in Team 60's Project repository, click on the green "Clone" button next to the download button.
   - You can git clone using HTTPS or SSH key.
 2. Click on the button next to the link, to copy the url
 
