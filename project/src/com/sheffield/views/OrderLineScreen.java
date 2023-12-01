@@ -223,7 +223,7 @@ public class OrderLineScreen extends JFrame {
         if (this.orderID.equals("") && this.status.equals(Status.PENDING)) {
             jButton3.setVisible(false);
             jButton1.setVisible(true);
-            jTextField1.setText("This order is pending. Go checkout now.");
+            jTextField1.setText("This order is pending or empty. Go checkout now.");
         } else if (!this.orderID.equals("") && this.status.equals(Status.PENDING)) {
             jButton3.setVisible(false);
             jButton1.setVisible(false);
@@ -283,7 +283,6 @@ public class OrderLineScreen extends JFrame {
                     userOrderCount = userOrderCount + 1;
                     orderID = orderID + userOrderCount;
                 }
-                System.out.println("JINI: " + orderID);
                 String userIDLast2Char = id.substring(id.length() - 2).toUpperCase();
                 int itemInOrderLineCount = databaseOperations.countUserOrderLine(orderID + userIDLast2Char, connection);
 
@@ -361,11 +360,9 @@ public class OrderLineScreen extends JFrame {
             String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
             int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
             orderID = orderID + userOrderCount;
-            System.out.println("1 current order id: " + orderID);
 
             if (!(this.orderID.equals(""))) {
                 orderID = this.orderID;
-                System.out.println("2 current order id: " + orderID);
             } else {
                 if (userOrderCount != 0) {
                     Order order = databaseOperations.getOrderModel(orderID, connection);
@@ -373,11 +370,9 @@ public class OrderLineScreen extends JFrame {
                         orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
                         int userOrderCountTemp = userOrderCount + 1;
                         orderID = orderID + userOrderCountTemp;
-                        System.out.println("3 current order id: " + orderID);
                     }
                 }
             }
-            System.out.println("4 current order id: " + orderID);
 
             orderIDOrderLineResultSet = databaseOperations.getAllOrderIDOrderLineData(connection, orderID);
             userModel = buildTableModel(orderIDOrderLineResultSet);
