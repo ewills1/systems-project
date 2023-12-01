@@ -61,7 +61,7 @@ public class MyOrderScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -69,7 +69,7 @@ public class MyOrderScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -104,7 +104,7 @@ public class MyOrderScreen extends JFrame {
         jButton1.setText("Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToMainScreen(evt, connection);
+                goToMainScreen(evt, connection, id);
             }
         });
 
@@ -235,9 +235,9 @@ public class MyOrderScreen extends JFrame {
         new LoginScreen(connection);
     }                                        
 
-    private void goToMainScreen(java.awt.event.ActionEvent evt, Connection connection) {                                         
+    private void goToMainScreen(java.awt.event.ActionEvent evt, Connection connection, String id) {                                         
         dispose();
-        new ProductListingScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
+        new ProductListingScreen(connection, id);
     }                                                                            
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {                                            

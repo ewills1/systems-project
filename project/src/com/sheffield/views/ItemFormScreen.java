@@ -13,6 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.sheffield.model.Controller;
+import com.sheffield.model.CurrentUserManager;
 import com.sheffield.model.DatabaseConnectionHandler;
 import com.sheffield.model.DatabaseOperations;
 import com.sheffield.model.Locomotive;
@@ -54,7 +55,7 @@ public class ItemFormScreen extends JFrame {
     /**
      * Creates ItemFormScreen constructor
      */
-    public ItemFormScreen(Connection connection) {
+    public ItemFormScreen(Connection connection, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -73,7 +74,7 @@ public class ItemFormScreen extends JFrame {
             locomotiveCount = databaseOperations.countProduct("Locomotives", connection) + 1;
             rollingStockCount = databaseOperations.countProduct("RollingStocks", connection) + 1;
             controllerCount = databaseOperations.countProduct("Controllers", connection) + 1;
-            initComponents(connection);
+            initComponents(connection, id);
             setVisible(true);
         } catch (Throwable t) {
             // Close connection if database crashes.
@@ -84,7 +85,7 @@ public class ItemFormScreen extends JFrame {
         setVisible(true);
     }
 
-    public ItemFormScreen(Connection connection, String productCode) {
+    public ItemFormScreen(Connection connection, String productCode, String id) {
         super();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
@@ -98,7 +99,7 @@ public class ItemFormScreen extends JFrame {
         // initialise widgets and other components
         try {        
             currentProductCode = productCode;
-            initComponents(connection);
+            initComponents(connection, id);
             setVisible(true);
         } catch (Throwable t) {
             // Close connection if database crashes.
@@ -112,18 +113,18 @@ public class ItemFormScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton16 = new javax.swing.JButton();
         addProductTab = new javax.swing.JTabbedPane();
-        formPanel = createPanel(0, connection);
-        jPanel27 = createPanel(1, connection);
-        jPanel28 = createPanel(2, connection);
-        jPanel29 = createPanel(3, connection);
-        jPanel30 = createPanel(4, connection);
-        jPanel31 = createPanel(5, connection);
+        formPanel = createPanel(0, connection, id);
+        jPanel27 = createPanel(1, connection, id);
+        jPanel28 = createPanel(2, connection, id);
+        jPanel29 = createPanel(3, connection, id);
+        jPanel30 = createPanel(4, connection, id);
+        jPanel31 = createPanel(5, connection, id);
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -170,7 +171,7 @@ public class ItemFormScreen extends JFrame {
         jButton16.setText("Back");
         jButton16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToInventoryScreen(evt, connection);
+                goToInventoryScreen(evt, connection, id);
             }
         });
 
@@ -223,12 +224,12 @@ public class ItemFormScreen extends JFrame {
      * Action-button || other functions | listeners
      */
 
-    private void goToInventoryScreen(java.awt.event.ActionEvent evt, Connection connection) {                                          
+    private void goToInventoryScreen(java.awt.event.ActionEvent evt, Connection connection, String id) {                                          
         dispose();
-        new InventoryScreen(connection, "fakeId");
+        new InventoryScreen(connection, id);
     }                                          
 
-    private void deleteProduct(int selectedIndex, String productCode, Connection connection) {   
+    private void deleteProduct(String id, int selectedIndex, String productCode, Connection connection) {   
         try { 
             switch (selectedIndex) {
                 case 0:
@@ -256,14 +257,14 @@ public class ItemFormScreen extends JFrame {
             JFrame frame = new JFrame();
             JOptionPane.showMessageDialog(frame,  productCode + " deleted successfully.");
             dispose();
-            new InventoryScreen(connection, "fakeID");
+            new InventoryScreen(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }                                  
     }                                        
                                       
     
-    private JPanel createPanel(int selectedIndex, Connection connection) {
+    private JPanel createPanel(int selectedIndex, Connection connection, String id) {
         JPanel formPanel = new javax.swing.JPanel();
         JLabel productcodeLabel = new javax.swing.JLabel();
         JTextField productcodeField = new javax.swing.JTextField();
@@ -654,7 +655,7 @@ public class ItemFormScreen extends JFrame {
                                     break;
                             }
                             dispose();
-                            new InventoryScreen(connection, "fakeId");
+                            new InventoryScreen(connection, id);
                         } catch (Throwable e) {
                             e.printStackTrace();
                         }
@@ -698,7 +699,7 @@ public class ItemFormScreen extends JFrame {
                                     break;
                             }
                             dispose();
-                            new InventoryScreen(connection, "fakeId");
+                            new InventoryScreen(connection, id);
                         } catch (Throwable e) {
                             e.printStackTrace();
                         }
@@ -710,14 +711,14 @@ public class ItemFormScreen extends JFrame {
         deleteButton.setText("Delete");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteProduct(selectedIndex, currentProductCode, connection);
+                deleteProduct(id, selectedIndex, currentProductCode, connection);
             }
         });
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToInventoryScreen(evt, connection);
+                goToInventoryScreen(evt, connection, id);
             }
         });
 

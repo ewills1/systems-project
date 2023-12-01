@@ -1,4 +1,5 @@
 package com.sheffield.views;
+import com.sheffield.model.CurrentUserManager;
 /**
  * @author afiq_ismail
  */
@@ -64,7 +65,7 @@ public class InventoryScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -72,7 +73,7 @@ public class InventoryScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -114,7 +115,7 @@ public class InventoryScreen extends JFrame {
         jButton1.setText("Staff Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(evt, connection);
+                goToStaffDashboard(evt, id, connection);
             }
         });
 
@@ -152,7 +153,7 @@ public class InventoryScreen extends JFrame {
         addnewproductButton.setText("Add New Item");
         addnewproductButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToAddItemForm(evt, connection);
+                goToAddItemForm(evt, connection, id);
             }
         });
 
@@ -254,14 +255,14 @@ public class InventoryScreen extends JFrame {
         new LoginScreen(connection);
     }                                        
 
-    private void goToStaffDashboard(java.awt.event.ActionEvent evt, Connection connection) {                                         
+    private void goToStaffDashboard(java.awt.event.ActionEvent evt, String id, Connection connection) {                                         
         dispose();
-        new StaffDashboardScreen(connection, "fakeid");
+        new StaffDashboardScreen(connection, id);
     }                                        
 
-    private void goToAddItemForm(java.awt.event.ActionEvent evt, Connection connection) {                                         
+    private void goToAddItemForm(java.awt.event.ActionEvent evt, Connection connection, String id) {                                         
         dispose();
-        new ItemFormScreen(connection);
+        new ItemFormScreen(connection, id);
     }                                        
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {                                            

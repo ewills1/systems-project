@@ -1262,7 +1262,7 @@ public class DatabaseOperations {
         }
     }
 
-    // Get all products from the database based on orderID
+    // Get all orderLine from the database based on orderID
     public ResultSet getAllOrderIDOrderLineData(Connection connection, String orderID) throws SQLException {
         try {
             String selectSQL = "SELECT orderLineNumber, productCode, productQuantity, orderLineCost FROM OrderLines WHERE orderID = ?";
@@ -1275,4 +1275,6 @@ public class DatabaseOperations {
             throw e;// Re-throw the exception to signal an error.
         }
     }
+
+    
 }
