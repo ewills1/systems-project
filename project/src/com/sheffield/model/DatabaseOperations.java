@@ -1228,6 +1228,19 @@ public class DatabaseOperations {
         }
     }
 
+    public void updateOrderIDTotalCost(Connection connection, String orderID, BigDecimal totalCost) {
+        try {
+            String updateSQL = "UPDATE Orders SET totalCost = ? WHERE orderID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
+            preparedStatement.setBigDecimal(1, totalCost);
+            preparedStatement.setString(2, orderID);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.getStackTrace();
+        }
+    }
+
     // ====== ORDERLINE OPERATION======
     // count the number of product in the table
     public int countOrderIDOrderLine(String orderID, Connection connection) throws SQLException {
@@ -1276,5 +1289,20 @@ public class DatabaseOperations {
         }
     }
 
-    
+    public ResultSet getAllOrderIDOrderLineTotalPrice(Connection connection, String orderID) throws SQLException {
+        try {
+            String selectSQL = "SELECT SUM(orderLineCost) AS total_price FROM OrderLines WHERE orderID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, orderID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            System.out.println(resultSet.getString("total_price"));
+            return resultSet;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;// Re-throw the exception to signal an error.
+        }
+    }
+
+
 }

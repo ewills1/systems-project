@@ -10,6 +10,7 @@ import com.sheffield.util.ButtonEditor;
 import com.sheffield.util.ButtonRenderer;
 
 import java.awt.*;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +68,6 @@ public class CheckoutScreen extends JFrame {
      */
     private void initComponents(Connection connection, String id, String orderID) {
 
-        
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -79,6 +79,13 @@ public class CheckoutScreen extends JFrame {
 
         orderLinePanel = createPanel(connection);
         jTextField1 = new javax.swing.JTextField();
+        double total = 0;
+
+        try {
+            total = Double.parseDouble(databaseOperations.getAllOrderIDOrderLineTotalPrice(connection, orderID).getString("total_price"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         orderLineTab.addTab("Order Line", orderLinePanel);
 
@@ -134,6 +141,8 @@ public class CheckoutScreen extends JFrame {
                         System.out.println("Order confirmed. Redirecting to my Order");
                         updateCurrentStock(connection, orderID);
                         databaseOperations.updateOrderStatus(connection, orderID, Status.CONFIRMED);
+                        String totalString = databaseOperations.getAllOrderIDOrderLineTotalPrice(connection, orderID).getString("total_price");
+                        databaseOperations.updateOrderIDTotalCost(connection, orderID, new BigDecimal(totalString));
                         goToMyOrderScreen(connection, id, evt);
                     }
                 } catch (SQLException e) {
@@ -147,7 +156,11 @@ public class CheckoutScreen extends JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         // Order order = databaseOperations.getOrderModel(orderID, connection);
-        jLabel3.setText("Total: £ XXXX");
+        if (total != 0) {
+            jLabel3.setText("Total: £ " + String.valueOf(total));
+        } else {
+            jLabel3.setText("Total: £ XXXX");
+        }
 
         jTextField1.setEditable(false);
         jTextField1.setText("Your order line is empty. Add item now.");
@@ -262,13 +275,6 @@ public class CheckoutScreen extends JFrame {
             countModel.addColumn("No.");
             DefaultTableModel userModel = new DefaultTableModel();
             DefaultTableModel combinedTableModel = new DefaultTableModel();
-            // // Create a DefaultTableModel with a JButton column
-            DefaultTableModel actionModel = new DefaultTableModel() {
-                @Override
-                public Class<?> getColumnClass(int columnIndex) {
-                    return columnIndex == 2 ? JButton.class : Object.class; // Column index 2 contains buttons
-                }
-            };
 
             // constructing defined orderID
             String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
@@ -289,24 +295,7 @@ public class CheckoutScreen extends JFrame {
                 userTable.setModel(combinedTableModel);
                 userTable.setColumnSelectionAllowed(true);
                 jScrollPane2.setViewportView(userTable);
-            } else {
-                userTable.setModel(new javax.swing.table.DefaultTableModel(
-                    new Object [][] {
-                    },
-                    new String [] {
-                        "No.", " productCode", "productQuantity", "orderLineCost", "Action"
-                    }
-                ) {
-                    boolean[] canEdit = new boolean [] {
-                        false, false, false, false, false
-                    };
-
-                    public boolean isCellEditable(int rowIndex, int columnIndex) {
-                        return canEdit [columnIndex];
-                    }
-                });
-            }
-
+            } 
         } catch(SQLException e) {
             e.printStackTrace();
         } catch (ParseException e) {
