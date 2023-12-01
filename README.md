@@ -1,4 +1,4 @@
-# Team 45's Edflix Project
+# Team 060 Sheffield e-Train Store System
 Welcome to Team 60 Sheffield e-Train Store System.
 
 ## How to clone our repository?
