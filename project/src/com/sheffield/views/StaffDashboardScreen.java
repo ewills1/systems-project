@@ -5,19 +5,11 @@ import com.sheffield.model.CurrentUserManager;
  * @author afiq_ismail
  */
 import com.sheffield.model.DatabaseConnectionHandler;
-import com.sheffield.model.DatabaseOperations;
 import com.sheffield.model.Role;
-import com.sheffield.util.ButtonEditor;
-import com.sheffield.util.ButtonRenderer;
 
 import java.awt.*;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 public class StaffDashboardScreen extends JFrame {
     /**
@@ -46,7 +38,6 @@ public class StaffDashboardScreen extends JFrame {
     // Create an instance of DatabaseConnectionHandler for managing database
     // connections
     DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     // End of variables declaration
 
@@ -193,37 +184,16 @@ public class StaffDashboardScreen extends JFrame {
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
-        try {
-                ResultSet productResultSet;
-                DefaultTableModel countModel = new DefaultTableModel();
-                countModel.addColumn("No.");
-                DefaultTableModel productModel = new DefaultTableModel();
-                DefaultTableModel combinedTableModel = new DefaultTableModel();
-                productResultSet = databaseOperations.getRecent10Orders(connection);
-                if (productResultSet.next()) {
-
-                        productResultSet = databaseOperations.getRecent10Orders(connection);
-                        productModel = buildTableModel(productResultSet);
-                        for (int i = 0; i < databaseOperations.countRecent10Orders(connection); i++) {
-                        countModel.addRow(new Object[] { i + 1 });
-                        }
-                        combinedTableModel = combineTableModels(countModel, productModel);
-                        jTable1.setModel(combinedTableModel);
-                        jTable1.setColumnSelectionAllowed(true);
-                        jScrollPane2.setViewportView(jTable1);
-                } else {
-                        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                        new Object[][] {
-                        },
-                        new String[] {
-                                "No.", "Title 2", "Title 3", "Title 4"
-                        }));
-                        jTable1.setColumnSelectionAllowed(true);
-                        jScrollPane2.setViewportView(jTable1);
-                }
-        } catch (SQLException e) {
-                e.printStackTrace();
-        }
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][] {
+                        { null, null, null, null },
+                        { null, null, null, null },
+                        { null, null, null, null },
+                        { null, null, null, null }
+                },
+                new String[] {
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }));
         jScrollPane1.setViewportView(jTable1);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -310,12 +280,17 @@ public class StaffDashboardScreen extends JFrame {
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE,
+                        
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap()));
 
+        jScrollPane1.setVisible(false);
+        jScrollPane2.setVisible(false);
+        jLabel1.setVisible(false);
+        jLabel3.setVisible(false);
         pack();
     }
 
@@ -345,75 +320,5 @@ public class StaffDashboardScreen extends JFrame {
     private void goToUserScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
         new UserScreen(connection, id);
-    }
-
-    public DefaultTableModel buildTableModel(ResultSet resultSet) throws SQLException {
-        java.sql.ResultSetMetaData metaData = resultSet.getMetaData();
-
-        // Get column count
-        int columnCount = metaData.getColumnCount();
-
-        // Create a DefaultTableModel to hold the data
-        DefaultTableModel tableModel = new DefaultTableModel();
-
-        // Add column names to the table model
-        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-            tableModel.addColumn(metaData.getColumnLabel(columnIndex));
-        }
-
-        // Add row data to the table model
-        while (resultSet.next()) {
-            Object[] rowData = new Object[columnCount];
-            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-                rowData[columnIndex - 1] = resultSet.getObject(columnIndex);
-            }
-            tableModel.addRow(rowData);
-        }
-
-        return tableModel;
-    }
-
-    // Method to combine two DefaultTableModel instances
-    private static DefaultTableModel combineTableModels(DefaultTableModel model1, DefaultTableModel model2) {
-        DefaultTableModel combinedModel = new DefaultTableModel();
-
-        // Add columns from model1 to combinedModel
-        for (int i = 0; i < model1.getColumnCount(); i++) {
-            combinedModel.addColumn(model1.getColumnName(i));
-        }
-
-        // Add columns from model2 to combinedModel (ignoring columns present in model1)
-        for (int i = 0; i < model2.getColumnCount(); i++) {
-            String columnName = model2.getColumnName(i);
-            if (!containsColumn(combinedModel, columnName)) {
-                combinedModel.addColumn(columnName);
-            }
-        }
-
-        // Add rows from model1 and model2 to combinedModel
-        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
-        for (int i = 0; i < rowCount; i++) {
-            Vector<Object> rowData = new Vector<>();
-            for (int j = 0; j < combinedModel.getColumnCount(); j++) {
-                if (j < model1.getColumnCount()) {
-                    rowData.add(model1.getValueAt(i, j));
-                } else {
-                    rowData.add(model2.getValueAt(i, j - model1.getColumnCount()));
-                }
-            }
-            combinedModel.addRow(rowData);
-        }
-
-        return combinedModel;
-    }
-
-    // Method to check if a column exists in the DefaultTableModel
-    private static boolean containsColumn(DefaultTableModel model, String columnName) {
-        for (int i = 0; i < model.getColumnCount(); i++) {
-            if (model.getColumnName(i).equals(columnName)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
