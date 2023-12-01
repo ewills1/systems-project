@@ -1,4 +1,5 @@
 package com.sheffield.views;
+import com.sheffield.model.CurrentUserManager;
 /**
  * @author afiq_ismail
  */
@@ -28,7 +29,6 @@ public class OrderScreen extends JFrame {
     // Variables declaration                 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton addnewproductButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -62,7 +62,7 @@ public class OrderScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // initialise widgets and other components
-        initComponents(connection);
+        initComponents(connection, id);
 
         setVisible(true);
     }
@@ -70,14 +70,13 @@ public class OrderScreen extends JFrame {
     /**
      * Initialise widgets and other components
      */
-    private void initComponents(Connection connection) {
+    private void initComponents(Connection connection, String id) {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        addnewproductButton = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
@@ -106,7 +105,7 @@ public class OrderScreen extends JFrame {
         jButton1.setText("Staff Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToStaffDashboard(evt, connection);
+                goToStaffDashboard(evt, id, connection);
             }
         });
 
@@ -140,13 +139,6 @@ public class OrderScreen extends JFrame {
                     .addComponent(jLabel1))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
-
-        addnewproductButton.setText("Add New Item");
-        addnewproductButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goToAddItemForm(evt, connection);
-            }
-        });
 
         jLabel2.setText("Order Queue:");
 
@@ -213,7 +205,6 @@ public class OrderScreen extends JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addnewproductButton)
                 .addGap(41, 41, 41))
         );
         jPanel2Layout.setVerticalGroup(
@@ -221,7 +212,6 @@ public class OrderScreen extends JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addnewproductButton)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,15 +271,10 @@ public class OrderScreen extends JFrame {
         new LoginScreen(connection);
     }                                        
 
-    private void goToStaffDashboard(java.awt.event.ActionEvent evt, Connection connection) {                                         
+    private void goToStaffDashboard(java.awt.event.ActionEvent evt, String id, Connection connection) {                                         
         dispose();
-        new StaffDashboardScreen(connection, "fakeid");
-    }                                        
-
-    private void goToAddItemForm(java.awt.event.ActionEvent evt, Connection connection) {                                         
-        dispose();
-        new ItemFormScreen(connection);
-    }                                        
+        new StaffDashboardScreen(connection, id);
+    }                                                                               
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:

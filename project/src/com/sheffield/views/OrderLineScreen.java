@@ -140,27 +140,9 @@ public class OrderLineScreen extends JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (jButton1.getText().equals("Fulfill Order")) {
-                    fulfillOrder(connection, evt);
+                    fulfillOrder(connection, evt, id);
                 } else {
-                    try {
-                        // constructing defined orderID
-                        String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
-                        String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
-                        int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
-                        orderID = orderID + userOrderCount;
-
-                        String userIDLast2Char = id.substring(id.length() - 2).toUpperCase();
-                        int itemInOrderLineCount = databaseOperations.countUserOrderLine(orderID + userIDLast2Char, connection);
-
-                        if (itemInOrderLineCount>0) { // proceed to checkout if cart is not empty
-                            goToCheckoutScreen(connection, id, orderID, evt);
-                        } else { // stay if cart is empty
-                            JFrame frame = new JFrame();
-                            JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
-                        }
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                    placeOrder(connection, id, evt);
                 }
             }
         });
@@ -168,7 +150,7 @@ public class OrderLineScreen extends JFrame {
         jButton3.setText("Decline Order");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                declineOrder(connection, evt);
+                declineOrder(connection, evt, id);
             }
         });
 
@@ -272,7 +254,7 @@ public class OrderLineScreen extends JFrame {
     private void goToCheckoutScreen(Connection connection, String id, String orderID, java.awt.event.ActionEvent evt) {
         dispose();
         new CheckoutScreen(connection, id, orderID);
-    }                                        
+    }  
 
     private void goToMainScreen(Connection connection, String id, java.awt.event.ActionEvent evt) {
         dispose();
@@ -284,20 +266,56 @@ public class OrderLineScreen extends JFrame {
         new OrderScreen(connection, id);
     }
 
-    private void fulfillOrder(Connection connection,java.awt.event.ActionEvent evt) {
+    private void placeOrder(Connection connection, String id, java.awt.event.ActionEvent evt) {
+        try {
+            // constructing defined orderID
+            String userIDFirst2Char = CurrentUserManager.getCurrentUser().getUserID();
+            String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
+            int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
+            if (userOrderCount == 0) {
+                JFrame frame = new JFrame();
+                JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
+            } else {
+                orderID = orderID + userOrderCount;
+                Order order = databaseOperations.getOrderModel(orderID, connection);
+                if (order.getStatus() != Status.PENDING) {
+                    orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
+                    userOrderCount = userOrderCount + 1;
+                    orderID = orderID + userOrderCount;
+                }
+                System.out.println("JINI: " + orderID);
+                String userIDLast2Char = id.substring(id.length() - 2).toUpperCase();
+                int itemInOrderLineCount = databaseOperations.countUserOrderLine(orderID + userIDLast2Char, connection);
+
+                if (itemInOrderLineCount>0) { // proceed to checkout if cart is not empty
+                    goToCheckoutScreen(connection, id, orderID, evt);
+                } else { // stay if cart is empty
+                    JFrame frame = new JFrame();
+                    JOptionPane.showMessageDialog(frame, "Your order line is empty. Add items to checkout!");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void fulfillOrder(Connection connection,java.awt.event.ActionEvent evt, String id) {
         databaseOperations.updateOrderStatus(connection, this.orderID, Status.FULFILLED);
         JFrame frame = new JFrame();
         JOptionPane.showMessageDialog(frame,   "[" + this.orderID + "] The order has been fulfilled.");
         dispose();
-        new OrderScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
+        new OrderScreen(connection, id);
     }
 
-    private void declineOrder(Connection connection,java.awt.event.ActionEvent evt) {
+    private void declineOrder(Connection connection,java.awt.event.ActionEvent evt, String id) {
         databaseOperations.updateOrderStatus(connection, this.orderID, Status.DECLINED);
         JFrame frame = new JFrame();
         JOptionPane.showMessageDialog(frame,   "[" + this.orderID + "] The order has been declined.");
         dispose();
-        new OrderScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
+        new OrderScreen(connection, id);
     } 
 
     private JPanel createPanel(Connection connection) {
@@ -343,43 +361,52 @@ public class OrderLineScreen extends JFrame {
             String orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
             int userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
             orderID = orderID + userOrderCount;
+            System.out.println("1 current order id: " + orderID);
 
-            if(!(this.orderID.equals(""))) {
+            if (!(this.orderID.equals(""))) {
                 orderID = this.orderID;
+                System.out.println("2 current order id: " + orderID);
+            } else {
+                if (userOrderCount != 0) {
+                    Order order = databaseOperations.getOrderModel(orderID, connection);
+                    if (order.getStatus() != Status.PENDING) {
+                        orderID = userIDFirst2Char.substring(0, Math.min(userIDFirst2Char.length(), 2)).toUpperCase();
+                        int userOrderCountTemp = userOrderCount + 1;
+                        orderID = orderID + userOrderCountTemp;
+                        System.out.println("3 current order id: " + orderID);
+                    }
+                }
             }
+            System.out.println("4 current order id: " + orderID);
 
-
-            Order order = databaseOperations.getOrderModel(orderID, connection);
+            orderIDOrderLineResultSet = databaseOperations.getAllOrderIDOrderLineData(connection, orderID);
+            userModel = buildTableModel(orderIDOrderLineResultSet);
+            for (int i = 0; i < databaseOperations.countOrderIDOrderLine(orderID, connection); i++) {
+                countModel.addRow(new Object[]{i+1});
+            }
+            combinedTableModel = countModel;
+            combinedTableModel = combineTableModels(countModel, userModel);
+            actionModel.addColumn("Action");
+            for (int i = 0; i < databaseOperations.countOrderIDOrderLine(orderID, connection); i++) {
+                actionModel.addRow(new Object[]{ "Remove"});
+            }
             
-            if (order.getStatus().equals(Status.PENDING) || !(this.orderID.equals(""))) {
-                orderIDOrderLineResultSet = databaseOperations.getAllOrderIDOrderLineData(connection, orderID);
-                userModel = buildTableModel(orderIDOrderLineResultSet);
-                for (int i = 0; i < databaseOperations.countOrderIDOrderLine(orderID, connection); i++) {
-                    countModel.addRow(new Object[]{i+1});
-                }
-                combinedTableModel = countModel;
-                combinedTableModel = combineTableModels(countModel, userModel);
-                actionModel.addColumn("Action");
-                for (int i = 0; i < databaseOperations.countOrderIDOrderLine(orderID, connection); i++) {
-                    actionModel.addRow(new Object[]{ "Remove"});
-                }
-                
-                if (!(this.orderID.equals(""))) {
-                    userTable.setModel(combinedTableModel);
-                    userTable.setColumnSelectionAllowed(true);
-                    jScrollPane2.setViewportView(userTable);
-                } else {
-                    combinedTableModel = combineTableModels(combinedTableModel, actionModel);
-                    userTable.setModel(combinedTableModel);
-                    userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
-                    userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), userTable, connection));
-                    userTable.setColumnSelectionAllowed(true);
-                    jScrollPane2.setViewportView(userTable);
-                }
-            } 
+            if (!(this.orderID.equals(""))) {
+                userTable.setModel(combinedTableModel);
+                userTable.setColumnSelectionAllowed(true);
+                jScrollPane2.setViewportView(userTable);
+            } else {
+                combinedTableModel = combineTableModels(combinedTableModel, actionModel);
+                userTable.setModel(combinedTableModel);
+                userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+                userTable.getColumnModel().getColumn(combinedTableModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(new JTextField(), userTable, connection));
+                userTable.setColumnSelectionAllowed(true);
+                jScrollPane2.setViewportView(userTable);
+            }
+            
         } catch(SQLException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
+        } catch(ParseException e) {
             e.printStackTrace();
         }
 

@@ -140,7 +140,7 @@ public class ButtonEditor extends DefaultCellEditor {
                     }
 
                     // Open another screen (frame)
-                    JFrame newFrame = new UserScreen(connection, "");
+                    JFrame newFrame = new UserScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
                     newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                     newFrame.setVisible(true);
                 } else {
@@ -175,8 +175,9 @@ public class ButtonEditor extends DefaultCellEditor {
                             } else {
                                 userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
                                 orderID = orderID + userOrderCount;
+                                System.out.println("jk:@ " + orderID);
                                 Order order = databaseOperations.getOrderModel(orderID, connection);
-                                if(order.getStatus().equals(Status.CONFIRMED)) {
+                                if(order.getStatus() != Status.PENDING) {
                                     orderID = orderID.substring(0, Math.min(orderID.length(), 2));
                                     orderID = orderID + (userOrderCount + 1);
                                     String userID = CurrentUserManager.getCurrentUser().getUserID();
@@ -222,7 +223,7 @@ public class ButtonEditor extends DefaultCellEditor {
                     }
 
                     // Open another screen (frame)
-                    JFrame newFrame = new OrderLineScreen(connection, "");
+                    JFrame newFrame = new OrderLineScreen(connection, CurrentUserManager.getCurrentUser().getUserID());
                     newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                     newFrame.setVisible(true);
             } else if (this.label.equals("View")) {
@@ -234,7 +235,7 @@ public class ButtonEditor extends DefaultCellEditor {
                 }
 
                 // Open another screen (frame)
-                JFrame newFrame = new OrderLineScreen(connection, "", this.storedOrderID, this.storedStatus);
+                JFrame newFrame = new OrderLineScreen(connection, CurrentUserManager.getCurrentUser().getUserID(), this.storedOrderID, this.storedStatus);
                 newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                 // Configure the new frame: set size, add components, etc.
                 newFrame.setVisible(true);
@@ -247,7 +248,7 @@ public class ButtonEditor extends DefaultCellEditor {
                 }
 
                 // Open another screen (frame)
-                JFrame newFrame = new OrderLineScreen(connection, "", this.storedOrderID, Status.PENDING);
+                JFrame newFrame = new OrderLineScreen(connection, CurrentUserManager.getCurrentUser().getUserID(), this.storedOrderID, Status.PENDING);
                 newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                 // Configure the new frame: set size, add components, etc.
                 newFrame.setVisible(true);
