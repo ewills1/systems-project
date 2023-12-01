@@ -40,9 +40,6 @@ public class MyOrderScreen extends JFrame {
     private javax.swing.JPanel trackPackPanel;
     private javax.swing.JPanel trackPanel;
     private javax.swing.JTabbedPane productTab;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
 
     // End of variables declaration
     
@@ -76,12 +73,9 @@ public class MyOrderScreen extends JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         productTab = new javax.swing.JTabbedPane();
         productPanel = createPanel(0, connection);
@@ -139,17 +133,11 @@ public class MyOrderScreen extends JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        jLabel2.setText("Order Queue:");
+        jLabel2.setText("");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
+        jLabel3.setText("");
 
-        jLabel3.setText("Product Low on Stock");
-
-        jLabel4.setText("Product Out of Stock");
+        jLabel4.setText("");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -159,15 +147,12 @@ public class MyOrderScreen extends JFrame {
                 .addGap(43, 43, 43)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(123, 123, 123)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(41, 41, 41))
         );
@@ -176,12 +161,9 @@ public class MyOrderScreen extends JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -238,11 +220,7 @@ public class MyOrderScreen extends JFrame {
     private void goToMainScreen(java.awt.event.ActionEvent evt, Connection connection, String id) {                                         
         dispose();
         new ProductListingScreen(connection, id);
-    }                                                                            
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    } 
+    }
 
     private JPanel createPanel(int selectedIndex, Connection connection) {
         JPanel productPanel = new javax.swing.JPanel();
