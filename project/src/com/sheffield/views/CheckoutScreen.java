@@ -132,12 +132,12 @@ public class CheckoutScreen extends JFrame {
                     JFrame frame = new JFrame();
                     String bankName = databaseOperations.getRecordFromTable(connection, "bankCardName", "Users", id);
                     if (bankName == null || bankName.isEmpty()) {
-                        JOptionPane.showMessageDialog(frame, "No bank detected. Please insert payment method");
-                        System.out.println("No bank detected. Redirecting to Profile");
+                        JOptionPane.showMessageDialog(frame, "No payment method detected. Please insert payment method");
+                        System.out.println("No payment method detected. Redirecting to Profile");
                         goToProfile(connection, id, evt);
                     } else {
                         JOptionPane.showMessageDialog(frame, "Your order has been confirmed!");
-                        System.out.println("Bank Name: " + bankName);
+                        System.out.println("Payment method: " + bankName);
                         System.out.println("Order confirmed. Redirecting to my Order");
                         updateCurrentStock(connection, orderID);
                         databaseOperations.updateOrderStatus(connection, orderID, Status.CONFIRMED);

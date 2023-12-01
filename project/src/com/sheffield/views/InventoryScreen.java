@@ -10,6 +10,7 @@ import com.sheffield.util.ButtonEditor;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -168,6 +169,41 @@ public class InventoryScreen extends JFrame {
         jLabel3.setText("Product Low on Stock");
 
         jLabel4.setText("Product Out of Stock");
+
+        //Display count value OrderQueue, ProductLowOnStock, ProductOutOfStock
+        String query = "SELECT COUNT(*) AS orderQueue FROM Orders WHERE status =?";
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setString(1,"CONFIRMED");
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int orderQueue = resultSet.getInt("orderQueue");
+                jTextField1.setText(String.valueOf(orderQueue));
+            }
+
+            query = "SELECT COUNT(*) AS lowStock FROM Products WHERE quantity > ? AND quantity < ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,"0");
+            statement.setString(2,"10");
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int lowStock = resultSet.getInt("lowStock");
+                jTextField2.setText(String.valueOf(lowStock));
+            }
+
+            query = "SELECT COUNT(*) AS outOfStock FROM Products WHERE quantity < ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,"1");
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int outOfStock = resultSet.getInt("outOfStock");
+                jTextField3.setText(String.valueOf(outOfStock));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
