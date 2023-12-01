@@ -51,12 +51,23 @@ CREATE TABLE Users (
   CONSTRAINT Users_ibfk_2 FOREIGN KEY (postcode, houseNumber) REFERENCES Addresses (postcode, houseNumber)
 );
 
+INSERT INTO Users (userID, forename, surname, email, password, bankCardName, cardHolderName, expiryDate, securityCode, accountLocked, postcode, houseNumber)
+VALUES
+    ('77ab0caf-2bfa-4da5-aa88-cf98e1459f2c', 'manager', 'manager', 'manager@manager.com', '5e762797813e48b30288cb2d78904cb0a78b47fe13e118fb3f139855c2781951', NULL, NULL, NULL, NULL, NULL, 'S12 L3', '4')  -- User: manager
+
+
 CREATE TABLE Roles (
   userID varchar(50) NOT NULL,
   role enum('MANAGER','STAFF','USER') NOT NULL,
   PRIMARY KEY (userID,role),
   CONSTRAINT Roles_ibfk_1 FOREIGN KEY (userID) REFERENCES Users (userID)
 );
+
+INSERT INTO Roles (userID, role)
+VALUES
+    ('77ab0caf-2bfa-4da5-aa88-cf98e1459f2c', 'MANAGER')
+
+
 
 CREATE TABLE Addresses (
   postcode varchar(100) NOT NULL,
@@ -65,6 +76,10 @@ CREATE TABLE Addresses (
   cityName varchar(100) DEFAULT NULL,
   PRIMARY KEY (postcode,houseNumber)
 );
+
+INSERT INTO Addresses (postcode, houseNumber, roadName, cityName)
+VALUES
+    ('S12 L3', '4', 'Wilkinson Lane', 'Sheffield')
 
 CREATE TABLE Locomotives (
   productCode varchar(100) NOT NULL,
