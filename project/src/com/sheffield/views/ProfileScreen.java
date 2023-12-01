@@ -183,9 +183,11 @@ public class ProfileScreen extends JFrame {
                         System.out.println("Surname updated");
                     }
 
-                    if (!oldBankName.equals(enteredBankName)) {
-                        databaseOperations.updateUserDetails(connection, "bankCardName", enteredBankName, id);
-                        System.out.println("Bank name updated");
+                    if (oldBankName!=null) {
+                        if (!oldBankName.equals(enteredBankName)) {
+                            databaseOperations.updateUserDetails(connection, "bankCardName", enteredBankName, id);
+                            System.out.println("Bank name updated");
+                        }
                     }
 
                     if (!enteredEmail.equals(oldEmail)) {
