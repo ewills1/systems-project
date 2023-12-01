@@ -167,6 +167,9 @@ public class ProfileScreen extends JFrame {
                     String oldSurname = databaseOperations.getRecordFromTable(connection,"surname", "Users", id);
                     String oldEmail = databaseOperations.getRecordFromTable(connection,"email", "Users", id);
                     String oldBankName = databaseOperations.getRecordFromTable(connection,"bankCardName", "Users", id);
+                    if (oldBankName == null) {
+                        oldBankName="";
+                    }
 
                     String enteredForename = InputSanitizer.trimMiddleWhitespaces(jTextField1.getText().trim());
                     String enteredSurname = InputSanitizer.trimMiddleWhitespaces(jTextField2.getText().trim());
@@ -193,14 +196,12 @@ public class ProfileScreen extends JFrame {
                         }
                     }
 
-                    if (oldBankName!=null) {
-                        if (!oldBankName.equals(enteredBankName)) {
-                            if (bankValid[0]) {
-                                databaseOperations.updateUserDetails(connection, "bankCardName", enteredBankName, id);
-                                System.out.println("Bank name updated");
-                            } else {
-                                JOptionPane.showMessageDialog(frame, "Seems you have changed your Bank name. Please verify it before update");
-                            }
+                    if (!oldBankName.equals(enteredBankName)) {
+                        if (bankValid[0]) {
+                            databaseOperations.updateUserDetails(connection, "bankCardName", enteredBankName, id);
+                            System.out.println("Bank name updated");
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Seems you have changed your Bank name. Please verify it before update");
                         }
                     }
 
@@ -243,9 +244,8 @@ public class ProfileScreen extends JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JFrame frame = new JFrame();
-                System.out.println(jTextField5.getText());
                 String enteredBankName = jTextField5.getText();
-                if (InputSanitizer.isLettersOnly(enteredBankName)) {
+                if (InputSanitizer.isLettersOnly(enteredBankName) && !(enteredBankName.trim().isEmpty())) {
                     bankValid[0] = true;
                     JOptionPane.showMessageDialog(frame, "Payment method is accepted. You can update your payment method now");
                 } else { // Contains non-letters (symbol,numbers,etc)
