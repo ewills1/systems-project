@@ -91,7 +91,7 @@ public class DatabaseOperations {
             String userID = getuserIDByForename(connection, forename);
 
             // Prepare the SQL statement to update the user's role to "Staff"
-            String sql = "UPDATE Roles SET role = 'Staff' WHERE userID = ?";
+            String sql = "UPDATE Roles SET role = 'STAFF' WHERE userID = ?";
             preparedStatement = connection.prepareStatement(sql);
 
             // Set the parameters for the prepared statement
@@ -130,7 +130,7 @@ public class DatabaseOperations {
             String userID = getuserIDByForename(connection, forename);
 
             // Prepare the SQL statement to update the staff's role to "User"
-            String sql = "UPDATE Roles SET role = 'User' WHERE userID = ?";
+            String sql = "UPDATE Roles SET role = 'USER' WHERE userID = ?";
             preparedStatement = connection.prepareStatement(sql);
 
             // Set the parameters for the prepared statement
@@ -1238,6 +1238,34 @@ public class DatabaseOperations {
 
         } catch (SQLException e) {
             e.getStackTrace();
+        }
+    }
+
+    public ResultSet getRecent10Orders (Connection connection) throws SQLException {
+        try {
+            String query = "SELECT * FROM Orders WHERE status='CONFIRMED' ORDER BY date DESC LIMIT 10";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex;// Re-throw the exception to signal an error.
+        }
+    }
+
+    public int countRecent10Orders (Connection connection) throws SQLException {
+        try {
+            String query = "SELECT *, (SELECT COUNT(*) FROM Orders WHERE status='CONFIRMED') AS total_confirmed_orders FROM Orders WHERE status='CONFIRMED' ORDER BY date DESC LIMIT 10";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return Integer.parseInt(resultSet.getString("total_confirmed_orders"));
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex;// Re-throw the exception to signal an error.
         }
     }
 

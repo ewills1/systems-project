@@ -22,6 +22,7 @@ import com.sheffield.views.OrderLineScreen;
 import com.sheffield.views.ProductListingScreen;
 import com.sheffield.views.UserScreen;
 import com.sheffield.model.Product;
+import com.sheffield.model.Role;
 import com.sheffield.model.OrderLine;
 import com.sheffield.model.CurrentUserManager;
 import com.sheffield.model.DatabaseOperations;
@@ -44,7 +45,7 @@ public class ButtonEditor extends DefaultCellEditor {
     private int storedQuantity;
     // User related private data
     private String forename;
-    private String role;
+    private Role role;
     // OrderLine related private data
     private String storedOrderLine;
     // Orders related private data
@@ -68,7 +69,14 @@ public class ButtonEditor extends DefaultCellEditor {
                 storedProductCode = (String) table.getValueAt(row, column);
             } else if (this.label.equals("Promote | Demote")) {
                 forename = (String) table.getValueAt(row, column+1);
-                role = (String) table.getValueAt(row, column + 4);
+                String roleString = (String) table.getValueAt(row, column + 4);
+                if (Role.valueOf(roleString.toUpperCase()) == Role.USER) {
+                    this.role = Role.USER;
+                } else if (Role.valueOf(roleString.toUpperCase()) == Role.STAFF) {
+                    this.role = Role.STAFF;
+                } else if (Role.valueOf(roleString.toUpperCase()) == Role.MANAGER) {
+                    this.role = Role.MANAGER;
+                }
             } else if (this.label.equals("Add to OrderLine")) {
                 storedProductCode = (String) table.getValueAt(row, column);
                 storedProductName = (String) table.getValueAt(row, column + 1);
@@ -109,15 +117,16 @@ public class ButtonEditor extends DefaultCellEditor {
                 }
 
                 // Open another screen (frame)
-                JFrame newFrame = new ItemFormScreen(connection, storedProductCode);
+                JFrame newFrame = new ItemFormScreen(connection, storedProductCode, CurrentUserManager.getCurrentUser().getUserID());
                 newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Change to your desired close operation
                 // Configure the new frame: set size, add components, etc.
                 newFrame.setVisible(true);
             } else if (this.label.equals("Promote | Demote")) {
                 String message = "";
-                if (this.role.equals("User")) {
+
+                if (this.role == Role.USER) {
                     message = "Promote to Staff?";
-                } else if (this.role.equals("Staff")) {
+                } else if (this.role == Role.STAFF) {
                     message = "Demote from Staff?";
                 } else {
                     message = "You're a manager.";
@@ -125,10 +134,10 @@ public class ButtonEditor extends DefaultCellEditor {
 
                 int choice = JOptionPane.showConfirmDialog(null, "[" + this.forename + " | " + this.role + "] " + message , "Confirmation", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
-                    if (this.role.equals("User")) {
+                    if (this.role == Role.USER) {
                         databaseOperations.promoteToStaff(connection, this.forename);
                         JOptionPane.showMessageDialog(null, this.forename + " has been promoted to Staff.");
-                    } else if (this.role.equals("Staff")) {
+                    } else if (this.role == Role.STAFF) {
                         databaseOperations.demoteStaff(connection, this.forename);
                         JOptionPane.showMessageDialog(null, this.forename + " has been demoted to User.");
                     }
@@ -175,7 +184,6 @@ public class ButtonEditor extends DefaultCellEditor {
                             } else {
                                 userOrderCount = databaseOperations.countUserOrder(CurrentUserManager.getCurrentUser().getUserID(), connection);
                                 orderID = orderID + userOrderCount;
-                                System.out.println("jk:@ " + orderID);
                                 Order order = databaseOperations.getOrderModel(orderID, connection);
                                 if(order.getStatus() != Status.PENDING) {
                                     orderID = orderID.substring(0, Math.min(orderID.length(), 2));
@@ -210,7 +218,7 @@ public class ButtonEditor extends DefaultCellEditor {
                         } catch(ParseException e) {
                             e.getStackTrace();
                         }
-                        JOptionPane.showMessageDialog(button, "Product added to order");
+                        JOptionPane.showMessageDialog(button, "Product added to OrderLine");
                     }
                 }
             } else if (this.label.equals("Remove")) {

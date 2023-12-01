@@ -434,7 +434,7 @@ public class ItemFormScreen extends JFrame {
                         }
                         eraField.setText(currentProductResultSet.getString("era"));
                         char dcc = currentProductResultSet.getString("dcc").charAt(4);
-                        if (dcc == 'o') {
+                        if (dcc == 'O') {
                             typeComboBox.setSelectedIndex(1);;
                         } else if (dcc == 'R') {
                             typeComboBox.setSelectedIndex(2);
