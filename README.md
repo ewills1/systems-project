@@ -7,7 +7,7 @@ If you want to clone our repository, please follow these steps below:
   - You can git clone using HTTPS or SSH key.
 2. Click on the button next to the link, to copy the url
 
-3. Go to your codio terminal and type "git clone <LINK>". For example:
+3. Go to your terminal and type "git clone <LINK>". For example:
   - If you are using HTTPS:
 ```console
 git clone https://github.com/ewills1/systems-project.git
