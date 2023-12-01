@@ -25,7 +25,7 @@ cd system-project
 ```
 2. Then import mySQL connector library (.jar) file that has been provided in the zip file to the referenced library of this project (system-project).
 
-3. If not using the database from (team060 db schema), run the sql on the 'systems-project\project\Database.sql' on your database engine (like MySQL Workbench). If no error encountered, proceeed to the next step.
+3. If not using the database from (team060 db schema), run the sql on the 'systems-project\project\Database.sql' on your database engine (like MySQL Workbench). If no error encountered, proceed to the next step.
 
 4. Then execute the Main.java class.
 
